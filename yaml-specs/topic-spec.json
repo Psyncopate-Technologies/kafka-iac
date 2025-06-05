@@ -1,3 +1,129 @@
 {
-    
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Kafka Topic Configuration",
+    "type": "object",
+    "properties": {
+        "pipeline_version": {
+            "type": "string",
+            "description": "IaC module version to be used by the pipeline. If not specified, latest will be used."
+        },
+        "topic": {
+            "type": "object",
+            "required": [
+                "name",
+                "mal_acronym",
+                "srb_review_number"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "maxLength": 249,
+                    "pattern": "^[a-zA-Z0-9._-]+$",
+                    "description": "Topic name following naming convention: DC.Env.MAL.EDT.CT.F.MP"
+                },
+                "alias_name": {
+                    "type": "string",
+                    "maxLength": 249,
+                    "pattern": "^[a-zA-Z0-9_]+$",
+                    "description": "Alias name used as the tf state file name"
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "Metadata description about topic"
+                },
+                "mal_acronym": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "description": "Owner of the topic - MAL acronym"
+                },
+                "srb_review_number": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "description": "SRB Review Ticket"
+                },
+                "partitions": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Number of partitions"
+                },
+                "retention": {
+                    "type": "string",
+                    "pattern": "^[0-9]+[smhd]$",
+                    "description": "Retention period (e.g., 1d, 7d)"
+                },
+                "cleanup_policy": {
+                    "type": "string",
+                    "enum": [
+                        "delete",
+                        "compact"
+                    ],
+                    "description": "Cleanup policy"
+                },
+                "config": {
+                    "type": "object",
+                    "properties": {
+                        "delete.retention.ms": {
+                            "type": "integer"
+                        },
+                        "max.message.bytes": {
+                            "type": "integer"
+                        },
+                        "max.compaction.lag.ms": {
+                            "type": "integer"
+                        },
+                        "message.timestamp.difference.max.ms": {
+                            "type": "integer"
+                        },
+                        "message.timestamp.before.max.ms": {
+                            "type": "integer"
+                        },
+                        "message.timestamp.after.max.ms": {
+                            "type": "integer"
+                        },
+                        "message.timestamp.type": {
+                            "type": "string",
+                            "enum": [
+                                "CreateTime",
+                                "LogAppendTime"
+                            ]
+                        },
+                        "min.compaction.lag.ms": {
+                            "type": "integer"
+                        },
+                        "min.insync.replicas": {
+                            "type": "integer"
+                        },
+                        "retention.bytes": {
+                            "type": "integer"
+                        },
+                        "retention.ms": {
+                            "type": "integer"
+                        },
+                        "segment.bytes": {
+                            "type": "integer"
+                        },
+                        "segment.ms": {
+                            "type": "integer"
+                        },
+                        "confluent.key.schema.validation": {
+                            "type": "boolean"
+                        },
+                        "confluent.value.schema.validation": {
+                            "type": "boolean"
+                        },
+                        "confluent.key.subject.name.strategy": {
+                            "type": "string"
+                        },
+                        "confluent.value.subject.name.strategy": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
 }

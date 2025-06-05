@@ -1,3 +1,173 @@
 {
-    
-}
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Client Configuration",
+    "type": "object",
+    "properties": {
+      "pipeline_version": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "identity_pool_name": {
+        "type": "string"
+      },
+      "oauth_client_id": {
+        "type": "string"
+      },
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "topic_name",
+            "schema_type",
+            "mal_acronym",
+            "srb_review_number"
+          ],
+          "properties": {
+            "topic_name": {
+              "type": "string"
+            },
+            "alias_name": {
+              "type": "string"
+            },
+            "schema_type": {
+              "type": "string",
+              "enum": [
+                "key",
+                "value"
+              ]
+            },
+            "mal_acronym": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "srb_review_number": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "AVRO",
+                "JSON",
+                "PROTOBUF"
+              ]
+            },
+            "file_name": {
+              "type": "string"
+            },
+            "compatibility_level": {
+              "type": "string",
+              "enum": [
+                "NONE",
+                "BACKWARD",
+                "BACKWARD_TRANSITIVE",
+                "FORWARD",
+                "FORWARD_TRANSITIVE",
+                "FULL",
+                "FULL_TRANSITIVE"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "producer": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "resource_name",
+            "resource_type",
+            "srb_review_number",
+            "mal_acronym"
+          ],
+          "properties": {
+            "resource_name": {
+              "type": "string"
+            },
+            "resource_type": {
+              "type": "string",
+              "enum": [
+                "Topic",
+                "Connector"
+              ]
+            },
+            "srb_review_number": {
+              "type": "string"
+            },
+            "mal_acronym": {
+              "type": "string"
+            },
+            "connect_cluster_name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "consumer": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "resource_name",
+            "resource_type",
+            "srb_review_number",
+            "mal_acronym"
+          ],
+          "properties": {
+            "resource_name": {
+              "type": "string"
+            },
+            "resource_type": {
+              "type": "string",
+              "enum": [
+                "Topic",
+                "Connector"
+              ]
+            },
+            "srb_review_number": {
+              "type": "string"
+            },
+            "mal_acronym": {
+              "type": "string"
+            },
+            "consumer_group_id": {
+              "type": "string"
+            },
+            "connect_cluster_name": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "quota": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ingress_byte_rate": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "egress_byte_rate": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "oauth_client_id"
+    ],
+    "additionalProperties": false
+  }
