@@ -85,7 +85,7 @@ resource "confluent_kafka_topic" "this" {
     secret = var.cc_kafka_api_secret
   }
 
-  topic_name        = local.topic.name
+  topic_name        = var.topic_name
   partitions_count  = local.partitions_count
   config = local.final_config == null ? {} : local.final_config  
 }

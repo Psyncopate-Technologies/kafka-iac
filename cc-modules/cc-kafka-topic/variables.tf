@@ -52,6 +52,16 @@ variable "topic_path" {
   }
 }
 
+variable "topic_name" {
+  type        = string
+  description = "The name of the topic to be created. This is used to validate the naming convention of the topic."
+  nullable    = false
+  validation {
+    condition     = length(var.topic_name) > 0 && can(regex("^[A-Z]{3}\.(DEV[1-4]|TEST[1-4]|PROD)\.[A-Z0-9]{2,}\.[A-Za-z0-9]+\.[A-Za-z0-9]+\.(JSON|AVRO|STRING)\.(CDO\.EVENT|SPECIFIC\.EVENT|RAW\.EVENT|COMMAND|API\.REQUEST|API\.RESPONSE|STREAM\.REQUEST|STREAM\.RESPONSE|PRIVATE|DEADLETTER)$", var.topic_name))
+    error_message = "topic_name must be a non-empty string containing only alphanumeric characters, dots, underscores, or hyphens."
+  }
+}
+
 variable "default_partitions" {
   type    = number
   description = "Default number of partitions for the topic if not specified in the YAML file. The default value here will be overridden from terragrunt based on environment."
