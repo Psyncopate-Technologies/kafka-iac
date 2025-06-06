@@ -1,1 +1,119 @@
 # CI Workflow for Kafka Resource Management
+name: CI Workflow for Kafka Client Resources
+
+on:
+  workflow_call:
+    inputs:
+      file:
+        required: true
+        type: string
+      cloud:
+        required: true
+        type: string
+      env:
+        required: true
+        type: string
+      pipeline_version:
+        required: true
+        type: string
+
+jobs:
+  stage-environment:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    env:
+      FILE_NAME: ${{ inputs.file }}
+      CLOUD_PROVIDER: ${{ inputs.cloud }}
+      ENV: ${{ inputs.env }}
+      PIPELINE_VERSION: ${{ inputs.pipeline_version }}
+    steps:
+      - name: Checkout kafka-iac
+        uses: actions/checkout@v4
+        with:
+          repository: Psyncopate-Technologies/kafka-iac
+          ref: v${{ inputs.pipeline_version }}
+          path: kafka-iac
+
+      - name: Checkout kafka-client-config
+        uses: actions/checkout@v4
+        with:
+          repository: Psyncopate-Technologies/kafka-client-config
+          path: kafka-client-config
+
+      - name: Set computed environment variables
+        run: |
+          DIR_PATH=$(dirname "$FILE_PATH")
+          echo "DIR_PATH=$DIR_PATH" >> $GITHUB_ENV
+          echo "FILE_NAME=$(basename $FILE_PATH)" >> $GITHUB_ENV
+          echo "TOPIC_NAME=${FILE_NAME%.yaml}" >> $GITHUB_ENV
+
+      - name: Copy terragrunt.hcl to kafka-client-config
+        run: |
+          mkdir -p kafka-client-config/_common
+          cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
+          cp kafka-iac/terragrunt/$DIR_PATH/terragrunt.hcl kafka-client-config/$DIR_PATH/terragrunt.hcl
+
+      - name: Set cloud-specific secrets
+        run: |
+          echo "Setting env for: $CLOUD_PROVIDER"
+          if [[ "$CLOUD_PROVIDER" == "azure" ]]; then
+            echo "CONFLUENT_API_KEY=${{ secrets.CONFLUENT_API_KEY }}" >> $GITHUB_ENV
+            echo "CONFLUENT_API_SECRET=${{ secrets.CONFLUENT_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> $GITHUB_ENV
+            echo "KAFKA_API_SECRET=${{ secrets.KAFKA_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_CLUSTER_ID=${{ secrets.KAFKA_CLUSTER_ID }}" >> $GITHUB_ENV
+            echo "KAFKA_REST_ENDPOINT=${{ secrets.KAFKA_REST_ENDPOINT }}" >> $GITHUB_ENV
+            echo "AZURE_RESOURCE_GROUP_NAME=${{ secrets.AZURE_RESOURCE_GROUP_NAME }}" >> $GITHUB_ENV
+            echo "AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" >> $GITHUB_ENV
+            echo "AZURE_CONTAINER_NAME=${{ secrets.AZURE_CONTAINER_NAME }}" >> $GITHUB_ENV
+            echo "ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}" >> $GITHUB_ENV
+            echo "ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}" >> $GITHUB_ENV
+            echo "ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+            echo "ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}" >> $GITHUB_ENV
+          elif [[ "$CLOUD_PROVIDER" == "gcp" ]]; then
+            echo "CONFLUENT_API_KEY=${{ secrets.CONFLUENT_API_KEY }}" >> $GITHUB_ENV
+            echo "CONFLUENT_API_SECRET=${{ secrets.CONFLUENT_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> $GITHUB_ENV
+            echo "KAFKA_API_SECRET=${{ secrets.KAFKA_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_CLUSTER_ID=${{ secrets.KAFKA_CLUSTER_ID }}" >> $GITHUB_ENV
+            echo "KAFKA_REST_ENDPOINT=${{ secrets.KAFKA_REST_ENDPOINT }}" >> $GITHUB_ENV
+            echo "GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }}" >> $GITHUB_ENV
+            echo "GCP_BUCKET_NAME=${{ secrets.GCP_BUCKET_NAME }}" >> $GITHUB_ENV
+          elif [[ "$CLOUD_PROVIDER" == "aws" ]]; then
+            echo "CONFLUENT_API_KEY=${{ secrets.CONFLUENT_API_KEY }}" >> $GITHUB_ENV
+            echo "CONFLUENT_API_SECRET=${{ secrets.CONFLUENT_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> $GITHUB_ENV
+            echo "KAFKA_API_SECRET=${{ secrets.KAFKA_API_SECRET }}" >> $GITHUB_ENV
+            echo "KAFKA_CLUSTER_ID=${{ secrets.KAFKA_CLUSTER_ID }}" >> $GITHUB_ENV
+            echo "KAFKA_REST_ENDPOINT=${{ secrets.KAFKA_REST_ENDPOINT }}" >> $GITHUB_ENV
+            echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+            echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+            echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+            echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> $GITHUB_ENV
+          else
+            echo "Unsupported cloud provider: $CLOUD_PROVIDER"
+            exit 1
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      
+      - name: Install Terragrunt
+        run: |
+          wget -q https://github.com/gruntwork-io/terragrunt/releases/download/v0.56.3/terragrunt_linux_amd64
+          chmod +x terragrunt_linux_amd64
+          sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
+
+      - name: Terragrunt Init
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        run: terragrunt init
+
+      - name: Terragrunt Validate
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        run: terragrunt validate
+
+      - name: Terragrunt Plan
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        run: terragrunt plan
