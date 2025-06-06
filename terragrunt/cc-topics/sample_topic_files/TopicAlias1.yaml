@@ -1,7 +1,7 @@
 # Topic definition for topic Alias1
 #pipeline_version: 1.0.0 #Optional - Version of IaC module to be used - If not specified, the latest release of IaC will be used.
 topic:
-  name: "Topic1" #Required - Naming convention - DataCenter.Environment.OwningMalAcronym.EnterpriseDesignatorTaxonomy.CapabilityTaxonomy.Format.MessagePattern
+  name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT" #Required - Naming convention - DataCenter.Environment.OwningMalAcronym.EnterpriseDesignatorTaxonomy.CapabilityTaxonomy.Format.MessagePattern
   alias_name: "TopicAlias1" #Optional - This is would be the name of the tf state file. If not provided, would be derieved from the filename. 
   description: "Test topic" #Optional - Just a metadata
   mal_acronym: "CLMAL1" #Required - Just a metadata
