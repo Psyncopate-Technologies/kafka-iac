@@ -37,6 +37,7 @@
 locals {
   topic_config = yamldecode(file(var.topic_path))
   topic        = local.topic_config.topic
+  partitions_count = try(local.topic.partitions, var.default_partitions)
 }
 
 resource "confluent_kafka_topic" "this" {
@@ -45,7 +46,7 @@ resource "confluent_kafka_topic" "this" {
   }
 
   topic_name        = local.topic.name
-  partitions_count  = local.topic.partitions
+  partitions_count  = local.partitions_count
   config            = local.topic.config
 
   credentials {
