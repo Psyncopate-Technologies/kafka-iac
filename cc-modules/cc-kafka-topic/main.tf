@@ -38,6 +38,7 @@ locals {
   topic_config = yamldecode(file(var.topic_path))
   topic        = local.topic_config.topic
   partitions_count = try(local.topic.partitions, var.default_partitions)
+  topic_config_map = try(local.topic.config, null)
 }
 
 resource "confluent_kafka_topic" "this" {
@@ -47,7 +48,14 @@ resource "confluent_kafka_topic" "this" {
 
   topic_name        = local.topic.name
   partitions_count  = local.partitions_count
-  config            = local.topic.config
+  
+  dynamic "config" {
+    for_each = local.topic_config_map == null ? [] : [1]
+    content {
+      for key, value in local.topic_config_map :
+      key => value
+    }
+  }
 
   credentials {
     key    = var.kafka_api_key
