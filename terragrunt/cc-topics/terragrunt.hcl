@@ -93,7 +93,7 @@ generate "outputs" {
   path      = "outputs.tf"
   if_exists = "overwrite"
   contents  = <<EOF
-output "use_pipeline_version" {
+output "pipeline_version" {
   value       = "${local.iac_version}"
   description = "The version of the IaC module that was applied."
 }
