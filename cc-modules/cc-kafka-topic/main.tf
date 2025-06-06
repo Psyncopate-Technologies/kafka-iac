@@ -45,10 +45,10 @@ locals {
 
   # Retention in milliseconds (only if defined)
   retention_ms = local.raw_retention == null ? null : (
-    can(regex("^\\d+s$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 1000 :
-    can(regex("^\\d+m$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 60 * 1000 :
-    can(regex("^\\d+h$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 60 * 60 * 1000 :
-    can(regex("^\\d+d$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 24 * 60 * 60 * 1000 :
+    can(regex("^\\d+s$", local.raw_retention)) ? tonumber(regexall("^\\d+", local.raw_retention)[0]) * 1000 :
+    can(regex("^\\d+m$", local.raw_retention)) ? tonumber(regexall("^\\d+", local.raw_retention)[0]) * 60 * 1000 :
+    can(regex("^\\d+h$", local.raw_retention)) ? tonumber(regexall("^\\d+", local.raw_retention)[0]) * 60 * 60 * 1000 :
+    can(regex("^\\d+d$", local.raw_retention)) ? tonumber(regexall("^\\d+", local.raw_retention)[0]) * 24 * 60 * 60 * 1000 :
     null
   )
 
