@@ -16,6 +16,9 @@ on:
       pipeline_version:
         required: true
         type: string
+      resource_type:
+        required: true
+        type: string
 
 jobs:
   stage-environment:
