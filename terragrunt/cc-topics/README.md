@@ -5,10 +5,12 @@
 2. `export ENV=dev`
 3. `export CONFLUENT_API_KEY=<CC API Key>`
 4. `export CONFLUENT_API_SECRET=<CC API Secret>`
-5. `export KAFKA_API_KEY=<Kafka Cluster API Key>`
-6. `export KAFKA_API_SECRET=<Kafka Cluster API Secret>`
-7. `export KAFKA_CLUSTER_NAME=<Kafka Cluster Name>`
+5. `export CC_KAFKA_API_KEY=<Kafka Cluster API Key>`
+6. `export CC_KAFKA_API_SECRET=<Kafka Cluster API Secret>`
+7. `export CC_KAFKA_CLUSTER_NAME=<Kafka Cluster Name>`
 7. `export ENVIRONMENT_NAME=<Confluent Cloud Environment Name>`
+7. `export KAFKA_CLUSTER_ID=<Kafka Cluster ID>`
+8. `export KAFKA_REST_ENDPOINT=<Kafka Cluster Rest Endpoint>`
 9. `export DEFAULT_PATITION_COUNT=3`
 
 ### Cloud Provider Specific Configurations

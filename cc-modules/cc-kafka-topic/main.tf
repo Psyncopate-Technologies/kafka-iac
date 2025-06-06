@@ -68,7 +68,7 @@ data "confluent_environment" "this" {
 }
 
 data "confluent_kafka_cluster" "this" {
-  display_name = var.kafka_cluster_name
+  display_name = var.cc_kafka_cluster_name
   environment {
     id = data.confluent_environment.this.id
   }
@@ -81,8 +81,8 @@ resource "confluent_kafka_topic" "this" {
   rest_endpoint = data.confluent_kafka_cluster.this.rest_endpoint
 
   credentials {
-    key    = var.kafka_api_key
-    secret = var.kafka_api_secret
+    key    = var.cc_kafka_api_key
+    secret = var.cc_kafka_api_secret
   }
 
   topic_name        = local.topic.name

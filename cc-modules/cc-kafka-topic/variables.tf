@@ -10,13 +10,13 @@ variable "confluent_api_secret" {
   sensitive   = true
 }
 
-variable "kafka_api_key" {
+variable "cc_kafka_api_key" {
   type        = string
   description = "Kafka API key for authenticating with the Kafka REST API."
   sensitive   = true
 }
 
-variable "kafka_api_secret" {
+variable "cc_kafka_api_secret" {
   type        = string
   description = "Kafka API secret for the Kafka REST API."
   sensitive   = true
@@ -32,13 +32,13 @@ variable "environment_name" {
   }
 }
 
-variable "kafka_cluster_name" {
+variable "cc_kafka_cluster_name" {
   type        = string
   description = "Kafka Cluster Name. This is used to retrieve the ID of the Kafka Cluster and the rest endpoint that is to be used to create the topic."
   nullable    = false
   validation {
-    condition     = length(var.kafka_cluster_name) > 0
-    error_message = "kafka_cluster_name must be a valid name"
+    condition     = length(var.cc_kafka_cluster_name) > 0
+    error_message = "cc_kafka_cluster_name must be a valid name"
   }
 }
 

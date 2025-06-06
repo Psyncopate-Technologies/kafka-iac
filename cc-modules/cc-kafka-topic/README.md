@@ -21,10 +21,10 @@ It is designed to be used with [Terragrunt](https://terragrunt.gruntwork.io/) an
 | ---------------------- | -------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `confluent_api_key`    | `string` | Yes    | —       | API key for authenticating with the Confluent Cloud control plane (used in the `provider` block).                                                  |
 | `confluent_api_secret` | `string` | Yes    | —       | API secret for the Confluent Cloud control plane.                                                                                                  |
-| `kafka_api_key`        | `string` | Yes    | —       | Kafka API key for authenticating with the Kafka REST API.                                                                                          |
-| `kafka_api_secret`     | `string` | Yes    | —       | Kafka API secret for the Kafka REST API.                                                                                                           |
+| `cc_kafka_api_key`        | `string` | Yes    | —       | Kafka API key for authenticating with the Kafka REST API.                                                                                          |
+| `cc_kafka_api_secret`     | `string` | Yes    | —       | Kafka API secret for the Kafka REST API.                                                                                                           |
 | `environment_name`     | `string` | Yes    | —       | The Confluent Cloud Environment Name. Cannot be empty.                                                                           |
-| `kafka_cluster_name`   | `string` | Yes    | —       | Kafka Cluster Name. Cannot be empty                   |
+| `cc_kafka_cluster_name`   | `string` | Yes    | —       | Kafka Cluster Name. Cannot be empty                   |
 | `topic_path`           | `string` | Yes    | —       | Absolute path to the YAML file defining the topic configuration. Must point to a `.yaml` or `.yml` file.                                           |
 | `default_partitions`   | `number` | No     | `3`     | Default number of partitions to use if not specified in the YAML file. This value is typically overridden via Terragrunt based on the environment. |
 
