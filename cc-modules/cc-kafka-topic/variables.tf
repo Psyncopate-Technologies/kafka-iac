@@ -22,23 +22,23 @@ variable "kafka_api_secret" {
   sensitive   = true
 }
 
-variable "kafka_cluster_id" {
+variable "environment_name" {
   type        = string
-  description = "The Kafka cluster ID where the topic should be created."
+  description = "The Confluent Cloud Environment Name. This is used to retrieve the ID of the Environment that is to be used to determine the Kafka Cluster ID"
   nullable    = false
   validation {
-    condition     = length(var.kafka_cluster_id) > 0
-    error_message = "kafka_cluster_id cannot be an empty string."
+    condition     = length(var.environment_name) > 0
+    error_message = "environment_name cannot be an empty string."
   }
 }
 
-variable "kafka_rest_endpoint" {
+variable "kafka_cluster_name" {
   type        = string
-  description = "Kafka REST endpoint URL for the target cluster (e.g., https://pkc-xxx.region.confluent.cloud:443)."
+  description = "Kafka Cluster Name. This is used to retrieve the ID of the Kafka Cluster and the rest endpoint that is to be used to create the topic."
   nullable    = false
   validation {
-    condition     = can(regex("^https://", var.kafka_rest_endpoint))
-    error_message = "kafka_rest_endpoint must be a valid HTTPS URL."
+    condition     = length(var.kafka_cluster_name) > 0
+    error_message = "kafka_cluster_name must be a valid name"
   }
 }
 
