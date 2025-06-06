@@ -78,15 +78,14 @@ resource "confluent_kafka_topic" "this" {
   kafka_cluster {
     id = data.confluent_kafka_cluster.this.id
   }
-
-  topic_name        = local.topic.name
-  partitions_count  = local.partitions_count
-  config = local.final_config == null ? {} : local.final_config
+  rest_endpoint = data.confluent_kafka_cluster.this.rest_endpoint
 
   credentials {
     key    = var.kafka_api_key
     secret = var.kafka_api_secret
   }
 
-  rest_endpoint = data.confluent_kafka_cluster.this.rest_endpoint
+  topic_name        = local.topic.name
+  partitions_count  = local.partitions_count
+  config = local.final_config == null ? {} : local.final_config  
 }
