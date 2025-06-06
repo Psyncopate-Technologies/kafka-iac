@@ -19,6 +19,40 @@ locals {
   # Define environment-specific defaults
   #default_partitions = local.env == "dev" ? 3 : local.env == "test" ? 6 : 6
   default_partitions = get_env("DEFAULT_PATITION_COUNT")
+
+  # Conditionally create the backend config block
+  backend_config = (
+        local.cloud_provider == "azure" ? <<EOF
+    terraform {
+    backend "azurerm" {
+        resource_group_name  = "${get_env("AZURE_RESOURCE_GROUP_NAME", "psy-flink-poc")}"
+        storage_account_name = "${get_env("AZURE_STORAGE_ACCOUNT_NAME", "psyflinkops")}"
+        container_name       = "${get_env("AZURE_STORAGE_CONTAINER_NAME", "psyflinkcontainer")}"
+        key                  = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}.tfstate"
+    }
+    }
+    EOF
+        : local.cloud_provider == "aws" ? <<EOF
+    terraform {
+    backend "s3" {
+        bucket         = "${get_env("AWS_BACKEND_BUCKET_NAME", "my-terraform-state")}"
+        key            = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}.tfstate"
+        region         = "${get_env("AWS_REGION", "us-east-1")}"
+        dynamodb_table = "${get_env("AWS_DYNAMODB_TABLE_NAME", "terraform-locks")}"
+        encrypt        = true
+    }
+    }
+    EOF
+        : local.cloud_provider == "gcp" ? <<EOF
+    terraform {
+    backend "gcs" {
+        bucket = "${get_env("GCP_BACKEND_BUCKET_NAME", "my-terraform-state")}"
+        prefix = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}"
+    }
+    }
+    EOF
+        : error("Unsupported cloud_provider: ${local.cloud_provider}")
+    )
 }
 
 terraform {
@@ -49,51 +83,10 @@ provider "confluent" {
 EOF
 }
 
-generate "backend_azure" {
+generate "backend" {
   path      = "backend.tf"
   if_exists = "overwrite"
-  condition = local.cloud_provider == "azure"
-  contents  = <<EOF
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "${get_env("AZURE_RESOURCE_GROUP_NAME", "psy-flink-poc")}"
-    storage_account_name = "${get_env("AZURE_STORAGE_ACCOUNT_NAME", "psyflinkops")}"
-    container_name       = "${get_env("AZURE_STORAGE_CONTAINER_NAME", "psyflinkcontainer")}"
-    key                  = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}.tfstate"
-  }
-}
-EOF
-}
-
-generate "backend_aws" {
-  path      = "backend.tf"
-  if_exists = "overwrite"
-  condition = local.cloud_provider == "aws"
-  contents  = <<EOF
-terraform {
-  backend "s3" {
-    bucket         = "${get_env("AWS_BACKEND_BUCKET_NAME", "my-terraform-state")}"
-    key            = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}.tfstate"
-    region         = "${get_env("AWS_REGION", "us-east-1")}"
-    dynamodb_table = "${get_env("AWS_DYNAMODB_TABLE_NAME", "terraform-locks")}"
-    encrypt        = true
-  }
-}
-EOF
-}
-
-generate "backend_gcp" {
-  path      = "backend.tf"
-  if_exists = "overwrite"
-  condition = local.cloud_provider == "gcp"
-  contents  = <<EOF
-terraform {
-  backend "gcs" {
-    bucket = "${get_env("GCP_BACKEND_BUCKET_NAME", "my-terraform-state")}"
-    prefix = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}"
-  }
-}
-EOF
+  contents  = local.backend_config
 }
 
 generate "outputs" {

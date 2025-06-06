@@ -25,7 +25,7 @@ export ARM_SUBSCRIPTION_ID=<Azure Tenant Subscription ID>
 
 ### Local Testing 
 1. Place the YAML interface file for topic in the same directory as terragrunt.hcl
-export FILE_NAME=TopicAlias1.yaml
+export FILE_NAME=sample_topic_files/TopicAlias1.yaml
 
 ### Execution for Local test
 1. Navigate to the directory where `terragrun.hcl` file for cc-topics are available.
