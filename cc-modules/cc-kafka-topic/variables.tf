@@ -51,3 +51,9 @@ variable "topic_path" {
     error_message = "topic_path must point to a .yaml or .yml file."
   }
 }
+
+variable "default_partitions" {
+  type    = number
+  description = "Default number of partitions for the topic if not specified in the YAML file. The default value here will be overridden from terragrunt based on environment."
+  default = 3  # Optional: Terragrunt will override this anyway
+}
