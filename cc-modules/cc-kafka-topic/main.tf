@@ -48,14 +48,7 @@ resource "confluent_kafka_topic" "this" {
 
   topic_name        = local.topic.name
   partitions_count  = local.partitions_count
-  
-  dynamic "config" {
-    for_each = local.topic_config_map == null ? [] : [1]
-    content {
-      for key, value in local.topic_config_map :
-      key => value
-    }
-  }
+  config = local.topic_config_map == null ? {} : local.topic_config_map
 
   credentials {
     key    = var.kafka_api_key
