@@ -52,10 +52,14 @@ locals {
     null
   )
 
+  # Cleanup policy optional field
+  cleanup_policy = try(local.topic.cleanup_policy, null)
+
   # Final config: merge user-supplied config with calculated retention.ms (if defined)
   final_config = merge(
     local.topic_config_map,
-    local.retention_ms == null ? {} : { "retention.ms" = tostring(local.retention_ms) }
+    local.retention_ms == null ? {} : { "retention.ms" = tostring(local.retention_ms) },
+    local.cleanup_policy == null ? {} : { "cleanup.policy" = tostring(local.cleanup_policy) }
   )
 }
 

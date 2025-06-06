@@ -7,7 +7,7 @@ topic:
   mal_acronym: "CLMAL1" #Required - Just a metadata
   srb_review_number: "SRB001" #Required - Just a metadata
   partitions: 4
-  retention: "1d"
+  retention: "11d"
   cleanup_policy: "delete"
   config:
     delete.retention.ms: 6400000
