@@ -39,6 +39,24 @@ locals {
   topic        = local.topic_config.topic
   partitions_count = try(local.topic.partitions, var.default_partitions)
   topic_config_map = try(local.topic.config, null)
+
+  # Optional 'retention' field (e.g. "5s", "3m", "2h", "1d")
+  raw_retention = try(local.topic.retention, null)
+
+  # Retention in milliseconds (only if defined)
+  retention_ms = local.raw_retention == null ? null : (
+    can(regex("^\\d+s$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 1000 :
+    can(regex("^\\d+m$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 60 * 1000 :
+    can(regex("^\\d+h$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 60 * 60 * 1000 :
+    can(regex("^\\d+d$", local.raw_retention)) ? tonumber(regex("^\\d+", local.raw_retention)[0]) * 24 * 60 * 60 * 1000 :
+    null
+  )
+
+  # Final config: merge user-supplied config with calculated retention.ms (if defined)
+  final_config = merge(
+    local.topic_config_map,
+    local.retention_ms == null ? {} : { "retention.ms" = tostring(local.retention_ms) }
+  )
 }
 
 resource "confluent_kafka_topic" "this" {
@@ -48,7 +66,7 @@ resource "confluent_kafka_topic" "this" {
 
   topic_name        = local.topic.name
   partitions_count  = local.partitions_count
-  config = local.topic_config_map == null ? {} : local.topic_config_map
+  config = local.final_config == null ? {} : local.final_config
 
   credentials {
     key    = var.kafka_api_key

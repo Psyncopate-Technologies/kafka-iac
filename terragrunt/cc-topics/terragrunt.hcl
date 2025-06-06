@@ -17,7 +17,8 @@ locals {
   iac_version = try(local.topic_config_raw.pipeline_version, "latest")
 
   # Define environment-specific defaults
-  default_partitions = local.env == "dev" ? 3 : local.env == "test" ? 6 : 6
+  #default_partitions = local.env == "dev" ? 3 : local.env == "test" ? 6 : 6
+  default_partitions = get_env("DEFAULT_PATITION_COUNT")
 }
 
 terraform {
@@ -57,7 +58,7 @@ terraform {
     resource_group_name  = "${get_env("AZURE_RESOURCE_GROUP_NAME", "psy-flink-poc")}"
     storage_account_name = "${get_env("AZURE_STORAGE_ACCOUNT_NAME", "psyflinkops")}"
     container_name       = "${get_env("AZURE_STORAGE_CONTAINER_NAME", "psyflinkcontainer")}"
-    key                  = "${local.env}/topics/${local.topic_name}.tfstate"
+    key                  = "${local.env}/topics/${local.topic_config_raw.topic.alias_name}.tfstate"
   }
 }
 EOF
