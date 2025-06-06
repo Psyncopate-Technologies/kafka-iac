@@ -15,10 +15,14 @@ locals {
 
   # Use pipeline_version if present, otherwise default to "latest"
   iac_version = try(local.topic_config_raw.pipeline_version, "latest")
+
+  # Define environment-specific defaults
+  default_partitions = local.env == "dev" ? 3 : local.env == "test" ? 6 : 6
 }
 
 terraform {
-  source = "git::https://github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
+  source = "https://github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
+  
 }
 
 inputs = {
@@ -30,6 +34,7 @@ inputs = {
 #   kafka_cluster_id     = get_env("KAFKA_CLUSTER_ID")
 #   kafka_rest_endpoint  = get_env("KAFKA_REST_ENDPOINT")
   topic_path           = local.topic_path
+  default_partitions   = local.default_partitions
 }
 
 generate "provider" {
@@ -65,6 +70,9 @@ generate "outputs" {
 output "use_pipeline_version" {
   value       = "${local.iac_version}"
   description = "The version of the IaC module that was applied."
+}
+output "topic_id" {
+  value = confluent_kafka_topic.this.id
 }
 EOF
 }
