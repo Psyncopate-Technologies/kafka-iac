@@ -1,0 +1,17 @@
+---
+pipeline_version: str(required=False)
+
+topic:
+  name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$')
+  alias_name: str(min=1, max=249, regex='^[a-zA-Z0-9_]+$', required=False)
+  description: str(max=500, required=False)
+  mal_acronym: str(max=10)
+  srb_review_number: str(max=10)
+  partitions: int(min=1, required=False)
+  retention: str(regex='^[0-9]+[smhd]$', required=False)
+  cleanup_policy: enum('delete', 'compact', required=False)
+  config: map(include('topic_config_props'), required=False)
+
+# Allow no extra top-level fields
+---
+required: [topic]
