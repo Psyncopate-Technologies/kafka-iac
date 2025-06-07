@@ -61,6 +61,16 @@ jobs:
           yamllint kafka-client-config/${{ env.FILE_NAME }}
 
       #---------------------------------------------
+      # Validate YAML against JSON Schema
+      #---------------------------------------------
+      - name: Validate YAML against JSON Schema
+        uses: nrkno/yaml-schema-validator-github-action@v5.1.0
+        with:
+          schema: kafka-iac/yaml-specs/topic-spec.json
+          target: kafka-client-config/${{ env.FILE_NAME }}
+        if: ${{ env.RESOURCE_TYPE == 'cc-topics' }}
+
+      #---------------------------------------------
       # Compute and export working directory
       #---------------------------------------------
       - name: Derive DIR_PATH and base FILE_NAME
@@ -71,16 +81,7 @@ jobs:
           echo "FILE_NAME=$(basename $FILE_NAME)" >> $GITHUB_ENV
           echo "Working on: $DIR_PATH/$FILE_NAME"
 
-      #---------------------------------------------
-      # Validate YAML against JSON Schema
-      #---------------------------------------------
-      - name: Validate YAML against JSON Schema
-        uses: nrkno/yaml-schema-validator-github-action@v5.1.0
-        with:
-          schema: kafka-iac/yaml-specs/topic-spec.json
-          target: kafka-client-config/${{ env.FILE_NAME }}
-        if: ${{ env.RESOURCE_TYPE == 'cc-topics' }}
-
+      
       #---------------------------------------------
       # Copy Terragrunt config into place
       #---------------------------------------------
