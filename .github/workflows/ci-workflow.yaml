@@ -23,7 +23,7 @@ on:
 jobs:
   stage-environment:
     runs-on: ubuntu-latest
-    #environment: ${{ inputs.env }}
+    environment: ${{ inputs.env }}
     env:
       FILE_NAME: ${{ inputs.file }}
       CLOUD_PROVIDER: ${{ inputs.cloud }}
@@ -36,7 +36,7 @@ jobs:
         with:
           repository: Psyncopate-Technologies/kafka-iac
           ref: latest
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
           path: kafka-iac
 
       - name: Checkout kafka-client-config
