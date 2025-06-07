@@ -57,7 +57,7 @@ jobs:
           mkdir -p kafka-client-config/_common
           mkdir -p kafka-client-config/${{ env.RESOURCE_TYPE }}
           cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
-          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/terragrunt.hcl kafka-client-config/${{ env.RESOURCE_TYPE }}/terragrunt.hcl
+          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/terragrunt.hcl kafka-client-config/${{ env.DIR_PATH }}/terragrunt.hcl
 
       - name: Set cloud-specific secrets
         run: |
@@ -114,13 +114,13 @@ jobs:
           sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
 
       - name: Terragrunt Init
-        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
         run: terragrunt init
 
       - name: Terragrunt Validate
-        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
         run: terragrunt validate
 
       - name: Terragrunt Plan
-        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
+        working-directory: kafka-client-config/${{ env.DIR_PATH }}
         run: terragrunt plan
