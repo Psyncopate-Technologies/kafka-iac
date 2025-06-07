@@ -1,6 +1,9 @@
 # CI Workflow for Kafka Resource Management
 name: CI Workflow for Kafka Client Resources
 
+permissions:
+  contents: read
+
 on:
   workflow_call:
     inputs:
@@ -35,8 +38,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Psyncopate-Technologies/kafka-iac
-          ref: latest
-          token: ${{ secrets.ACCESS_TOKEN }}
+          ref: ${{ inputs.pipeline_version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: kafka-iac
 
       - name: Checkout kafka-client-config
