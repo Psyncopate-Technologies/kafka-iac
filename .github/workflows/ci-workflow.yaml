@@ -23,7 +23,7 @@ on:
 jobs:
   stage-environment:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
+    #environment: ${{ inputs.env }}
     env:
       FILE_NAME: ${{ inputs.file }}
       CLOUD_PROVIDER: ${{ inputs.cloud }}
