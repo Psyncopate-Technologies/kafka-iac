@@ -75,7 +75,7 @@ jobs:
       # Validate YAML against JSON Schema
       #---------------------------------------------
       - name: Validate YAML against JSON Schema
-        uses: nrkno/yaml-schema-validator-github-action@v5
+        uses: nrkno/yaml-schema-validator-github-action@v5.1.0
         with:
           schema: kafka-iac/yaml-specs/topic-spec.json
           target: kafka-client-config/${{ env.FILE_NAME }}
