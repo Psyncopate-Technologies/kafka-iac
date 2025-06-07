@@ -75,12 +75,12 @@ jobs:
       # Validate YAML against JSON Schema
       #---------------------------------------------
       - name: Validate YAML against JSON Schema
-        uses: orlandov/node-yaml-schema-validator@v1.2.0
+        uses: nrkno/yaml-schema-validator-github-action@v5
         with:
           schema: kafka-iac/yaml-specs/topic-spec.json
-          file: kafka-client-config/${{ env.FILE_NAME }}
+          target: kafka-client-config/${{ env.FILE_NAME }}
         if: ${{ env.RESOURCE_TYPE == 'cc-topics' }}
-        
+
       #---------------------------------------------
       # Copy Terragrunt config into place
       #---------------------------------------------
