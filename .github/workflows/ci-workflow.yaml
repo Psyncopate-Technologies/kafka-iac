@@ -57,7 +57,7 @@ jobs:
           mkdir -p kafka-client-config/_common
           pwd
           ls -ltr
-          ls -ltr kafka-iac/terragrunt
+          ls -ltr kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}
           cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
           cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/terragrunt.hcl kafka-client-config/${{ env.RESOURCE_TYPE }}/terragrunt.hcl
 
