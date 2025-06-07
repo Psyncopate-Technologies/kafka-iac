@@ -36,7 +36,7 @@ jobs:
         with:
           repository: Psyncopate-Technologies/kafka-iac
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: v${{ inputs.pipeline_version }}
+          ref: ${{ inputs.pipeline_version }}
           path: kafka-iac
 
       - name: Checkout kafka-client-config
