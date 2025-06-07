@@ -56,7 +56,7 @@ locals {
 }
 
 terraform {
-  source = "https://github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
+  source = "git::https://${get_env("GITHUB_TOKEN")}@github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
   
 }
 

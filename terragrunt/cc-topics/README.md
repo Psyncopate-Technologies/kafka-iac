@@ -10,6 +10,7 @@
 7. `export CC_KAFKA_CLUSTER_NAME=<Kafka Cluster Name>`
 7. `export ENVIRONMENT_NAME=<Confluent Cloud Environment Name>`
 9. `export DEFAULT_PATITION_COUNT=3`
+10. `export GITHUB_TOKEN=<Github Token>`
 
 ### Cloud Provider Specific Configurations
 #### Azure - For state file storage
