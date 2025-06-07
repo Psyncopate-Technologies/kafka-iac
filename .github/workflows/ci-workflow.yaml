@@ -48,16 +48,17 @@ jobs:
 
       - name: Set computed environment variables
         run: |
-          DIR_PATH=$(dirname "$FILE_PATH")
+          DIR_PATH=$(dirname "$FILE_NAME")
           echo "DIR_PATH=$DIR_PATH" >> $GITHUB_ENV
-          echo "FILE_NAME=$(basename $FILE_PATH)" >> $GITHUB_ENV
-          echo "TOPIC_NAME=${FILE_NAME%.yaml}" >> $GITHUB_ENV
+          echo "FILE_NAME=$(basename $FILE_NAME)" >> $GITHUB_ENV
 
       - name: Copy terragrunt.hcl to kafka-client-config
         run: |
           mkdir -p kafka-client-config/_common
+          pwd
+          ls -ltr
           cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
-          cp kafka-iac/terragrunt/$DIR_PATH/terragrunt.hcl kafka-client-config/$DIR_PATH/terragrunt.hcl
+          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/terragrunt.hcl kafka-client-config/${{ env.RESOURCE_TYPE }}/terragrunt.hcl
 
       - name: Set cloud-specific secrets
         run: |
@@ -113,13 +114,13 @@ jobs:
           sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
 
       - name: Terragrunt Init
-        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
         run: terragrunt init
 
       - name: Terragrunt Validate
-        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
         run: terragrunt validate
 
       - name: Terragrunt Plan
-        working-directory: kafka-client-config/${{ env.DIR_PATH }}
+        working-directory: kafka-client-config/${{ env.RESOURCE_TYPE }}
         run: terragrunt plan
