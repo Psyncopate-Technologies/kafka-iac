@@ -52,6 +52,15 @@ jobs:
           path: kafka-client-config
 
       #---------------------------------------------
+      # YAML Lint Validation
+      #---------------------------------------------
+      - name: Validate YAML syntax and style
+        run: |
+          echo "Linting kafka-client-config/${{ env.FILE_NAME }}..."
+          sudo apt-get update && sudo apt-get install -y yamllint
+          yamllint kafka-client-config/${{ env.FILE_NAME }}
+
+      #---------------------------------------------
       # Compute and export working directory
       #---------------------------------------------
       - name: Derive DIR_PATH and base FILE_NAME
@@ -166,3 +175,7 @@ jobs:
         run: |
           echo "Generating Terraform plan..."
           terragrunt plan
+
+      - name: Summary
+        run: |
+          echo "Terragrunt plan completed for $RESOURCE_TYPE in $ENV"
