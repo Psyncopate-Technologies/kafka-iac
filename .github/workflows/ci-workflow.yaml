@@ -61,14 +61,34 @@ jobs:
           yamllint kafka-client-config/${{ env.FILE_NAME }}
 
       #---------------------------------------------
+      # Dynamically map RESOURCE_TYPE to Schema File for Schema Validation
+      #---------------------------------------------
+      - name: Map resource_type to schema file
+        id: map-schema
+        run: |
+          echo "Mapping resource_type '${RESOURCE_TYPE}' to schema file..."
+          declare -A schema_map=(
+            ["cc-topics"]="topic-spec.yaml"
+            ["client-resources"]="kafka-resources-spec.yaml"
+            ["connectors"]="connector-spec.yaml"
+          )
+
+          SCHEMA_FILE="${schema_map[$RESOURCE_TYPE]}"
+          if [ -z "$SCHEMA_FILE" ]; then
+            echo "::error :: No schema mapping defined for resource_type: $RESOURCE_TYPE"
+            exit 1
+          fi
+
+          echo "schema_path=kafka-iac/yaml-specs/$SCHEMA_FILE" >> $GITHUB_OUTPUT
+
+      #---------------------------------------------
       # Validate YAML against Specification using Yamale
       #---------------------------------------------
-      - name: Validate YAML against JSON Schema
+      - name: Validate YAML against Schema
         uses: nrkno/yaml-schema-validator-github-action@v5.1.0
         with:
-          schema: kafka-iac/yaml-specs/topic-spec.yaml
+          schema: ${{ steps.map-schema.outputs.schema_path }}
           target: kafka-client-config/${{ env.FILE_NAME }}
-        if: ${{ env.RESOURCE_TYPE == 'cc-topics' }}
 
       #---------------------------------------------
       # Compute and export working directory
