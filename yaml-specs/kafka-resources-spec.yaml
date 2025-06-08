@@ -1,0 +1,51 @@
+pipeline_version: str(required=False)
+name: str(required=False)
+description: str(required=False)
+identity_pool_name: str(required=False)
+oauth_client_id: str(required=True)
+schema: list(include('schema_entry'), required=False)
+producer: list(include('producer_entry'), required=False)
+consumer: list(include('consumer_entry'), required=False)
+quota: include('quota_block', required=False)
+
+# -----------------------------
+# Reusable Schema Entry Block
+# -----------------------------
+schema_entry:
+  topic_name: str()
+  alias_name: str(required=False)
+  schema_type: enum('key', 'value')
+  mal_acronym: str(max=10)
+  srb_review_number: str(max=10)
+  format: enum('AVRO', 'JSON', 'PROTOBUF', required=False)
+  file_name: str(required=False)
+  compatibility_level: enum('NONE', 'BACKWARD', 'BACKWARD_TRANSITIVE', 'FORWARD', 'FORWARD_TRANSITIVE', 'FULL', 'FULL_TRANSITIVE', required=False)
+
+# -----------------------------
+# Reusable Producer Block
+# -----------------------------
+producer_entry:
+  resource_name: str()
+  resource_type: enum('Topic', 'Connector')
+  srb_review_number: str()
+  mal_acronym: str()
+  connect_cluster_name: str(required=False)
+
+# -----------------------------
+# Reusable Consumer Block
+# -----------------------------
+consumer_entry:
+  resource_name: str()
+  resource_type: enum('Topic', 'Connector')
+  srb_review_number: str()
+  mal_acronym: str()
+  consumer_group_id: str(required=False)
+  connect_cluster_name: str(required=False)
+
+# -----------------------------
+# Reusable Quota Block
+# -----------------------------
+quota_block:
+  name: str(required=False)
+  ingress_byte_rate: regex('^[0-9]+$', required=False)
+  egress_byte_rate: regex('^[0-9]+$', required=False)
