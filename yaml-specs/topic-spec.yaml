@@ -1,11 +1,9 @@
----
 pipeline_version: str(required=False)
-
-topic: include('topic_definition')
+topic: include('topic_definition', required=True)
 ---
 topic_definition:
   name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$')
-  alias_name: str(min=1, max=249, regex='^[a-zA-Z0-9_]+$', required=False)
+  alias_name: str(min=1, max=9, regex='^[a-zA-Z0-9_]+$', required=False)
   description: str(max=500, required=False)
   mal_acronym: str(max=10)
   srb_review_number: str(max=10)
@@ -32,7 +30,3 @@ topic_config_props:
     confluent.value.schema.validation: bool(required=False)
     confluent.key.subject.name.strategy: str(required=False)
     confluent.value.subject.name.strategy: str(required=False)
-
-# Allow no extra top-level fields
----
-required: [topic]
