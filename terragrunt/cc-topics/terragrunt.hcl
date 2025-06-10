@@ -87,8 +87,6 @@ inputs = {
   topic_path           = local.topic_path
   topic_name           = local.topic_name # Explicitly passing this as input so as to validate the naming convention of it in variables.tf
   default_partitions   = local.default_partitions
-  create_mal_tag       = local.create_mal_tag
-  create_srb_tag       = local.create_srb_tag
 }
 
 generate "provider" {

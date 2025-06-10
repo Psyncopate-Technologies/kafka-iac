@@ -86,13 +86,13 @@ variable "default_partitions" {
 }
 
 variable "create_mal_tag" {
-  type    = boolean
+  type    = bool
   description = "Should Client MAL tag be created? This is used to create a tag for the topic if it does not already exist."
   default = false
 }
 
 variable "create_srb_tag" {
-  type    = boolean
+  type    = bool
   description = "Should Client SRB Review # tag be created? This is used to create a tag for the topic if it does not already exist."
   default = false
 }
