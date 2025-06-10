@@ -14,5 +14,5 @@ inputs = {
 generate "shared_variables" {
   path      = "shared-variables.tf"
   if_exists = "overwrite"
-  contents  = file("${get_terragrunt_dir()}/../_common/shared_variables.tf")
+  contents  = file("shared_variables.tf")
 }
