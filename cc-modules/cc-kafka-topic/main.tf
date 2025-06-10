@@ -63,22 +63,22 @@ locals {
   )
 }
 
-data "confluent_environment" "this" {
+data "confluent_environment" "cc_environment" {
   display_name = var.environment_name
 }
 
-data "confluent_kafka_cluster" "this" {
+data "confluent_kafka_cluster" "cc_kafka_cluster" {
   display_name = var.cc_kafka_cluster_name
   environment {
-    id = data.confluent_environment.this.id
+    id = data.confluent_environment.cc_environment.id
   }
 }
 
-resource "confluent_kafka_topic" "this" {
+resource "confluent_kafka_topic" "cc_kafka_topic" {
   kafka_cluster {
-    id = data.confluent_kafka_cluster.this.id
+    id = data.confluent_kafka_cluster.cc_kafka_cluster.id
   }
-  rest_endpoint = data.confluent_kafka_cluster.this.rest_endpoint
+  rest_endpoint = data.confluent_kafka_cluster.cc_kafka_cluster.rest_endpoint
 
   credentials {
     key    = var.cc_kafka_api_key
@@ -88,4 +88,129 @@ resource "confluent_kafka_topic" "this" {
   topic_name        = var.topic_name
   partitions_count  = local.partitions_count
   config = local.final_config == null ? {} : local.final_config  
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
+
+data "confluent_schema_registry_cluster" "cc_sr_cluster" {
+  environment {
+    id = data.confluent_environment.cc_environment.id
+  }
+}
+
+## Logic to retrieve the business metadata for the client - The Business metadata resource needs to be created as part of Platform resource provisioning
+## Business Metadata in Confluent Cloud is applicable only for ADVANCED Stream governance package.
+## To save cost, as an alternative, we can use the tagging
+# data "confluent_business_metadata" "client_metadata" {
+#   schema_registry_cluster {
+#     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+#   }
+#   rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+#   credentials {
+#     key    = var.cc_sr_api_key
+#     secret = var.cc_sr_api_secret
+#   }
+
+#   name = "client_metadata"
+# }
+
+# ## Logic to create Business Metadata binding
+# resource "confluent_business_metadata_binding" "client_md_binding" {
+#   schema_registry_cluster {
+#     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+#   }
+#   rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+#   credentials {
+#     key    = var.cc_sr_api_key
+#     secret = var.cc_sr_api_secret
+#   }
+
+#   business_metadata_name = confluent_business_metadata.client_metadata.name
+#   entity_name = "${data.confluent_schema_registry_cluster.cc_sr_cluster.id}:${data.confluent_kafka_cluster.cc_kafka_cluster.id}:${var.topic_name}"
+#   entity_type = "kafka_topic"
+#   attributes = {
+#     "MAL" = local.topic.mal_acronym
+#     "SRB_REVIEW_NUMBER" = local.topic.srb_review_number
+#   }
+
+#   # lifecycle {
+#   #   prevent_destroy = true
+#   # }
+# }
+
+## Logic to create Tags for Client Metadata
+resource "confluent_tag" "clientMAL" {
+  schema_registry_cluster {
+    id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+  }
+  rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+  credentials {
+    key    = var.cc_sr_api_key
+    secret = var.cc_sr_api_secret
+  }
+
+  name = local.topic.mal_acronym
+  description = "Client MAL tag"
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}
+resource "confluent_tag" "ClientSRBNumber" {
+  schema_registry_cluster {
+    id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+  }
+  rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+  credentials {
+    key    = var.cc_sr_api_key
+    secret = var.cc_sr_api_secret
+  }
+
+  name = local.topic.srb_review_number
+  description = "Client SRB Board Review Number"
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}
+
+## Logic to bind Tags for Client Metadata
+resource "confluent_tag_binding" "ClientMALBinding" {
+  schema_registry_cluster {
+    id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+  }
+  rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+  credentials {
+    key    = var.cc_sr_api_key
+    secret = var.cc_sr_api_secret
+  }
+
+  tag_name = local.topic.mal_acronym
+  entity_name = "${data.confluent_schema_registry_cluster.cc_sr_cluster.id}:${data.confluent_kafka_cluster.cc_kafka_cluster.id}:${var.topic_name}"
+  entity_type = "kafka_topic"
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}
+resource "confluent_tag_binding" "ClientSRBBinding" {
+  schema_registry_cluster {
+    id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
+  }
+  rest_endpoint = data.confluent_schema_registry_cluster.cc_sr_cluster.rest_endpoint
+  credentials {
+    key    = var.cc_sr_api_key
+    secret = var.cc_sr_api_secret
+  }
+
+  tag_name = local.topic.srb_review_number
+  entity_name = "${data.confluent_schema_registry_cluster.cc_sr_cluster.id}:${data.confluent_kafka_cluster.cc_kafka_cluster.id}:${var.topic_name}"
+  entity_type = "kafka_topic"
+
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
+}
+

@@ -22,6 +22,18 @@ variable "cc_kafka_api_secret" {
   sensitive   = true
 }
 
+variable "cc_sr_api_key" {
+  type        = string
+  description = "Schema Registry API key for authenticating with the SR REST API."
+  sensitive   = true
+}
+
+variable "cc_sr_api_secret" {
+  type        = string
+  description = "Schema Registry API secret for the SR REST API."
+  sensitive   = true
+}
+
 variable "environment_name" {
   type        = string
   description = "The Confluent Cloud Environment Name. This is used to retrieve the ID of the Environment that is to be used to determine the Kafka Cluster ID"
