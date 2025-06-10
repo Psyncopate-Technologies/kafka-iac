@@ -82,5 +82,17 @@ variable "topic_name" {
 variable "default_partitions" {
   type    = number
   description = "Default number of partitions for the topic if not specified in the YAML file. The default value here will be overridden from terragrunt based on environment."
-  default = 3  # Optional: Terragrunt will override this anyway
+  default = 3  # Optional: Terragrunt will override this
+}
+
+variable "create_mal_tag" {
+  type    = boolean
+  description = "Should Client MAL tag be created? This is used to create a tag for the topic if it does not already exist."
+  default = false
+}
+
+variable "create_srb_tag" {
+  type    = boolean
+  description = "Should Client SRB Review # tag be created? This is used to create a tag for the topic if it does not already exist."
+  default = false
 }

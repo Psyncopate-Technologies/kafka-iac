@@ -140,8 +140,10 @@ data "confluent_schema_registry_cluster" "cc_sr_cluster" {
 #   # }
 # }
 
-## Logic to create Tags for Client Metadata
+## Logic to check if the tags for ClientMAL and ClientSRBNumber already exists is taken care as part of before_hook in terragrunt
+## Logic to create Tags for Client Metadata if the tags does not exists
 resource "confluent_tag" "clientMAL" {
+  count = var.create_mal_tag ? 1 : 0
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }
@@ -159,6 +161,7 @@ resource "confluent_tag" "clientMAL" {
   # }
 }
 resource "confluent_tag" "ClientSRBNumber" {
+  count = var.create_srb_tag ? 1 : 0
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }
@@ -178,7 +181,7 @@ resource "confluent_tag" "ClientSRBNumber" {
 
 ## Logic to bind Tags for Client Metadata
 resource "confluent_tag_binding" "ClientMALBinding" {
-  depends_on = [confluent_tag.clientMAL]
+  depends_on = [confluent_tag.clientMAL, confluent_kafka_topic.cc_kafka_topic]
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }
@@ -197,7 +200,7 @@ resource "confluent_tag_binding" "ClientMALBinding" {
   # }
 }
 resource "confluent_tag_binding" "ClientSRBBinding" {
-  depends_on = [confluent_tag.ClientSRBNumber]
+  depends_on = [confluent_tag.ClientSRBNumber, confluent_kafka_topic.cc_kafka_topic]
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }

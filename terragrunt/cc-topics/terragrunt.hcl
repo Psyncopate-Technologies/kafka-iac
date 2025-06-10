@@ -13,6 +13,10 @@ locals {
   topic_config_raw = yamldecode(file(local.topic_path))
   topic_name       = local.topic_config_raw.topic.name
 
+  # Retrieve ClientMAL and SRB#
+  clientMAL = local.topic_config_raw.mal_acronym
+  srb_review_number = local.topic_config_raw.srb_review_number
+
   # Use pipeline_version if present, otherwise default to "latest"
   iac_version = try(local.topic_config_raw.pipeline_version, "latest")
 
@@ -57,6 +61,18 @@ locals {
 
 terraform {
   source = "git::https://${get_env("GITHUB_TOKEN")}@github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
+
+  before_hook "check_tag_existence" {
+    commands = ["plan", "apply"]
+    execute  = [
+      "${get_terragrunt_dir()}/validation/check_tag_existence.sh",
+      get_env("CC_SR_API_KEY"),
+      get_env("CC_SR_API_SECRET"),
+      get_env("CC_SR_ENDPOINT"),
+      local.clientMAL,
+      local.srb_review_number
+    ]
+  }
   
 }
 
@@ -71,6 +87,8 @@ inputs = {
   topic_path           = local.topic_path
   topic_name           = local.topic_name # Explicitly passing this as input so as to validate the naming convention of it in variables.tf
   default_partitions   = local.default_partitions
+  create_mal_tag       = local.create_mal_tag
+  create_srb_tag       = local.create_srb_tag
 }
 
 generate "provider" {
@@ -103,3 +121,4 @@ output "topic_id" {
 }
 EOF
 }
+
