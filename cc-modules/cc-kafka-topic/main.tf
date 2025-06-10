@@ -178,6 +178,7 @@ resource "confluent_tag" "ClientSRBNumber" {
 
 ## Logic to bind Tags for Client Metadata
 resource "confluent_tag_binding" "ClientMALBinding" {
+  depends_on = [confluent_tag.clientMAL]
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }
@@ -196,6 +197,7 @@ resource "confluent_tag_binding" "ClientMALBinding" {
   # }
 }
 resource "confluent_tag_binding" "ClientSRBBinding" {
+  depends_on = [confluent_tag.ClientSRBNumber]
   schema_registry_cluster {
     id = data.confluent_schema_registry_cluster.cc_sr_cluster.id
   }
