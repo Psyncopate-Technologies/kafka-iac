@@ -17,7 +17,7 @@ done
 
 TAG_FILE="tag_override.auto.tfvars"
 AUTH="${CC_SR_API_KEY}:${CC_SR_API_SECRET}"
-SR_URL="${CC_SR_ENDPOINT}/metadata/namespace/default/tags"
+SR_URL="${CC_SR_ENDPOINT}"
 
 check_tag() {
   local tag_name="$1"

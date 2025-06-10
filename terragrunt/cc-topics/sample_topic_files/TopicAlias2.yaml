@@ -5,3 +5,4 @@ topic:
   description: "Test topic1"
   mal_acronym: "CLMAL1"
   srb_review_number: "SRB001"
+  partitions: 6
