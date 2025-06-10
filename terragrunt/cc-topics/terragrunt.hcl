@@ -99,7 +99,7 @@ output "pipeline_version" {
   description = "The version of the IaC module that was applied."
 }
 output "topic_id" {
-  value = confluent_kafka_topic.this.id
+  value = confluent_kafka_topic.cc_kafka_topic.id
 }
 EOF
 }
