@@ -14,8 +14,8 @@ locals {
   topic_name       = local.topic_config_raw.topic.name
 
   # Retrieve ClientMAL and SRB#
-  clientMAL = local.topic_config_raw.mal_acronym
-  srb_review_number = local.topic_config_raw.srb_review_number
+  clientMAL = local.topic_config_raw.topic.mal_acronym
+  srb_review_number = local.topic_config_raw.topic.srb_review_number
 
   # Use pipeline_version if present, otherwise default to "latest"
   iac_version = try(local.topic_config_raw.pipeline_version, "latest")
