@@ -110,8 +110,8 @@ jobs:
           mkdir -p kafka-client-config/_common
           cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
 
-          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/terragrunt.hcl \
-             kafka-client-config/${{ env.DIR_PATH }}/terragrunt.hcl
+          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }} \
+             kafka-client-config/${{ env.DIR_PATH }}
 
       #---------------------------------------------
       # Inject common secrets and env vars
@@ -125,6 +125,9 @@ jobs:
             echo "DEFAULT_PATITION_COUNT=${{ vars.DEFAULT_PATITION_COUNT }}"
             echo "CC_KAFKA_API_KEY=${{ secrets.CC_KAFKA_API_KEY }}"
             echo "CC_KAFKA_API_SECRET=${{ secrets.CC_KAFKA_API_SECRET }}"
+            echo "CC_SR_API_KEY=${{ secrets.CC_SR_API_KEY }}"
+            echo "CC_SR_API_SECRET=${{ secrets.CC_SR_API_SECRET }}"
+            echo "CC_SR_ENDPOINT=${{ secrets.CC_SR_ENDPOINT }}"
             echo "CC_KAFKA_CLUSTER_NAME=${{ secrets.CC_KAFKA_CLUSTER_NAME }}"
             echo "ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }}"
           } >> $GITHUB_ENV
