@@ -11,6 +11,10 @@
 7. `export ENVIRONMENT_NAME=<Confluent Cloud Environment Name>`
 9. `export DEFAULT_PATITION_COUNT=3`
 10. `export GITHUB_TOKEN=<Github Token>`
+11. `export CC_SR_API_KEY=<SR API Key>`
+12. `export CC_SR_API_SECRET=<SR API Secret>`
+13. `export CC_SR_ENDPOINT=<SR Endpoint>`
+
 
 ### Cloud Provider Specific Configurations
 #### Azure - For state file storage

@@ -23,6 +23,8 @@ It is designed to be used with [Terragrunt](https://terragrunt.gruntwork.io/) an
 | `confluent_api_secret` | `string` | Yes    | —       | API secret for the Confluent Cloud control plane.                                                                                                  |
 | `cc_kafka_api_key`        | `string` | Yes    | —       | Kafka API key for authenticating with the Kafka REST API.                                                                                          |
 | `cc_kafka_api_secret`     | `string` | Yes    | —       | Kafka API secret for the Kafka REST API.                                                                                                           |
+| `cc_sr_api_key`        | `string` | Yes    | —       | Schema Registry API key for authenticating with the Kafka REST API.                                                                                          |
+| `cc_sr_api_secret`     | `string` | Yes    | —       | Schema Registry API secret for the Kafka REST API.                                                                                                           |
 | `environment_name`     | `string` | Yes    | —       | The Confluent Cloud Environment Name. Cannot be empty.                                                                           |
 | `cc_kafka_cluster_name`   | `string` | Yes    | —       | Kafka Cluster Name. Cannot be empty                   |
 | `topic_path`           | `string` | Yes    | —       | Absolute path to the YAML file defining the topic configuration. Must point to a `.yaml` or `.yml` file.                                           |
