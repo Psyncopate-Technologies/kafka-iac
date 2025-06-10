@@ -110,8 +110,8 @@ jobs:
           mkdir -p kafka-client-config/_common
           cp -r kafka-iac/terragrunt/_common/. kafka-client-config/_common/
 
-          cp kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }} \
-             kafka-client-config/${{ env.DIR_PATH }}
+          cp -r kafka-iac/terragrunt/${{ env.RESOURCE_TYPE }}/. \
+             kafka-client-config/${{ env.DIR_PATH }}/
 
       #---------------------------------------------
       # Inject common secrets and env vars
