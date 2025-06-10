@@ -1,0 +1,9 @@
+output "identity_provider_id" {
+  value       = confluent_identity_provider.this.id
+  description = "The ID of the created Confluent Identity Provider"
+}
+
+output "identity_provider_name" {
+  value       = confluent_identity_provider.this.display_name
+  description = "The display name of the Confluent Identity Provider"
+}
