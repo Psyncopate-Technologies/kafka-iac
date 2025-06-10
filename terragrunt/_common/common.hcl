@@ -10,3 +10,9 @@ inputs = {
   environment_name     = get_env("ENVIRONMENT_NAME")
   cc_kafka_cluster_name= get_env("CC_KAFKA_CLUSTER_NAME")
 }
+
+generate "shared_variables" {
+  path      = "shared-variables.tf"
+  if_exists = "overwrite"
+  contents  = file("${get_terragrunt_dir()}/../_common/shared_variables.tf")
+}
