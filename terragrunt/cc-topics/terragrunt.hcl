@@ -1,6 +1,10 @@
 # Logic for topics
-include {
+include "common" {
   path = find_in_parent_folders("_common/common.hcl")
+}
+
+include "providers" {
+  path = find_in_parent_folders("_common/providers.hcl")
 }
 
 locals {
@@ -87,17 +91,6 @@ inputs = {
   topic_path           = local.topic_path
   topic_name           = local.topic_name # Explicitly passing this as input so as to validate the naming convention of it in variables.tf
   default_partitions   = local.default_partitions
-}
-
-generate "provider" {
-  path      = "provider.tf"
-  if_exists = "overwrite"
-  contents  = <<EOF
-provider "confluent" {
-  cloud_api_key    = var.confluent_api_key
-  cloud_api_secret = var.confluent_api_secret
-}
-EOF
 }
 
 generate "backend" {
