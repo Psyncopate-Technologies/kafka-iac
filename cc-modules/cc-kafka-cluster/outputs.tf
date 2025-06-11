@@ -13,6 +13,6 @@ output "cluster_rest_endpoint" {
 }
 
 output "cluster_availability_zones" {
-  value       = confluent_kafka_cluster.this.dedicated.zones
+  value       = confluent_kafka_cluster.this.dedicated[0].zones
   description = "The list of cloud provider zones the cluster is in"
 }

@@ -22,7 +22,7 @@ variable "cloud_provider" {
   description = "Cloud provider to deploy Kafka cluster to"
 
   validation {
-    condition     = contains(upper(var.cloud_provider), ["AWS", "AZURE", "GCP"])
+    condition     = contains(["AWS", "AZURE", "GCP"], upper(var.cloud_provider))
     error_message = "cloud_provider must be one of: AWS, AZURE, or GCP"
   }
 }
@@ -41,7 +41,7 @@ variable "environment_name" {
   description = "Deployment environment of cluster: 'dev', 'test', or 'prod'"
 
   validation {
-    condition     = contains(var.environment_name, ["dev", "test", "prod"])
+    condition     = contains(["dev", "test", "prod"], var.environment_name)
     error_message = "cluster_environment_name must be one of: dev, test, prod"
   }
 }
@@ -70,7 +70,7 @@ variable "cluster_ckus" {
   description = "The number of Confluent Kafka Units (CKUs) to allocate to the cluster for cluster scale"
 
   validation {
-    condition     = var.multi_zone_availability ? var.cluster_ckus >= 2 : var.cluster_ckus >= 1
+    condition     = var.cluster_multi_zone_available ? var.cluster_ckus >= 2 : var.cluster_ckus >= 1
     error_message = "cluster_ckus must be greater than 1 for single-zone clusters and greater than 2 for multi-zone clusters"
   }
 }
