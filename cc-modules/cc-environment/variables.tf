@@ -3,17 +3,15 @@ variable "environment_name" {
   description = "Name of the Confluent Cloud environment"
 
   validation {
-    condition = (
-      length(var.environment_name) <= 100 &&
-      can(regex("^[a-z][a-z0-9-]{0,99}$", var.environment_name))
-    )
-    error_message = "Must be ≤100 characters, lowercase alphanumeric with dashes, and start with a lowercase letter."
+    condition = can(regex("^[a-zA-Z0-9]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$", var.environment_name))
+    error_message = "Must start and end with alphanumeric characters, and may contain hyphens and underscores in between."
   }
 }
 
-variable "schema_registry_package" {
+variable "stream_governance_package" {
   type        = string
-  description = "Schema Registry package"
+  description = "stream governance package"
+  default     = "ESSENTIALS"
 
   validation {
     condition     = contains(["ESSENTIALS", "ADVANCED"], upper(var.schema_registry_package))

@@ -3,7 +3,7 @@ output "environment" {
   value       = confluent_environment.this
 }
 
-output "schema_registry_cluster" {
-  description = "The created Schema Registry Cluster resource"
-  value       = confluent_schema_registry_cluster.this
+output "stream_governance_package" {
+  description = "The created environment stream governance package"
+  value       = confluent_stream_governance_package.this
 }
