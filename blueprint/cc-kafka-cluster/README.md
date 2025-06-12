@@ -12,8 +12,8 @@ This blueprint is for a Confluent Cloud Kafka Cluster
 ### terraform.tfvars
 
 ```hcl
-confluent_cloud_environment_id = "env-y6j90j"
-confluent_cloud_network_id     = "n-go788y"
+confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
+confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
 
 cloud_provider = "AZURE"
 cloud_region   = "eastus2"
@@ -35,6 +35,6 @@ cluster_ckus                 = 1
 | input_cluster_ckus | The number of Confluent Kafka Units (CKUs) to allocate to the cluster for cluster scale | `number` | n/a | yes |
 | input_cluster_multi_zone_available | The availability zone configuration of the Kafka cluster | `bool` | n/a | yes |
 | input_cluster_number | Monotonically increasing integer used as a suffix for cluster name, 1 <= cluster\_number <= 99 | `number` | n/a | yes |
-| input_confluent_cloud_environment_id | Confluent Cloud environment ID for the environment that the cluster belongs to | `string` | n/a | yes |
-| input_confluent_cloud_network_id | Confluent Cloud network ID for the network that the cluster uses | `string` | n/a | yes |
+| input_confluent_cloud_environment_name | Confluent Cloud environment name for the environment that the cluster belongs to | `string` | n/a | yes |
+| input_confluent_cloud_network_name | Confluent Cloud network name for the network that the cluster uses | `string` | n/a | yes |
 | input_environment_name | Deployment environment of cluster: 'dev', 'test', or 'prod' | `string` | n/a | yes |
