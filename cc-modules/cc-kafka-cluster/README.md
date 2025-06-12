@@ -32,8 +32,8 @@ No modules.
 | <a name="input_cluster_ckus"></a> [cluster\_ckus](#input\_cluster\_ckus) | The number of Confluent Kafka Units (CKUs) to allocate to the cluster for cluster scale | `number` | n/a | yes |
 | <a name="input_cluster_multi_zone_available"></a> [cluster\_multi\_zone\_available](#input\_cluster\_multi\_zone\_available) | The availability zone configuration of the Kafka cluster | `bool` | n/a | yes |
 | <a name="input_cluster_number"></a> [cluster\_number](#input\_cluster\_number) | Monotonically increasing integer used as a suffix for cluster name, 1 <= cluster\_number <= 99 | `number` | n/a | yes |
-| <a name="input_confluent_cloud_environment_id"></a> [confluent\_cloud\_environment\_id](#input\_confluent\_cloud\_environment\_id) | Confluent Cloud environment ID for the environment that the cluster belongs to | `string` | n/a | yes |
-| <a name="input_confluent_cloud_network_id"></a> [confluent\_cloud\_network\_id](#input\_confluent\_cloud\_network\_id) | Confluent Cloud network ID for the network that the cluster uses | `string` | n/a | yes |
+| <a name="input_confluent_cloud_environment_name"></a> [confluent\_cloud\_environment\_name](#input\_confluent\_cloud\_environment\_name) | Confluent Cloud environment name for the environment that the cluster belongs to | `string` | n/a | yes |
+| <a name="input_confluent_cloud_network_name"></a> [confluent\_cloud\_network\_name](#input\_confluent\_cloud\_network\_name) | Confluent Cloud network name for the network that the cluster uses | `string` | n/a | yes |
 | <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | Deployment environment of cluster: 'dev', 'test', or 'prod' | `string` | n/a | yes |
 
 ## Outputs

@@ -1,19 +1,19 @@
-variable "confluent_cloud_environment_id" {
+variable "confluent_cloud_environment_name" {
   type        = string
-  description = "Confluent Cloud environment ID for the environment that the cluster belongs to"
+  description = "Confluent Cloud environment name for the environment that the cluster belongs to"
 
   validation {
-    condition     = length(var.confluent_cloud_environment_id) > 0
-    error_message = "confluent_cloud_environment_id must be a non-empty string"
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-env-${var.environment_name}-.+-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name)) > 0
+    error_message = "confluent_cloud_environment_name must follow the CCOE Confluent environment naming convention"
   }
 }
-variable "confluent_cloud_network_id" {
+variable "confluent_cloud_network_name" {
   type        = string
-  description = "Confluent Cloud network ID for the network that the cluster uses"
+  description = "Confluent Cloud network name for the network that the cluster uses"
 
   validation {
-    condition     = length(var.confluent_cloud_network_id) > 0
-    error_message = "confluent_cloud_network_id must be a non-empty string"
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-net-${var.environment_name}-.+-([1-9][0-9]|0[1-9])$", var.confluent_cloud_network_name)) > 0
+    error_message = "confluent_cloud_network_name must follow the CCOE Confluent network naming convention"
   }
 }
 
