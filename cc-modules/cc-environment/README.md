@@ -7,7 +7,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.9.8 |
 | <a name="requirement_confluent"></a> [confluent](#requirement_confluent) | ~> 2.30.0 |
 
 ## Providers
@@ -34,4 +34,5 @@
 | Name | Description |
 |------|-------------|
 | environment_id | The ID of the created Confluent Cloud environment |
+| stream_governance_package | The stream governance package used in the environment |
 <!-- END_TF_DOCS -->
