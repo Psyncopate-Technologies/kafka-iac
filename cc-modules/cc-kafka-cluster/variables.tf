@@ -3,7 +3,7 @@ variable "confluent_cloud_environment_name" {
   description = "Confluent Cloud environment name for the environment that the cluster belongs to"
 
   validation {
-    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-env-${var.environment_name}-.+-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name)) > 0
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-env-${var.environment_name}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name)) > 0
     error_message = "confluent_cloud_environment_name must follow the CCOE Confluent environment naming convention"
   }
 }
@@ -12,7 +12,7 @@ variable "confluent_cloud_network_name" {
   description = "Confluent Cloud network name for the network that the cluster uses"
 
   validation {
-    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-net-${var.environment_name}-.+-([1-9][0-9]|0[1-9])$", var.confluent_cloud_network_name)) > 0
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-net-${var.environment_name}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_network_name)) > 0
     error_message = "confluent_cloud_network_name must follow the CCOE Confluent network naming convention"
   }
 }
