@@ -14,22 +14,82 @@ mock_provider "confluent" {
 
 # Default test variables
 variables {
-  environment_name          = "dev-team1"
+  environment_name          = "D"
   stream_governance_package = "ESSENTIALS"
 }
 
 # Validate that the environment name is set correctly
-run "environment_name_check" {
+run "valid_environment_name_check" {
   command = plan
 
   variables {
-    environment_name = "dev-team1"
+    environment_name = "t"
   }
 
   assert {
-    condition     = confluent_environment.this.display_name == "dev-team1"
-    error_message = "Expected environment name to be 'dev-team1'"
+    condition     = contains(["d", "dev", "t", "test", "p", "prod", "np", "nonprod"], lower(var.environment_name))
+    error_message = "Environment name must be one of: d, dev, t, test, p, prod, np, nonprod (case-insensitive)."
   }
+}
+
+
+run "valid_env_np" {
+  command = plan
+
+  variables {
+    environment_name = "np"
+  }
+
+  assert {
+    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
+    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+  }
+}
+
+run "valid_env_prod" {
+  command = plan
+
+  variables {
+    environment_name = "prod"
+  }
+
+  assert {
+    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
+    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+  }
+}
+
+run "valid_env_case_insensitive" {
+  command = plan
+
+  variables {
+    environment_name = "DeV"
+  }
+
+  assert {
+    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
+    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+  }
+}
+
+run "invalid_env_value" {
+  command = plan
+
+  variables {
+    environment_name = "stage"
+  }
+
+  expect_failures = [ var.environment_name ]
+}
+
+run "invalid_env_length" {
+  command = plan
+
+  variables {
+    environment_name = "prodd"
+  }
+
+  expect_failures = [ var.environment_name ]
 }
 
 # Validate that the stream governance package is set correctly
@@ -37,7 +97,7 @@ run "stream_governance_package_check" {
   command = plan
 
   variables {
-    environment_name          = "dev-team1"
+    environment_name          = "T"
     stream_governance_package = "ADVANCED"
   }
 
@@ -77,20 +137,6 @@ run "default_stream_governance" {
   assert {
     condition     = confluent_environment.this.stream_governance[0].package == "ESSENTIALS"
     error_message = "Expected default stream governance package to be 'ESSENTIALS'"
-  }
-}
-
-# Validate naming conventions (e.g., only alphanumeric, hyphens, underscores)
-run "naming_convention_check" {
-  command = plan
-
-  variables {
-    environment_name = "team_env-01"
-  }
-
-  assert {
-    condition     = can(regex("^[a-zA-Z0-9_-]+$", confluent_environment.this.display_name))
-    error_message = "Environment name must follow naming convention: alphanumeric, underscores, or hyphens only."
   }
 }
 

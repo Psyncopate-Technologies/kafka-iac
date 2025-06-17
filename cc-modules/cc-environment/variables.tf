@@ -3,8 +3,11 @@ variable "environment_name" {
   description = "Name of the Confluent Cloud environment"
 
   validation {
-    condition = can(regex("^[a-zA-Z0-9]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$", var.environment_name))
-    error_message = "Must start and end with alphanumeric characters, and may contain hyphens and underscores in between."
+    condition = (
+      contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
+      && length(var.environment_name) <= 4
+    )
+    error_message = "The 'environment_name' must be one of: np, nonprod, p, prod, t, test, d, dev and must not exceed 4 characters."
   }
 }
 
