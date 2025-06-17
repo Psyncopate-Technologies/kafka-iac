@@ -3,11 +3,10 @@ variable "display_name" {
   description = "Name of the Identity Provider"
 
   validation {
-    condition     = length(var.display_name) > 0 && length(var.display_name) <= 100
-    error_message = "Display name must be non-empty and no more than 100 characters."
+    condition = can(regex("^entra-[a-z0-9]+-01$", var.display_name))
+    error_message = "Identity provider name must follow the pattern: 'entra-<cloud_region>-01' (lowercase, alphanumeric region)."
   }
 }
-
 
 variable "issuer" {
   type        = string

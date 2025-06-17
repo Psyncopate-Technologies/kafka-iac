@@ -2,7 +2,7 @@ mock_provider "confluent" {
   mock_data "confluent_identity_provider" {
     defaults = {
       id          = "idp-abc123"
-      display_name = "my-idp"
+      display_name = "entra-eastus2-01"
       issuer      = "https://example.com"
       jwks_uri    = "https://example.com/.well-known/jwks.json"
       description = "OIDC Identity Provider"
@@ -11,19 +11,22 @@ mock_provider "confluent" {
 }
 
 variables {
-  display_name = "my-idp"
+  display_name = "entra-eastus2-01"
   issuer       = "https://example.com"
   jwks_uri     = "https://example.com/.well-known/jwks.json"
   description  = "OIDC Identity Provider"
 }
 
-# Check if identity provider name is set correctly
-run "idp_display_name_check" {
+run "valid_identity_provider_name" {
   command = plan
 
+  variables {
+    display_name = "entra-eastus2-01"
+  }
+
   assert {
-    condition     = confluent_identity_provider.this.display_name == "my-idp"
-    error_message = "Display name must be 'my-idp'"
+    condition     = can(regex("^entra-[a-z0-9]+-01$", var.display_name))
+    error_message = "Should match pattern 'entra-<cloud_region>-01'"
   }
 }
 
@@ -55,6 +58,51 @@ run "idp_description_check" {
     condition     = confluent_identity_provider.this.description == "OIDC Identity Provider"
     error_message = "Description must be 'OIDC Identity Provider'"
   }
+}
+
+
+# Invalid: wrong prefix
+run "invalid_idp_prefix" {
+  command = plan
+
+  variables {
+    display_name = "azure-eastus2-01"
+  }
+
+  expect_failures = [ var.display_name ]
+}
+
+# Invalid: region capitalized
+run "invalid_idp_caps_region" {
+  command = plan
+
+  variables {
+    display_name = "entra-EastUS2-01"
+  }
+
+  expect_failures = [ var.display_name ]
+}
+
+# Invalid: no -01 suffix
+run "missing_suffix" {
+  command = plan
+
+  variables {
+    display_name = "entra-eastus2"
+  }
+
+  expect_failures = [ var.display_name ]
+}
+
+# Invalid: too short
+run "invalid_short_name" {
+  command = plan
+
+  variables {
+    display_name = "entra-e-1"
+  }
+
+  expect_failures = [ var.display_name ]
 }
 
 # Invalid JWKS URI
