@@ -1,0 +1,8 @@
+confluent_cloud_api_key = "**********************"
+confluent_cloud_api_secret = "**********************"
+network_display_name = "dev-confluent-network-azure"
+region = "eastus"
+private_link_dns_resolution = "PRIVATE"
+private_link_access_display_name = "dev-confluent-network-azure-private-link"
+customer_azure_subscription_id = "**********************"
+confluent_cloud_environment_name = "DEV"
