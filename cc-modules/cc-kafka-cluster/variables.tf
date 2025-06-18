@@ -1,6 +1,7 @@
 variable "module_repo_version_tag" {
   type        = string
   description = "Repo version tag of module, such as 'v1.0.0'"
+  default     = "latest"
 }
 
 variable "confluent_cloud_environment_name" {
