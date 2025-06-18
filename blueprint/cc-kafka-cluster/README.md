@@ -14,8 +14,8 @@ This blueprint is for a Confluent Cloud Kafka Cluster
 ```hcl
 module_repo_version_tag = "v1.0.0"
 
-confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
 cloud_provider = "AZURE"
 cloud_region   = "eastus2"
@@ -34,16 +34,36 @@ terraform {
     confluent = {
       source  = "confluentinc/confluent"
       version = "2.30.0"
+    },
+
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
     }
   }
 }
 
 provider "confluent" {
 }
+
 ```
 
 [More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
 
+
+### backend.tf
+```hcl
+# Azure backend state storage
+terraform {
+     backend "azurerm" {
+      resource_group_name  = "<resource_group_name>"
+      storage_account_name = "<storage_account_name>"
+      container_name       = "tfstate"
+      key                  = "cc_kafka_cluster.tfstate"
+  }
+}
+```
 ## Variables for Confluent Cloud Kafka Cluster
 
 | Name | Description | Type | Default | Required |
