@@ -14,17 +14,18 @@ mock_provider "confluent" {
 
 # Default test variables, specific variables overwritten by individual tests
 variables {
-        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
+    module_repo_version_tag = "v1.0.0"
+    confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+    confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
-        cloud_provider = "AZURE"
-        cloud_region = "eastus2"
+    cloud_provider = "AZURE"
+    cloud_region = "eastus2"
 
-        cluster_number = 1
-        environment_name = "dev"
+    cluster_number = 1
+    environment_name = "dev"
 
-        cluster_multi_zone_available = false
-        cluster_ckus = 1
+    cluster_multi_zone_available = false
+    cluster_ckus = 1
 }
 
 # Cluster naming convention conformance tests

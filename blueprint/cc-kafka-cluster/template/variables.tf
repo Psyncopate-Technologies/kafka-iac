@@ -1,3 +1,8 @@
+variable "module_repo_version_tag" {
+  type = string
+  description = "Repo version tag of module, such as 'v1.0.0'"
+}
+
 variable "confluent_cloud_environment_name" {
   type        = string
   description = "Confluent Cloud environment name for the environment that the cluster belongs to"

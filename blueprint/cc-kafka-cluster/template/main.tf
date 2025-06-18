@@ -5,6 +5,8 @@ locals {
 module "cc-kafka-cluster" {
   source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=${local.module_repo_version_tag}"
 
+  module_repo_version_tag = local.module_repo_version_tag
+
   confluent_cloud_environment_name = var.confluent_cloud_environment_name
   confluent_cloud_network_name     = var.confluent_cloud_network_name
 

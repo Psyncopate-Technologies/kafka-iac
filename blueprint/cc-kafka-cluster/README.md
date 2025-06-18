@@ -12,6 +12,8 @@ This blueprint is for a Confluent Cloud Kafka Cluster
 ### terraform.tfvars
 
 ```hcl
+module_repo_version_tag = "v1.0.0"
+
 confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
 confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
 
@@ -30,6 +32,7 @@ cluster_ckus                 = 1
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| input_module_repo_version_tag | Repo version tag of module, such as 'v1.0.0' | `string` | n/a | yes |
 | input_cloud_provider | Cloud provider to deploy Kafka cluster to | `string` | n/a | yes |
 | input_cloud_region | Cloud region of the cluster in the specified cloud provider | `string` | n/a | yes |
 | input_cluster_ckus | The number of Confluent Kafka Units (CKUs) to allocate to the cluster for cluster scale | `number` | n/a | yes |
