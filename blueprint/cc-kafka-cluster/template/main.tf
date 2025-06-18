@@ -3,7 +3,7 @@ locals {
 }
 
 module "cc-kafka-cluster" {
-  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=${local.module_repo_version_tag}"
+  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=<INSERT module_repo_version_tag>" # Update module_repo_version_tag here
 
   module_repo_version_tag = local.module_repo_version_tag
 
