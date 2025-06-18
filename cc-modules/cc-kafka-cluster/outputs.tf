@@ -16,3 +16,10 @@ output "cluster_availability_zones" {
   value       = confluent_kafka_cluster.this.dedicated[0].zones
   description = "The list of cloud provider zones the cluster is in"
 }
+
+output "schema_registry_id" {
+  value = data.confluent_schema_registry_cluster.cc_schema_registry.id
+}
+output "schema_registry_rest_endpoint" {
+  value = data.confluent_schema_registry_cluster.cc_schema_registry.rest_endpoint
+}

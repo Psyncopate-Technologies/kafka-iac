@@ -15,6 +15,12 @@ data "confluent_network" "cc_network" {
   }
 }
 
+data "confluent_schema_registry_cluster" "cc_schema_registry" {
+  environment {
+    id = data.confluent_environment.cc_environment.id
+  }
+}
+
 resource "confluent_kafka_cluster" "this" {
   display_name = local.cluster_name
 
