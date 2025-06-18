@@ -27,6 +27,22 @@ cluster_multi_zone_available = false
 cluster_ckus                 = 1
 ```
 
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+      version = "2.30.0"
+    }
+  }
+}
+
+provider "confluent" {
+}
+```
+
+[More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
 
 ## Variables for Confluent Cloud Kafka Cluster
 
