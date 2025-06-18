@@ -1,5 +1,5 @@
 variable "module_repo_version_tag" {
-  type = string
+  type        = string
   description = "Repo version tag of module, such as 'v1.0.0'"
 }
 
