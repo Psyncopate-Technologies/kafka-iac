@@ -14,8 +14,8 @@ mock_provider "confluent" {
 
 # Default test variables, specific variables overwritten by individual tests
 variables {
-        confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
         cloud_provider = "AZURE"
         cloud_region = "eastus2"
@@ -40,7 +40,7 @@ run "create_standard_named_cluster" {
     }
 
     assert {
-        condition = confluent_kafka_cluster.this.display_name == "azu-clstr-dev-eastus2-01"
+        condition = confluent_kafka_cluster.this.display_name == "azu-clstr-d-eastus2-01"
         error_message = "Cluster is expected follow CCOE cluster naming convention"
     }
 }
@@ -132,8 +132,8 @@ run "create_aws_cluster" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "aws-env-dev-us-east-2-01"
-        confluent_cloud_network_name     = "aws-net-dev-us-east-2-01"
+        confluent_cloud_environment_name = "aws-env-d-us-east-2-01"
+        confluent_cloud_network_name     = "aws-net-d-us-east-2-01"
 
         cloud_provider = "AWS"
         cloud_region = "us-east-2"
@@ -156,8 +156,8 @@ run "create_gcp_cluster" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "gcp-env-dev-us-east-5-01"
-        confluent_cloud_network_name     = "gcp-net-dev-us-east-5-01"
+        confluent_cloud_environment_name = "gcp-env-d-us-east-5-01"
+        confluent_cloud_network_name     = "gcp-net-d-us-east-5-01"
 
         cloud_provider = "GCP"
         cloud_region = "us-east-5"
@@ -191,45 +191,45 @@ run "create_dev_cluster" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
         environment_name = "dev"
     }
 
     assert {
-        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "dev"
-        error_message = "Cluster environment in name is expected to be 'dev'"
+        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "d"
+        error_message = "Cluster environment in name is expected to be 'd'"
     }
 }
 run "create_test_cluster" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-test-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-test-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-t-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-t-eastus2-01"
 
         environment_name = "test"
     }
 
     assert {
-        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "test"
-        error_message = "Cluster environment in name is expected to be 'test'"
+        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "t"
+        error_message = "Cluster environment in name is expected to be 't'"
     }
 }
 run "create_prod_cluster" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-prod-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-prod-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-p-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-p-eastus2-01"
 
         environment_name = "prod"
     }
 
     assert {
-        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "prod"
-        error_message = "Cluster environment in name is expected to be 'prod'"
+        condition = split("-", confluent_kafka_cluster.this.display_name)[2] == "p"
+        error_message = "Cluster environment in name is expected to be 'p'"
     }
 }
 run "create_invalid_env_cluster" {
@@ -247,8 +247,8 @@ run "create_cluster_non_matching_envs" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
         environment_name = "prod"
     }
@@ -259,8 +259,8 @@ run "create_cluster_non_matching_clouds" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
         cloud_provider = "GCP"
     }
@@ -271,8 +271,8 @@ run "create_cluster_non_matching_regions" {
     command = plan
 
     variables {
-        confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-        confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+        confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+        confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
         cloud_region = "centralus"
     }
