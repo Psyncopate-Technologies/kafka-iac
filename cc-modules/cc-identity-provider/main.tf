@@ -8,4 +8,3 @@ resource "confluent_identity_provider" "this" {
     prevent_destroy = true
   }
 }
-

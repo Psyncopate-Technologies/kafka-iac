@@ -17,6 +17,7 @@ variables {
   description  = "OIDC Identity Provider"
 }
 
+# Check if the provider name is valid
 run "valid_identity_provider_name" {
   command = plan
 
@@ -127,6 +128,7 @@ run "invalid_issuer" {
   expect_failures = [var.issuer]
 }
 
+# Check if the issuer is missing
 run "missing_issuer" {
   command = plan
 
@@ -138,6 +140,7 @@ run "missing_issuer" {
   expect_failures = [var.issuer]
 }
 
+# Check if the jwks is missing
 run "missing_jwks" {
   command = plan
 

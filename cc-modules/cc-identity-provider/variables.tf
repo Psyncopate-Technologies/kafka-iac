@@ -28,7 +28,6 @@ variable "jwks_uri" {
   }
 }
 
-
 variable "description" {
   type        = string
   description = "Optional description"
@@ -39,5 +38,3 @@ variable "description" {
     error_message = "Description must be at most 256 characters."
   }
 }
-
-

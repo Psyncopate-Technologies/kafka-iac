@@ -8,7 +8,6 @@ variable "display_name" {
   }
 }
 
-
 variable "issuer" {
   type        = string
   description = "Issuer URI (OIDC issuer)"
@@ -28,7 +27,6 @@ variable "jwks_uri" {
     error_message = "The JWKS URI must be a valid HTTPS URI."
   }
 }
-
 
 variable "description" {
   type        = string
