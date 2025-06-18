@@ -23,3 +23,7 @@ output "schema_registry_id" {
 output "schema_registry_rest_endpoint" {
   value = data.confluent_schema_registry_cluster.cc_schema_registry.rest_endpoint
 }
+
+output "module_repo_version_tag" {
+  value = "v1.0.0"
+}
