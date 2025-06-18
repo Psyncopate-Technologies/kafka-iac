@@ -26,7 +26,13 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| environment_name | Human-readable name for the Environment. Start and end with alphanumeric characters. Can include hyphens and underscores. | `string` | n/a | yes |
+| environment_name | Valid values are (single/shortname/name):
+
+1. Np/nonprod = Non Prod
+2. p/prod = Production
+3. T/test = Test
+4. D/dev = development
+Use the ultrashort name in case you have character limitations. E.g Vm 15 character limit | `string` | n/a | yes |
 | stream_governance_package | Stream Governance package for the environment | `string` | `"ESSENTIALS"` | no |
 
 ## Outputs

@@ -8,4 +8,3 @@ variable "stream_governance_package" {
   description = "stream governance package"
   default     = "ESSENTIALS"
 }
-

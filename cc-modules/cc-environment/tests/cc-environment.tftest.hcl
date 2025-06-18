@@ -1,5 +1,4 @@
 # Unit tests for Confluent Cloud Environment module
-
 mock_provider "confluent" {
   mock_data "confluent_environment" {
     defaults = {
@@ -31,7 +30,6 @@ run "valid_environment_name_check" {
     error_message = "Environment name must be one of: d, dev, t, test, p, prod, np, nonprod (case-insensitive)."
   }
 }
-
 
 run "valid_env_np" {
   command = plan
@@ -107,7 +105,6 @@ run "stream_governance_package_check" {
   }
 }
 
-
 # Validate failure when environment name is empty
 run "invalid_empty_environment_name" {
   command = plan
@@ -139,4 +136,3 @@ run "default_stream_governance" {
     error_message = "Expected default stream governance package to be 'ESSENTIALS'"
   }
 }
-
