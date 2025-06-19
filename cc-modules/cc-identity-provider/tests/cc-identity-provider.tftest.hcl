@@ -1,13 +1,4 @@
 mock_provider "confluent" {
-  mock_data "confluent_identity_provider" {
-    defaults = {
-      id          = "idp-abc123"
-      display_name = "entra-eastus2-01"
-      issuer      = "https://example.com"
-      jwks_uri    = "https://example.com/.well-known/jwks.json"
-      description = "OIDC Identity Provider"
-    }
-  }
 }
 
 variables {

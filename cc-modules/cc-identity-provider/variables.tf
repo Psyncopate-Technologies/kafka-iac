@@ -42,4 +42,5 @@ variable "description" {
 variable "module_repo_version_tag" {
   type        = string
   description = "Version tag of the cc-identity_provider module used in this run"
+  default     = "latest"
 }
