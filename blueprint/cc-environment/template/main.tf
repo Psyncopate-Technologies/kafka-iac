@@ -3,7 +3,7 @@ locals {
 }
 
 module "cc-environment" {
-  source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-environment?ef=<INSERT module_repo_version_tag VARIABLE HERE>" 
+  source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-environment?ref=<INSERT module_repo_version_tag VARIABLE HERE>" 
 
   module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
 
