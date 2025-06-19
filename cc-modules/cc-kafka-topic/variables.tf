@@ -9,16 +9,13 @@ variable "topic_path" {
 }
 
 variable "topic_config_raw" {
-  description = "Raw topic config loaded from YAML"
+  description = "Parsed topic configuration from YAML file."
   type        = any
   nullable    = false
+
   validation {
-    condition = (
-      var.topic_config_raw != null &&
-      type(var.topic_config_raw) == object({}) &&
-      length(keys(var.topic_config_raw)) > 0
-    )
-    error_message = "The Topic configuration must be a non-null, non-empty object."
+    condition     = length(keys(var.topic_config_raw)) > 0
+    error_message = "topic_config_raw must be a non-empty object."
   }
 }
 
