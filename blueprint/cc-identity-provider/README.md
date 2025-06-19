@@ -18,6 +18,25 @@ description  = "OIDC integration with AzureAD"
 issuer       = "https://login.microsoftonline.com/<tenant-id>/v2.0"
 jwks_uri     = "https://login.microsoftonline.com/<tenant-id>/discovery/v2.0/keys"
 
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+      version = "2.30.0"
+    },
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+provider "confluent" {
+}
+```
+
 ## Variables for Confluent Cloud Identity Provider
 
 | Name                   | Description                                                                                  | Type     | Default | Required |
