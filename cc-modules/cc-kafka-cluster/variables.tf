@@ -1,9 +1,15 @@
+variable "module_repo_version_tag" {
+  type        = string
+  description = "Repo version tag of module, such as 'v1.0.0'"
+  default     = "latest"
+}
+
 variable "confluent_cloud_environment_name" {
   type        = string
   description = "Confluent Cloud environment name for the environment that the cluster belongs to"
 
   validation {
-    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-env-${var.environment_name}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name)) > 0
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-env-${substr(var.environment_name, 0, 1)}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name)) > 0
     error_message = "confluent_cloud_environment_name must follow the CCOE Confluent environment naming convention"
   }
 }
@@ -12,7 +18,7 @@ variable "confluent_cloud_network_name" {
   description = "Confluent Cloud network name for the network that the cluster uses"
 
   validation {
-    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-net-${var.environment_name}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_network_name)) > 0
+    condition     = length(regexall("^${lower(substr(var.cloud_provider, 0, 3))}-net-${substr(var.environment_name, 0, 1)}-${var.cloud_region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_network_name)) > 0
     error_message = "confluent_cloud_network_name must follow the CCOE Confluent network naming convention"
   }
 }

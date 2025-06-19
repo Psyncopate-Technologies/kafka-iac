@@ -1,9 +1,8 @@
-locals {
-  module_repo_version_tag = "" # Update to the module repo version tag
-}
-
 module "cc-kafka-cluster" {
-  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=${local.module_repo_version_tag}"
+  # Update module_repo_version_tag here for ref
+  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=<INSERT module_repo_version_tag VARIABLE HERE>"
+
+  module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
 
   confluent_cloud_environment_name = var.confluent_cloud_environment_name
   confluent_cloud_network_name     = var.confluent_cloud_network_name

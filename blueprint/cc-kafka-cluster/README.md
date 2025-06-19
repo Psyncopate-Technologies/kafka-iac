@@ -4,7 +4,7 @@ This blueprint is for a Confluent Cloud Kafka Cluster
 ## Setup
 1. Copy the files from the template folder to a new folder
 2. Update the `module_repo_version_tag` in the `main.tf` file
-3. Create a `terraform.tfvars` file with your configuration
+3. Create a `terraform.tfvars` file with your configuration (reference in `test/test.tfvars`)
 4. Setup your `provider.tf` file
 
 ## Examples
@@ -12,8 +12,8 @@ This blueprint is for a Confluent Cloud Kafka Cluster
 ### terraform.tfvars
 
 ```hcl
-confluent_cloud_environment_name = "azu-env-dev-eastus2-01"
-confluent_cloud_network_name     = "azu-net-dev-eastus2-01"
+confluent_cloud_environment_name = "azu-env-d-eastus2-01"
+confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
 cloud_provider = "AZURE"
 cloud_region   = "eastus2"
@@ -25,7 +25,42 @@ cluster_multi_zone_available = false
 cluster_ckus                 = 1
 ```
 
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+    },
 
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+
+provider "confluent" {
+}
+
+```
+
+[More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
+
+
+### backend.tf
+```hcl
+# Example for Azure blob state storage backend
+terraform {
+     backend "azurerm" {
+      resource_group_name  = "<resource_group_name>"
+      storage_account_name = "<storage_account_name>"
+      container_name       = "tfstate"
+      key                  = "cc_kafka_cluster.tfstate"
+  }
+}
+```
 ## Variables for Confluent Cloud Kafka Cluster
 
 | Name | Description | Type | Default | Required |

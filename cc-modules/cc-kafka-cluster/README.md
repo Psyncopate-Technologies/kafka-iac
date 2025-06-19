@@ -27,6 +27,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="module_repo_version_tag"></a> [module\_repo\_version\_tag](#input\_module\_repo\_version\_tag) | Repo version tag of module, such as 'v1.0.0' |
 | <a name="input_cloud_provider"></a> [cloud\_provider](#input\_cloud\_provider) | Cloud provider to deploy Kafka cluster to | `string` | n/a | yes |
 | <a name="input_cloud_region"></a> [cloud\_region](#input\_cloud\_region) | Cloud region of the cluster in the specified cloud provider | `string` | n/a | yes |
 | <a name="input_cluster_ckus"></a> [cluster\_ckus](#input\_cluster\_ckus) | The number of Confluent Kafka Units (CKUs) to allocate to the cluster for cluster scale | `number` | n/a | yes |
@@ -40,6 +41,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="module_repo_version_tag"></a> [module\_repo\_version\_tag](#output\_module\_repo\_version\_tag) | Repo version tag of module, such as 'v1.0.0' |
 | <a name="output_cluster_availability_zones"></a> [cluster\_availability\_zones](#output\_cluster\_availability\_zones) | The list of cloud provider zones the cluster is in |
 | <a name="output_cluster_bootstrap_endpoint"></a> [cluster\_bootstrap\_endpoint](#output\_cluster\_bootstrap\_endpoint) | The bootstrap endpoint used by Kafka clients to connect to the Kafka cluster |
 | <a name="output_cluster_id"></a> [cluster\_id](#output\_cluster\_id) | The ID of the Kafka cluster (e.g. 'lkc-abc123') |
