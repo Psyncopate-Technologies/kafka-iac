@@ -2,15 +2,17 @@ pipeline_version: str(required=False)
 name: str(required=False)
 description: str(required=False)
 identity_pool_name: str(required=False)
-oauth_client_id: str(required=True)
+oauth_client_id: str(required=False)
+oauth_client_group: str(required=False)
 schema: list(include('schema_entry'), required=False)
-producer: list(include('producer_entry'), required=False)
-consumer: list(include('consumer_entry'), required=False)
+producer: include('producer_block', required=False)
+consumer: include('consumer_block', required=False)
 quota: include('quota_block', required=False)
 
-# -----------------------------
-# Reusable Schema Entry Block
-# -----------------------------
+
+# ---------------------------------
+# Sub-schema: Schema entry
+# ---------------------------------
 schema_entry:
   topic_name: str()
   alias_name: str(required=False)
@@ -21,30 +23,34 @@ schema_entry:
   file_name: str(required=False)
   compatibility_level: enum('NONE', 'BACKWARD', 'BACKWARD_TRANSITIVE', 'FORWARD', 'FORWARD_TRANSITIVE', 'FULL', 'FULL_TRANSITIVE', required=False)
 
-# -----------------------------
-# Reusable Producer Block
-# -----------------------------
-producer_entry:
-  resource_name: str()
-  resource_type: enum('Topic', 'Connector')
+# ---------------------------------
+# Sub-schema: Producer block
+# ---------------------------------
+producer_block:
+  client_id: str(required=False)
+  topics: list(include('producer_topic_entry'))
+
+producer_topic_entry:
+  topic: str()
   srb_review_number: str()
   mal_acronym: str()
-  connect_cluster_name: str(required=False)
 
-# -----------------------------
-# Reusable Consumer Block
-# -----------------------------
-consumer_entry:
-  resource_name: str()
-  resource_type: enum('Topic', 'Connector')
+# ---------------------------------
+# Sub-schema: Consumer block
+# ---------------------------------
+consumer_block:
+  client_id: str(required=False)
+  group_id: str(required=False)
+  topics: list(include('consumer_topic_entry'))
+
+consumer_topic_entry:
+  name: str()
   srb_review_number: str()
   mal_acronym: str()
-  consumer_group_id: str(required=False)
-  connect_cluster_name: str(required=False)
 
-# -----------------------------
-# Reusable Quota Block
-# -----------------------------
+# ---------------------------------
+# Sub-schema: Quota block
+# ---------------------------------
 quota_block:
   name: str(required=False)
   ingress_byte_rate: regex('^[0-9]+$', required=False)
