@@ -38,3 +38,8 @@ variable "description" {
     error_message = "Description must be at most 256 characters."
   }
 }
+
+variable "module_repo_version_tag" {
+  type        = string
+  description = "Version tag of the cc-identity_provider module used in this run"
+}

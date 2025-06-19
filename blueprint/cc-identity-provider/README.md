@@ -17,3 +17,13 @@ display_name = "AzureAD-SSO"
 description  = "OIDC integration with AzureAD"
 issuer       = "https://login.microsoftonline.com/<tenant-id>/v2.0"
 jwks_uri     = "https://login.microsoftonline.com/<tenant-id>/discovery/v2.0/keys"
+
+## Variables for Confluent Cloud Identity Provider
+
+| Name                   | Description                                                                                  | Type     | Default | Required |
+|------------------------|----------------------------------------------------------------------------------------------|----------|---------|:--------:|
+| module_repo_version_tag| Repo version tag of module, such as `'v1.0.0'`                                               | `string` | latest  |  Yes   |
+| display_name           | Name of the identity provider. Must follow format: `entra-<region>-01`                      | `string` | n/a     |  Yes   |
+| issuer                 | The Issuer URI for the identity provider (must be a valid HTTPS URL)                        | `string` | n/a     |  Yes   |
+| jwks_uri               | The JWKS URI used to verify the provider's JWT tokens (must be a valid HTTPS URL)           | `string` | n/a     |  Yes   |
+| description            | Optional description for the identity provider                                               | `string` | `""`    |  No    |
