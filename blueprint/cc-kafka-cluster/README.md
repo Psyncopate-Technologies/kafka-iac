@@ -54,7 +54,7 @@ provider "confluent" {
 
 ### backend.tf
 ```hcl
-# Azure backend state storage
+# Example for Azure blob state storage backend
 terraform {
      backend "azurerm" {
       resource_group_name  = "<resource_group_name>"
