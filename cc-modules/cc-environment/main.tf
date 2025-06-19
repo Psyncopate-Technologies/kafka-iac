@@ -1,5 +1,5 @@
 resource "confluent_environment" "this" {
-  display_name = var.environment_name
+  display_name = var.confluent_cloud_environment_name
 
   stream_governance {
     package = var.stream_governance_package

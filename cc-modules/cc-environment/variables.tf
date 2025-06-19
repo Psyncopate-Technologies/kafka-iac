@@ -1,13 +1,37 @@
+variable "cloud_provider" {
+  type        = string
+  description = "Cloud provider to deploy Kafka cluster to"
+  validation {
+    condition     = contains(["AWS", "AZURE", "GCP"], upper(var.cloud_provider))
+    error_message = "cloud_provider must be one of: AWS, AZURE, or GCP"
+  }
+}
+variable "cloud_region" {
+  type        = string
+  description = "Cloud region of the cluster in the specified cloud provider"
+  validation {
+    condition     = length(var.cloud_region) > 0
+    error_message = "cloud_region must be a non-empty string"
+  }
+}
 variable "environment_name" {
   type        = string
-  description = "Name of the Confluent Cloud environment"
-
+  description = "Deployment environment of cluster: 'dev', 'test', or 'prod'"
   validation {
-    condition = (
-      contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
-      && length(var.environment_name) <= 4
-    )
-    error_message = "The 'environment_name' must be one of: np, nonprod, p, prod, t, test, d, dev and must not exceed 4 characters."
+    condition     = contains(["dev", "test", "prod"], var.environment_name)
+    error_message = "cluster_environment_name must be one of: dev, test, prod"
+  }
+}
+variable "cluster_number" {
+  type        = number
+  description = "Monotonically increasing integer used as a suffix for cluster name, 1 <= cluster_number <= 99"
+  validation {
+    condition     = var.cluster_number >= 1 && var.cluster_number <= 99
+    error_message = "cluster_number must be between 1 and 99"
+  }
+  validation {
+    condition     = floor(var.cluster_number) == var.cluster_number
+    error_message = "cluster_number must be integer"
   }
 }
 
@@ -26,4 +50,9 @@ variable "module_repo_version_tag" {
   type        = string
   description = "Version tag of the cc-environment module used in this run"
   default     = "latest"
+}
+
+variable "confluent_cloud_environment_name" {
+  description = "The fully constructed Confluent Cloud environment name."
+  type        = string
 }

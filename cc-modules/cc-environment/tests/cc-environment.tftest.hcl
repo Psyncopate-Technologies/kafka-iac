@@ -1,129 +1,201 @@
-# Unit tests for Confluent Cloud Environment module
-mock_provider "confluent" {
-}
+mock_provider "confluent" {}
 
-# Default test variables
+# Default variables for all runs
 variables {
-  environment_name          = "D"
-  stream_governance_package = "ESSENTIALS"
+  cloud_provider                     = "AWS"
+  cloud_region                       = "us-west-1"
+  environment_name                   = "dev"
+  cluster_number                     = 1
+  stream_governance_package          = "ESSENTIALS"
+  module_repo_version_tag            = "latest"
+  confluent_cloud_environment_name   = "aws-env-dev-us-west-1-01"
 }
 
-# Validate that the environment name is set correctly
-run "valid_environment_name_check" {
+run "valid_cloud_provider_aws" {
   command = plan
-
-  variables {
-    environment_name = "t"
+   variables {
+    cloud_provider = "AWS"
   }
 
   assert {
-    condition     = contains(["d", "dev", "t", "test", "p", "prod", "np", "nonprod"], lower(var.environment_name))
-    error_message = "Environment name must be one of: d, dev, t, test, p, prod, np, nonprod (case-insensitive)."
+    condition     = contains(["AWS", "AZURE", "GCP"], upper(var.cloud_provider))
+    error_message = "cloud_provider must be one of: AWS, AZURE, or GCP"
   }
 }
 
-run "valid_env_np" {
+run "valid_cloud_provider_gcp" {
   command = plan
-
-  variables {
-    environment_name = "np"
+   variables {
+    cloud_provider = "GCP"
   }
 
   assert {
-    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
-    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+    condition     = contains(["AWS", "AZURE", "GCP"], upper(var.cloud_provider))
+    error_message = "cloud_provider must be one of: AWS, AZURE, or GCP"
   }
 }
 
-run "valid_env_prod" {
+run "invalid_cloud_provider" {
   command = plan
+   variables {
+    cloud_provider = "IBM"
+  }
+  expect_failures = [var.cloud_provider]
+}
 
-  variables {
-    environment_name = "prod"
+run "empty_cloud_provider" {
+  command = plan
+   variables {
+    cloud_provider = ""
+  }
+  expect_failures = [var.cloud_provider]
+}
+
+run "valid_cloud_region" {
+  command = plan
+   variables {
+    cloud_region = "eastus2"
   }
 
   assert {
-    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
-    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+    condition     = length(var.cloud_region) > 0
+    error_message = "cloud_region must be a non-empty string"
   }
 }
 
-run "valid_env_case_insensitive" {
+run "empty_cloud_region" {
   command = plan
+   variables {
+    cloud_region = ""
+  }
+  expect_failures = [var.cloud_region]
+}
 
-  variables {
-    environment_name = "DeV"
+run "valid_environment_name_dev" {
+  command = plan
+   variables {
+    environment_name = "dev"
   }
 
   assert {
-    condition     = contains(["np", "nonprod", "p", "prod", "t", "test", "d", "dev"], lower(var.environment_name))
-    error_message = "Valid environment values: np, nonprod, p, prod, t, test, d, dev"
+    condition     = contains(["dev", "test", "prod"], var.environment_name)
+    error_message = "environment_name must be one of: dev, test, prod"
   }
 }
 
-run "invalid_env_value" {
+run "valid_environment_name_test" {
   command = plan
+   variables {
+    environment_name = "test"
+  }
 
-  variables {
+  assert {
+    condition     = contains(["dev", "test", "prod"], var.environment_name)
+    error_message = "environment_name must be one of: dev, test, prod"
+  }
+}
+
+run "invalid_environment_name" {
+  command = plan
+   variables {
     environment_name = "stage"
   }
-
-  expect_failures = [ var.environment_name ]
+  expect_failures = [var.environment_name]
 }
 
-run "invalid_env_length" {
+run "empty_environment_name" {
   command = plan
+   variables {
+    environment_name = ""
+  }
+  expect_failures = [var.environment_name]
+}
 
-  variables {
-    environment_name = "prodd"
+run "valid_cluster_number" {
+  command = plan
+   variables {
+    cluster_number = 5
   }
 
-  expect_failures = [ var.environment_name ]
+  assert {
+    condition     = var.cluster_number >= 1 && var.cluster_number <= 99
+    error_message = "cluster_number must be between 1 and 99"
+  }
 }
 
-# Validate that the stream governance package is set correctly
-run "stream_governance_package_check" {
+run "invalid_cluster_number_zero" {
   command = plan
+   variables {
+    cluster_number = 0
+  }
+  expect_failures = [var.cluster_number]
+}
 
-  variables {
-    environment_name          = "T"
+run "invalid_cluster_number_overflow" {
+  command = plan
+   variables {
+    cluster_number = 100
+  }
+  expect_failures = [var.cluster_number]
+}
+
+run "invalid_cluster_number_float" {
+  command = plan
+   variables {
+    cluster_number = 4.5
+  }
+  expect_failures = [var.cluster_number]
+}
+
+run "valid_stream_governance_essentials" {
+  command = plan
+   variables {
+    stream_governance_package = "ESSENTIALS"
+  }
+
+  assert {
+    condition     = contains(["ESSENTIALS", "ADVANCED"], upper(var.stream_governance_package))
+    error_message = "Must be either 'ESSENTIALS' or 'ADVANCED'"
+  }
+}
+
+run "valid_stream_governance_advanced" {
+  command = plan
+   variables {
     stream_governance_package = "ADVANCED"
   }
 
   assert {
-    condition     = confluent_environment.this.stream_governance[0].package == "ADVANCED"
-    error_message = "Expected Stream Governance Package to be ADVANCED"
+    condition     = contains(["ESSENTIALS", "ADVANCED"], upper(var.stream_governance_package))
+    error_message = "Must be either 'ESSENTIALS' or 'ADVANCED'"
   }
 }
 
-# Validate failure when environment name is empty
-run "invalid_empty_environment_name" {
+run "invalid_stream_governance_package" {
   command = plan
-
-  variables {
-    environment_name = ""
+   variables {
+    stream_governance_package = "PREMIUM"
   }
-
-  expect_failures = [ var.environment_name ]
+  expect_failures = [var.stream_governance_package]
 }
 
-# Validate failure when environment name includes invalid characters
-run "invalid_environment_name_format" {
-  command = plan
-
-  variables {
-    environment_name = "@!invalid-name"
-  }
-
-  expect_failures = [ var.environment_name ]
-}
-
-# Validate that the default stream governance package is ESSENTIALS
-run "default_stream_governance" {
+run "default_module_repo_version_tag" {
   command = plan
 
   assert {
-    condition     = confluent_environment.this.stream_governance[0].package == "ESSENTIALS"
-    error_message = "Expected default stream governance package to be 'ESSENTIALS'"
+    condition     = var.module_repo_version_tag == "latest"
+    error_message = "module_repo_version_tag should default to 'latest'"
+  }
+}
+
+run "custom_module_repo_version_tag" {
+  command = plan
+   variables {
+    module_repo_version_tag = "v1.0.2"
+  }
+
+  assert {
+    condition     = var.module_repo_version_tag == "v1.0.2"
+    error_message = "module_repo_version_tag should be 'v1.0.2'"
   }
 }

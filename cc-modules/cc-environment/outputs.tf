@@ -8,9 +8,9 @@ output "stream_governance_package" {
   value       = var.stream_governance_package
 }
 
-output "environment_display_name" {
-  value = confluent_environment.this.display_name
-  description = "The created Confluent Environment name"
+output "confluent_cloud_environment_name" {
+  value       = local.confluent_cloud_environment_name
+  description = "Constructed environment name following CCOE naming convention."
 }
 
 output "module_repo_version_tag" {

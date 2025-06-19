@@ -24,18 +24,24 @@
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment_name | Valid values are (single/shortname/name): Np/p/prod/T/test/D/dev = development| `string` | n/a | yes |
-| stream_governance_package | Stream Governance package for the environment | `string` | `"ESSENTIALS"` | no |
-| module_repo_version_tag | The version tag of the module being used, such as 'v1.0.0' | `string` | latest | yes |
+| Name                           | Description                                                                 | Type     | Default         | Required |
+|--------------------------------|-----------------------------------------------------------------------------|----------|------------------|:--------:|
+| module_repo_version_tag        | Repo version tag of the module, e.g. `'v1.0.0'`                             | `string` | `"latest"`       |   yes    |
+| cloud_provider                 | Cloud provider to deploy environment (`AWS`, `AZURE`, or `GCP`)             | `string` | n/a              |   yes    |
+| cloud_region                   | Cloud region of the environment                                             | `string` | n/a              |   yes    |
+| environment_name               | Environment name (`dev`, `test`, `prod`)                                    | `string` | n/a              |   yes    |
+| cluster_number                 | Numeric identifier suffix for the environment (1–99)                        | `number` | n/a              |   yes    |
+| stream_governance_package      | Stream Governance package (`ESSENTIALS` or `ADVANCED`)                     | `string` | `"ESSENTIALS"`   |   no     |
+
+---
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| environment_id | The ID of the created Confluent Cloud environment |
-| stream_governance_package | The stream governance package used in the environment |
-| module_repo_version_tag | The version tag of the module being used |
-<!-- END_TF_DOCS -->
+| Name                             | Description                                                                 |
+|----------------------------------|-----------------------------------------------------------------------------|
+| environment_id                   | The ID of the created Confluent Environment                                 |
+| stream_governance_package        | The stream governance package used in the environment                       |
+| confluent_cloud_environment_name | Constructed environment name following CCOE naming convention               |
+| module_repo_version_tag          | Version tag of the cc-environment module used in this run                   |
+
 

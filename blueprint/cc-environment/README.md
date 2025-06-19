@@ -13,14 +13,41 @@ This blueprint sets up a reusable Confluent Cloud Environment with Stream Govern
 
 ### terraform.tfvars
 
+
 ```hcl
-environment_name          = "dev-team1"
+cloud_provider       = "AZURE"
+cloud_region         = "eastus2"
+environment_name     = "dev"
+cluster_number       = 1
 stream_governance_package = "ESSENTIALS"
+module_repo_version_tag   = "v1.0.0"
+
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+      version = "2.30.0"
+    },
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+provider "confluent" {
+}
+```
 
 ## Variables for Confluent Cloud environment and Schema Registry
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| module_repo_version_tag | Repo version tag of module, such as 'v1.0.0' | `string` | latest | yes |
-| environment_name | Valid values are (single/shortname/name): Np/p/prod/T/test/D/dev | `string` | n/a | yes |
-| stream_governance_package | Stream Governance package for the environment | `string` | `"ESSENTIALS"` | no |
+| Name                           | Description                                                                 | Type     | Default         | Required |
+|--------------------------------|-----------------------------------------------------------------------------|----------|------------------|:--------:|
+| cloud_provider                 | Cloud provider to deploy the environment (`AWS`, `AZURE`, or `GCP`)         | `string` | n/a              | yes   |
+| cloud_region                   | Cloud region for the environment                                            | `string` | n/a              | yes   |
+| environment_name               | Environment name (`dev`, `test`, or `prod`)                                 | `string` | n/a              | yes   |
+| cluster_number                 | Integer suffix used to uniquely identify the environment (1–99)             | `number` | n/a              | yes   |
+| stream_governance_package      | Stream Governance package (`ESSENTIALS` or `ADVANCED`)                     | `string` | `"ESSENTIALS"`   | no    |
+| module_repo_version_tag        | Version tag of the module being used                                        
