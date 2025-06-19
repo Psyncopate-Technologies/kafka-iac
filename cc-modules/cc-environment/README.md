@@ -26,14 +26,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| environment_name | Valid values are (single/shortname/name):
-
-1. Np/nonprod = Non Prod
-2. p/prod = Production
-3. T/test = Test
-4. D/dev = development
-Use the ultrashort name in case you have character limitations. E.g Vm 15 character limit | `string` | n/a | yes |
+| environment_name | Valid values are (single/shortname/name): Np/p/prod/T/test/D/dev = development| `string` | n/a | yes |
 | stream_governance_package | Stream Governance package for the environment | `string` | `"ESSENTIALS"` | no |
+| module_repo_version_tag | The version tag of the module being used, such as 'v1.0.0' | `string` | latest | yes |
 
 ## Outputs
 
@@ -41,4 +36,6 @@ Use the ultrashort name in case you have character limitations. E.g Vm 15 charac
 |------|-------------|
 | environment_id | The ID of the created Confluent Cloud environment |
 | stream_governance_package | The stream governance package used in the environment |
+| module_repo_version_tag | The version tag of the module being used |
 <!-- END_TF_DOCS -->
+

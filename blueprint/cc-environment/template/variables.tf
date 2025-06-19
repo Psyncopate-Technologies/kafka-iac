@@ -8,3 +8,8 @@ variable "stream_governance_package" {
   description = "stream governance package"
   default     = "ESSENTIALS"
 }
+
+variable "module_repo_version_tag" {
+  type        = string
+  description = "Version tag of the cc-environment module used in this run"
+}

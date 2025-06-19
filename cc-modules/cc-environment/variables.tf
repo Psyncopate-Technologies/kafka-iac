@@ -21,3 +21,9 @@ variable "stream_governance_package" {
     error_message = "Must be either 'ESSENTIALS' or 'ADVANCED'."
   }
 }
+
+variable "module_repo_version_tag" {
+  type        = string
+  description = "Version tag of the cc-environment module used in this run"
+  default     = "latest"
+}
