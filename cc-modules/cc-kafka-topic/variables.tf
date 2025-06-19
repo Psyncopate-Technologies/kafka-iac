@@ -8,6 +8,20 @@ variable "topic_path" {
   }
 }
 
+variable "topic_config_raw" {
+  description = "Raw topic config loaded from YAML"
+  type        = any
+  nullable    = false
+  validation {
+    condition = (
+      var.topic_config_raw != null &&
+      type(var.topic_config_raw) == object({}) &&
+      length(keys(var.topic_config_raw)) > 0
+    )
+    error_message = "The Topic configuration must be a non-null, non-empty object."
+  }
+}
+
 variable "topic_name" {
   type        = string
   description = "The name of the topic to be created. This is used to validate the naming convention of the topic."

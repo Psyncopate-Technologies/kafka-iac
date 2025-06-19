@@ -89,6 +89,7 @@ inputs = {
 #   kafka_cluster_id     = get_env("KAFKA_CLUSTER_ID")
 #   kafka_rest_endpoint  = get_env("KAFKA_REST_ENDPOINT")
   topic_path           = local.topic_path
+  topic_config_raw     = local.topic_config_raw
   topic_name           = local.topic_name # Explicitly passing this as input so as to validate the naming convention of it in variables.tf
   default_partitions   = local.default_partitions
 }
