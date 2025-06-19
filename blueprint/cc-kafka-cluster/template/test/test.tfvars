@@ -1,5 +1,3 @@
-module_repo_version_tag = "v1.0.0"
-
 confluent_cloud_environment_name = "azu-env-d-eastus2-01"
 confluent_cloud_network_name     = "azu-net-d-eastus2-01"
 
