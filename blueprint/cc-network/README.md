@@ -4,7 +4,7 @@ This blueprint is for a Confluent Cloud Network
 ## Setup
 1. Copy the files from the template folder to a new folder
 2. Update the `module_repo_version_tag` in the `main.tf` file
-3. Create a `terraform.tfvars` file with your configuration
+3. Create a `terraform.tfvars` file with your configuration (reference in `test/test.tfvars`)
 4. Set up your `provider.tf` file
 
 ## Examples
@@ -12,8 +12,6 @@ This blueprint is for a Confluent Cloud Network
 ### terraform.tfvars
 
 ```hcl
-confluent_cloud_api_key = "**********************"
-confluent_cloud_api_secret = "**********************"
 network_display_name = "azu-net-dev-eastus-01"
 region = "eastus"
 private_link_dns_resolution = "PRIVATE"
@@ -25,7 +23,10 @@ confluent_cloud_environment_name = "DEV"
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name                                                                      | Version  |
+|---------------------------------------------------------------------------|----------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.8 |
+| <a name="requirement_confluent"></a> [confluent](#requirement\_confluent) | 2.30.0   |
 
 ## Providers
 
@@ -33,9 +34,9 @@ No providers.
 
 ## Modules
 
-| Name                                                                 | Source                                                              | Version |
-|----------------------------------------------------------------------|---------------------------------------------------------------------|---------|
-| <a name="module_cc_network"></a> [cc\_network](#module\_cc\_network) | github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-network | n/a     |
+| Name                                                                 | Source                                                                                                                                                          | Version |
+|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| <a name="module_cc_network"></a> [cc\_network](#module\_cc\_network) | /Users/psyncopate-admin/Library/CloudStorage/OneDrive-Psyncopate,Inc/Workspace/Clients/Lumen/Devlopment/Psyncopate-Technologies/kafka-iac/cc-modules/cc-network | n/a     |
 
 ## Resources
 

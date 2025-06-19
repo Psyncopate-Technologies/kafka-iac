@@ -1,16 +1,3 @@
-# Variables: Confluent Provider
-variable "confluent_cloud_api_key" {
-  description = "Confluent Cloud API Key for authentication."
-  type        = string
-  sensitive   = true
-}
-
-variable "confluent_cloud_api_secret" {
-  description = "Confluent Cloud API Secret for authentication."
-  type        = string
-  sensitive   = true
-}
-
 # Variables: confluent_network resource
 variable "network_display_name" {
   description = "The name of the Confluent Cloud Network for Azure Private Link."
@@ -24,7 +11,7 @@ variable "network_display_name" {
 variable "cloud_provider" {
   type        = string
   description = "Cloud provider to deploy Kafka cluster to"
-  default = "AZURE"
+  default     = "AZURE"
 
   validation {
     condition     = contains(["AWS", "AZURE", "GCP"], upper(var.cloud_provider))
