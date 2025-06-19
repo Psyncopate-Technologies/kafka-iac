@@ -45,9 +45,9 @@ resource "confluent_kafka_topic" "cc_kafka_topic" {
     secret = var.cc_kafka_api_secret
   }
 
-  topic_name        = var.topic_name
-  partitions_count  = local.partitions_count
-  config = local.final_config == null ? {} : local.final_config  
+  topic_name       = var.topic_name
+  partitions_count = local.partitions_count
+  config           = local.final_config == null ? {} : local.final_config
 
   # lifecycle {
   #   prevent_destroy = true
@@ -109,7 +109,7 @@ resource "confluent_tag" "clientMAL" {
     secret = var.cc_sr_api_secret
   }
 
-  name = local.topic.mal_acronym
+  name        = local.topic.mal_acronym
   description = "Client MAL tag"
 
   # lifecycle {
@@ -127,7 +127,7 @@ resource "confluent_tag" "ClientSRBNumber" {
     secret = var.cc_sr_api_secret
   }
 
-  name = local.topic.srb_review_number
+  name        = local.topic.srb_review_number
   description = "Client SRB Board Review Number"
 
   # lifecycle {
@@ -147,7 +147,7 @@ resource "confluent_tag_binding" "ClientMALBinding" {
     secret = var.cc_sr_api_secret
   }
 
-  tag_name = local.topic.mal_acronym
+  tag_name    = local.topic.mal_acronym
   entity_name = "${data.confluent_schema_registry_cluster.cc_sr_cluster.id}:${data.confluent_kafka_cluster.cc_kafka_cluster.id}:${var.topic_name}"
   entity_type = "kafka_topic"
 
@@ -166,7 +166,7 @@ resource "confluent_tag_binding" "ClientSRBBinding" {
     secret = var.cc_sr_api_secret
   }
 
-  tag_name = local.topic.srb_review_number
+  tag_name    = local.topic.srb_review_number
   entity_name = "${data.confluent_schema_registry_cluster.cc_sr_cluster.id}:${data.confluent_kafka_cluster.cc_kafka_cluster.id}:${var.topic_name}"
   entity_type = "kafka_topic"
 

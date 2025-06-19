@@ -1,6 +1,6 @@
 locals {
-  topic_config = var.topic_config_raw
-  topic        = local.topic_config.topic
+  topic_config     = var.topic_config_raw
+  topic            = local.topic_config.topic
   partitions_count = try(local.topic.partitions, var.default_partitions)
   topic_config_map = try(local.topic.config, null)
 
