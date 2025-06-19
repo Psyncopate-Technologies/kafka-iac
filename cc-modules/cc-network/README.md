@@ -21,7 +21,7 @@ No modules.
 
 | Name                                                                                                                                     | Type     |
 |------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| [confluent_network.private-link](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/confluent_network) | resource |
+| [confluent_network.private_link_network](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/confluent_network) | resource |
 
 ## Inputs
 

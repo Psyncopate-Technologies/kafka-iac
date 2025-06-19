@@ -1,8 +1,8 @@
 # Resource: confluent_network
 # This resource creates a Confluent Cloud Network configured for PrivateLink.
-resource "confluent_network" "private-link" {
+resource "confluent_network" "private_link_network" {
   display_name     = var.network_display_name
-  cloud            = "AZURE"
+  cloud            = var.cloud_provider
   region           = var.region
   connection_types = ["PRIVATELINK"]
 
@@ -23,7 +23,7 @@ resource "confluent_network" "private-link" {
 
 # Resource: confluent_private_link_access
 # This resource allows specific Azure subscriptions to auto-approve Private Endpoint connections.
-resource "confluent_private_link_access" "azure" {
+resource "confluent_private_link_access" "private_link_access" {
   display_name = var.private_link_access_display_name
 
   environment {
@@ -31,7 +31,7 @@ resource "confluent_private_link_access" "azure" {
   }
 
   network {
-    id = confluent_network.private-link.id
+    id = confluent_network.private_link_network.id
   }
 
   azure {
