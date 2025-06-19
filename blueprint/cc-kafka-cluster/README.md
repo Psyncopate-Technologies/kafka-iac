@@ -31,7 +31,6 @@ terraform {
   required_providers {
     confluent = {
       source  = "confluentinc/confluent"
-      version = "2.30.0"
     },
 
 # If using Azure blob TF state storage
