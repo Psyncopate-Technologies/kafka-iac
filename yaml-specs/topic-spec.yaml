@@ -3,7 +3,7 @@ topic: include('topic_definition', required=True)
 ---
 topic_definition:
   name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$')
-  alias_name: str(min=1, max=249, regex='^[a-zA-Z0-9_]+$', required=False)
+  alias_name: str(min=1, max=249, regex='^[a-zA-Z0-9_]+$', required=True)
   description: str(max=500, required=False)
   mal_acronym: str(max=10)
   srb_review_number: str(max=10)

@@ -1,40 +1,130 @@
-# TF module for CC Kafka Topics - YAML Interface approach
+# TF Module for Confluent Cloud Kafka Topics — YAML Interface Approach
 
-### Export the following TF variables
-1. `export CLOUD_PROVIDER=azure`
-2. `export ENV=dev`
-3. `export CONFLUENT_API_KEY=<CC API Key>`
-4. `export CONFLUENT_API_SECRET=<CC API Secret>`
-5. `export CC_KAFKA_API_KEY=<Kafka Cluster API Key>`
-6. `export CC_KAFKA_API_SECRET=<Kafka Cluster API Secret>`
-7. `export CC_KAFKA_CLUSTER_NAME=<Kafka Cluster Name>`
-7. `export ENVIRONMENT_NAME=<Confluent Cloud Environment Name>`
-9. `export DEFAULT_PATITION_COUNT=3`
-10. `export GITHUB_TOKEN=<Github Token>`
-11. `export CC_SR_API_KEY=<SR API Key>`
-12. `export CC_SR_API_SECRET=<SR API Secret>`
-13. `export CC_SR_ENDPOINT=<SR Endpoint>`
+This Terragrunt wrapper provisions **Kafka Topics** in **Confluent Cloud** using a **YAML interface**, abstracting away Terraform complexity while enforcing governance via naming conventions, metadata, and hooks.
+
+---
+
+## Overview
+
+This wrapper uses a topic-specific YAML file to define Kafka topic configurations and dynamically injects those values into a reusable Terraform module sourced from:
+
+```hcl
+git::https://github.com/Psyncopate-Technologies/kafka-iac.git//cc-modules/cc-kafka-topic?ref=<version>
+```
+
+- `pipeline_version` is fetched from the YAML (`default = latest`)
+- Works across **Azure**, **AWS**, and **GCP** for backend state
+- Pre-provisioning hooks ensure SRB and MAL compliance
+
+---
+
+## Required Environment Variables
+
+### Common
+
+| Variable                   | Description                                 |
+|---------------------------|---------------------------------------------|
+| `CLOUD_PROVIDER`          | Cloud where backend is stored (`azure`, etc.) |
+| `ENV`                     | Environment (`dev`, `test`, `prod`)         |
+| `CONFLUENT_API_KEY`       | Confluent Cloud API Key                     |
+| `CONFLUENT_API_SECRET`    | Confluent Cloud API Secret                  |
+| `CC_KAFKA_API_KEY`        | Kafka API Key                               |
+| `CC_KAFKA_API_SECRET`     | Kafka API Secret                            |
+| `CC_KAFKA_CLUSTER_NAME`   | Kafka Cluster Name                          |
+| `ENVIRONMENT_NAME`        | Confluent Cloud Environment Name            |
+| `DEFAULT_PATITION_COUNT`  | Default number of partitions (e.g., `3`)    |
+| `GITHUB_TOKEN`            | Token to access the private module repo     |
+| `CC_SR_API_KEY`           | Schema Registry API Key                     |
+| `CC_SR_API_SECRET`        | Schema Registry API Secret                  |
+| `CC_SR_ENDPOINT`          | Schema Registry endpoint                    |
+| `FILE_NAME`               | Path to the YAML file describing the topic  |
+
+---
+
+### Azure Backend (State Storage)
+
+| Variable                     | Description                           |
+|-----------------------------|---------------------------------------|
+| `AZURE_RESOURCE_GROUP_NAME` | Azure Resource Group name             |
+| `AZURE_STORAGE_ACCOUNT_NAME`| Azure Storage Account for state       |
+| `AZURE_STORAGE_CONTAINER_NAME` | Azure Blob Container for state     |
+
+### Azure Authentication
+
+| Variable               | Description                |
+|------------------------|----------------------------|
+| `ARM_CLIENT_ID`        | Azure SP Client ID         |
+| `ARM_CLIENT_SECRET`    | Azure SP Client Secret     |
+| `ARM_TENANT_ID`        | Azure Tenant ID            |
+| `ARM_SUBSCRIPTION_ID`  | Azure Subscription ID      |
 
 
-### Cloud Provider Specific Configurations
-#### Azure - For state file storage
-1. `export AZURE_RESOURCE_GROUP_NAME=<Azure RG Name>`
-2. `export AZURE_STORAGE_ACCOUNT_NAME=<Azure Blob storage account name>`
-3. `export AZURE_STORAGE_CONTAINER_NAME=<Azure Blob container name>`
+---
 
-#### Azure - Authentication to Azure to connect to Storage Account
-1. `export ARM_CLIENT_ID=<Azure SP Client ID>`
-2. `export ARM_CLIENT_SECRET=<Aure SP Client Secret>`
-3. `export ARM_TENANT_ID=<Azure Tenant ID>`
-4. `export ARM_SUBSCRIPTION_ID=<Azure Tenant Subscription ID>`
+## YAML File Format
 
-### Local Testing 
-1. Place the YAML interface file for topic in the same directory as terragrunt.hcl
-`export FILE_NAME=sample_topic_files/TopicAlias1.yaml`
+The YAML should include topic metadata like:
 
-### Execution for Local test
-1. Navigate to the directory where `terragrun.hcl` file for cc-topics are available.
-2. Ensure the YAML file holding the topic metadata resides in the same directory
-3. Run `terragrunt init`
-4. Run `terragrunt plan`
-5. Run `terragrunt apply --auto-approve`
+- `pipeline_version`
+- `topic.name`
+- `topic.alias_name`
+- `mal_acronym`
+- `srb_review_number`
+
+This file is passed via:
+```bash
+export FILE_NAME=sample_topic_files/TopicAlias1.yaml
+```
+
+Only one topic definition is expected per file.
+
+---
+
+## Pre-Apply Validation Hook
+
+Before `plan` or `apply`, the following script validates the SRB and MAL fields:
+
+```bash
+validation/check_tag_existence.sh \
+  $CC_SR_API_KEY \
+  $CC_SR_API_SECRET \
+  $CC_SR_ENDPOINT \
+  <clientMAL> \
+  <srb_review_number>
+```
+
+---
+
+## Local Testing Instructions
+
+1. Place the topic YAML file in the same directory as `terragrunt.hcl`
+2. Export all required environment variables
+3. Run the following commands:
+
+```bash
+terragrunt init
+terragrunt plan
+terragrunt apply --auto-approve
+```
+
+---
+
+## Generated Outputs
+
+| Output Name         | Description                                    |
+|---------------------|------------------------------------------------|
+| `pipeline_version`  | The version of the IaC module that was applied |
+| `topic_id`          | The Confluent Kafka topic ID that was created  |
+
+---
+
+## Notes
+
+- The backend is dynamically created using the environment and alias name:
+  ```
+  <ENV>/topics/<alias_name>.tfstate
+  ```
+- If `pipeline_version` is not defined in the YAML, `latest` is used.
+- The reusable module validates the topic name and enforces naming conventions via Terraform `variables.tf`.
+
+---
