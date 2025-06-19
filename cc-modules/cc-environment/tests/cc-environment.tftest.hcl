@@ -1,14 +1,5 @@
 # Unit tests for Confluent Cloud Environment module
 mock_provider "confluent" {
-  mock_data "confluent_environment" {
-    defaults = {
-      id = "env-abc123"
-      display_name = "dev-team1"
-      stream_governance = {
-        package = "ESSENTIALS"
-      }
-    }
-  }
 }
 
 # Default test variables
