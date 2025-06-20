@@ -52,6 +52,21 @@ consumer_topic_entry:
 # Sub-schema: Quota block
 # ---------------------------------
 quota_block:
-  name: str(required=False)
-  ingress_byte_rate: regex('^[0-9]+$', required=False)
-  egress_byte_rate: regex('^[0-9]+$', required=False)
+  name: str(required=True)
+  alias_name: str(required=False)
+  description: str(required=False)
+  principal: str(required=True)
+  ingress_byte_rate: regex('^[0-9]+$', required=True)
+  egress_byte_rate: regex('^[0-9]+$', required=True)
+  mal_acronym: str(max=10)
+  srb_review_number: str(max=10)
+
+identity_pool:
+  name: str(required=True)
+  alias_name: str(required=True)
+  description: str(required=True)
+  identity_provider: str(required=True)
+  identity_claim: str(required=True)
+  filter: str(required=True)
+  mal_acronym: str(max=10)
+  srb_review_number: str(max=10)

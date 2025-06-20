@@ -1,0 +1,9 @@
+---
+identity_pool:
+  name: "ApplicationClientNameIdentityPool_1"
+  alias_name: "IdentityPool_1"
+  description: "Test Identity pool config"
+  identity_claim: "claims.sub"
+  filter: "claims.aud==\"confluent\" && claims.group!=\"invalid_group\""
+  mal_acronym: "CLMAL1"
+  srb_review_number: "SRB001"
