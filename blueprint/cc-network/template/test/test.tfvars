@@ -1,0 +1,6 @@
+network_display_name             = "azu-net-dev-eastus-01"
+region                           = "eastus"
+private_link_dns_resolution      = "PRIVATE"
+private_link_access_display_name = "azu-pla-dev-eastus-01"
+customer_azure_subscription_id   = "**********************"
+confluent_cloud_environment_name = "DEV"
