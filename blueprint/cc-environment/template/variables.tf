@@ -23,12 +23,3 @@ variable "stream_governance_package" {
   description = "Stream Governance package"
   default     = "ESSENTIALS"
 }
-variable "module_repo_version_tag" {
-  type        = string
-  description = "Version tag of the cc-environment module used in this run"
-}
-
-variable "confluent_cloud_environment_name" {
-  description = "The fully constructed Confluent Cloud environment name."
-  type        = string
-}

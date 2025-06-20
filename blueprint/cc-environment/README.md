@@ -20,7 +20,6 @@ cloud_region         = "eastus2"
 environment_name     = "dev"
 environment_number       = 1
 stream_governance_package = "ESSENTIALS"
-module_repo_version_tag   = "v1.0.0"
 
 ### provider.tf
 ```hcl
