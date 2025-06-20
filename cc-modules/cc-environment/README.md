@@ -7,7 +7,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.9.8 |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.12.2 |
 | <a name="requirement_confluent"></a> [confluent](#requirement_confluent) | ~> 2.30.0 |
 
 ## Providers
