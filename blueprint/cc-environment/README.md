@@ -18,7 +18,7 @@ This blueprint sets up a reusable Confluent Cloud Environment with Stream Govern
 cloud_provider       = "AZURE"
 cloud_region         = "eastus2"
 environment_name     = "dev"
-cluster_number       = 1
+environment_number       = 1
 stream_governance_package = "ESSENTIALS"
 module_repo_version_tag   = "v1.0.0"
 
@@ -48,6 +48,6 @@ provider "confluent" {
 | cloud_provider                 | Cloud provider to deploy the environment (`AWS`, `AZURE`, or `GCP`)         | `string` | n/a              | yes   |
 | cloud_region                   | Cloud region for the environment                                            | `string` | n/a              | yes   |
 | environment_name               | Environment name (`dev`, `test`, or `prod`)                                 | `string` | n/a              | yes   |
-| cluster_number                 | Integer suffix used to uniquely identify the environment (1–99)             | `number` | n/a              | yes   |
+| environment_number                 | Integer suffix used to uniquely identify the environment (1–99)             | `number` | n/a              | yes   |
 | stream_governance_package      | Stream Governance package (`ESSENTIALS` or `ADVANCED`)                     | `string` | `"ESSENTIALS"`   | no    |
 | module_repo_version_tag        | Version tag of the module being used                                        

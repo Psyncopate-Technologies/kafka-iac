@@ -22,16 +22,16 @@ variable "environment_name" {
     error_message = "cluster_environment_name must be one of: dev, test, prod"
   }
 }
-variable "cluster_number" {
+variable "environment_number" {
   type        = number
-  description = "Monotonically increasing integer used as a suffix for cluster name, 1 <= cluster_number <= 99"
+  description = "Monotonically increasing integer used as a suffix for cluster name, 1 <= environment_number <= 99"
   validation {
-    condition     = var.cluster_number >= 1 && var.cluster_number <= 99
-    error_message = "cluster_number must be between 1 and 99"
+    condition     = var.environment_number >= 1 && var.environment_number <= 99
+    error_message = "environment_number must be between 1 and 99"
   }
   validation {
-    condition     = floor(var.cluster_number) == var.cluster_number
-    error_message = "cluster_number must be integer"
+    condition     = floor(var.environment_number) == var.environment_number
+    error_message = "environment_number must be integer"
   }
 }
 
@@ -50,9 +50,4 @@ variable "module_repo_version_tag" {
   type        = string
   description = "Version tag of the cc-environment module used in this run"
   default     = "latest"
-}
-
-variable "confluent_cloud_environment_name" {
-  description = "The fully constructed Confluent Cloud environment name."
-  type        = string
 }

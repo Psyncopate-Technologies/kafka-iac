@@ -13,7 +13,7 @@ variable "cloud_region" {
   description = "Cloud region (e.g., eastus2, us-west-1)"
 }
 
-variable "cluster_number" {
+variable "environment_number" {
   type        = number
   description = "Cluster number suffix"
 }

@@ -5,7 +5,7 @@ variables {
   cloud_provider                     = "AWS"
   cloud_region                       = "us-west-1"
   environment_name                   = "dev"
-  cluster_number                     = 1
+  environment_number                     = 1
   stream_governance_package          = "ESSENTIALS"
   module_repo_version_tag            = "latest"
   confluent_cloud_environment_name   = "aws-env-dev-us-west-1-01"
@@ -111,40 +111,40 @@ run "empty_environment_name" {
   expect_failures = [var.environment_name]
 }
 
-run "valid_cluster_number" {
+run "valid_environment_number" {
   command = plan
    variables {
-    cluster_number = 5
+    environment_number = 5
   }
 
   assert {
-    condition     = var.cluster_number >= 1 && var.cluster_number <= 99
-    error_message = "cluster_number must be between 1 and 99"
+    condition     = var.environment_number >= 1 && var.environment_number <= 99
+    error_message = "environment_number must be between 1 and 99"
   }
 }
 
-run "invalid_cluster_number_zero" {
+run "invalid_environment_number_zero" {
   command = plan
    variables {
-    cluster_number = 0
+    environment_number = 0
   }
-  expect_failures = [var.cluster_number]
+  expect_failures = [var.environment_number]
 }
 
-run "invalid_cluster_number_overflow" {
+run "invalid_environment_number_overflow" {
   command = plan
    variables {
-    cluster_number = 100
+    environment_number = 100
   }
-  expect_failures = [var.cluster_number]
+  expect_failures = [var.environment_number]
 }
 
-run "invalid_cluster_number_float" {
+run "invalid_environment_number_float" {
   command = plan
    variables {
-    cluster_number = 4.5
+    environment_number = 4.5
   }
-  expect_failures = [var.cluster_number]
+  expect_failures = [var.environment_number]
 }
 
 run "valid_stream_governance_essentials" {
