@@ -5,7 +5,7 @@ This blueprint is for a Confluent Cloud Network
 1. Copy the files from the template folder to a new folder
 2. Update the `module_repo_version_tag` in the `main.tf` file
 3. Create a `terraform.tfvars` file with your configuration (reference in `test/test.tfvars`)
-4. Set up your `provider.tf` file
+4. Setup your `provider.tf` file
 
 ## Examples
 
@@ -17,7 +17,44 @@ region = "eastus"
 private_link_dns_resolution = "PRIVATE"
 private_link_access_display_name = "azu-pla-dev-eastus-01"
 customer_azure_subscription_id = "**********************"
-confluent_cloud_environment_name = "DEV"
+confluent_cloud_environment_name = "dev"
+```
+
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+    },
+
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+
+provider "confluent" {
+}
+
+```
+
+[More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
+
+
+### backend.tf
+```hcl
+# Example for Azure blob state storage backend
+terraform {
+     backend "azurerm" {
+      resource_group_name  = "<resource_group_name>"
+      storage_account_name = "<storage_account_name>"
+      container_name       = "tfstate"
+      key                  = "cc_kafka_cluster.tfstate"
+  }
+}
 ```
 
 <!-- BEGIN_TF_DOCS -->

@@ -1,6 +1,8 @@
 module "cc_network" {
   # source = "/Users/psyncopate-admin/Library/CloudStorage/OneDrive-Psyncopate,Inc/Workspace/Clients/Lumen/Devlopment/Psyncopate-Technologies/kafka-iac/cc-modules/cc-network"
-  source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-network?ref=${local.module_repo_version_tag}"
+  source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-network?ref=<INSERT module_repo_version_tag VARIABLE HERE>"
+
+  module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
 
   network_display_name             = var.network_display_name
   region                           = var.region

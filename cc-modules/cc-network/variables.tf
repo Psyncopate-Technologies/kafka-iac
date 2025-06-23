@@ -59,4 +59,9 @@ variable "customer_azure_subscription_id" {
 variable "confluent_cloud_environment_name" {
   description = "The name of the Confluent Cloud Environment that the Network belongs to."
   type        = string
+
+  validation {
+    condition     = contains(["dev", "test", "prod"], var.confluent_cloud_environment_name)
+    error_message = "cluster_environment_name must be one of: dev, test, prod"
+  }
 }
