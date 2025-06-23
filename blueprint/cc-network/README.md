@@ -60,10 +60,7 @@ terraform {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name                                                                      | Version  |
-|---------------------------------------------------------------------------|----------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.8 |
-| <a name="requirement_confluent"></a> [confluent](#requirement\_confluent) | 2.30.0   |
+No requirements.
 
 ## Providers
 
@@ -71,9 +68,9 @@ No providers.
 
 ## Modules
 
-| Name                                                                 | Source                                                                                                                                                          | Version |
-|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| <a name="module_cc_network"></a> [cc\_network](#module\_cc\_network) | /Users/psyncopate-admin/Library/CloudStorage/OneDrive-Psyncopate,Inc/Workspace/Clients/Lumen/Devlopment/Psyncopate-Technologies/kafka-iac/cc-modules/cc-network | n/a     |
+| Name                                                                 | Source                                                              | Version |
+|----------------------------------------------------------------------|---------------------------------------------------------------------|---------|
+| <a name="module_cc_network"></a> [cc\_network](#module\_cc\_network) | github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-network | n/a     |
 
 ## Resources
 
