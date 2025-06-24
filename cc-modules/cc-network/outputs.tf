@@ -49,3 +49,8 @@ output "private_link_access_name" {
   description = "The name of the Confluent Cloud Private Link Access."
   value       = confluent_private_link_access.private_link_access.display_name
 }
+
+# Outputs: variables
+output "module_repo_version_tag" {
+  value = var.module_repo_version_tag
+}

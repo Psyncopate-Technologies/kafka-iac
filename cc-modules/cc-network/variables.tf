@@ -61,7 +61,14 @@ variable "confluent_cloud_environment_name" {
   type        = string
 
   validation {
-    condition     = contains(["dev", "test", "prod"], var.confluent_cloud_environment_name)
-    error_message = "cluster_environment_name must be one of: dev, test, prod"
+    condition     = can(regex("^${lower(substr(var.cloud_provider, 0, 3))}-env-[dtp]-${var.region}-([1-9][0-9]|0[1-9])$", var.confluent_cloud_environment_name))
+    error_message = "confluent_cloud_environment_name must follow the CCOE Confluent environment naming convention"
   }
+}
+
+# Variables: module_repo_version_tag
+variable "module_repo_version_tag" {
+  type        = string
+  description = "Repo version tag of module, such as 'v1.0.0'"
+  default     = "latest"
 }

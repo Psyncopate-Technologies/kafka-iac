@@ -1,16 +1,4 @@
 # Variables: cc_network module
-variable "confluent_cloud_api_key" {
-  description = "Confluent Cloud API Key for authentication."
-  type        = string
-  sensitive   = true
-}
-
-variable "confluent_cloud_api_secret" {
-  description = "Confluent Cloud API Secret for authentication."
-  type        = string
-  sensitive   = true
-}
-
 variable "network_display_name" {
   description = "The name of the Confluent Cloud Network for Azure Private Link."
   type        = string

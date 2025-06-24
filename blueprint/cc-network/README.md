@@ -16,8 +16,8 @@ network_display_name = "azu-net-dev-eastus-01"
 region = "eastus"
 private_link_dns_resolution = "PRIVATE"
 private_link_access_display_name = "azu-pla-dev-eastus-01"
-customer_azure_subscription_id = "**********************"
-confluent_cloud_environment_name = "dev"
+customer_azure_subscription_id = "00000000-0000-0000-0000-d6b16f9a0eba"
+confluent_cloud_environment_name = "azu-env-d-eastus-01"
 ```
 
 ### provider.tf
@@ -80,8 +80,6 @@ No resources.
 
 | Name                                                                                                                                       | Description                                                                      | Type     | Default     | Required |
 |--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|----------|-------------|:--------:|
-| <a name="input_confluent_cloud_api_key"></a> [confluent\_cloud\_api\_key](#input\_confluent\_cloud\_api\_key)                              | Confluent Cloud API Key for authentication.                                      | `string` | n/a         |   yes    |
-| <a name="input_confluent_cloud_api_secret"></a> [confluent\_cloud\_api\_secret](#input\_confluent\_cloud\_api\_secret)                     | Confluent Cloud API Secret for authentication.                                   | `string` | n/a         |   yes    |
 | <a name="input_confluent_cloud_environment_name"></a> [confluent\_cloud\_environment\_name](#input\_confluent\_cloud\_environment\_name)   | The name of the Confluent Cloud Environment that the Network belongs to.         | `string` | n/a         |   yes    |
 | <a name="input_customer_azure_subscription_id"></a> [customer\_azure\_subscription\_id](#input\_customer\_azure\_subscription\_id)         | Your Azure Subscription ID that will be granted Private Link Access.             | `string` | n/a         |   yes    |
 | <a name="input_network_display_name"></a> [network\_display\_name](#input\_network\_display\_name)                                         | The name of the Confluent Cloud Network for Azure Private Link.                  | `string` | n/a         |   yes    |
