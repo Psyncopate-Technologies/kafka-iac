@@ -1,35 +1,85 @@
-# Confluent Cloud Network Terraform Module
+# Blueprint - Confluent Cloud Network
+This blueprint is for a Confluent Cloud Network
+
+## Setup
+1. Copy the files from the template folder to a new folder
+2. Update the `module_repo_version_tag` in the `main.tf` file
+3. Create a `terraform.tfvars` file with your configuration (reference in `test/test.tfvars`)
+4. Setup your `provider.tf` file
+
+## Examples
+
+### terraform.tfvars
+
+```hcl
+network_display_name = "azu-net-dev-eastus-01"
+region = "eastus"
+private_link_dns_resolution = "PRIVATE"
+private_link_access_display_name = "azu-pla-dev-eastus-01"
+customer_azure_subscription_id = "00000000-0000-0000-0000-d6b16f9a0eba"
+confluent_cloud_environment_name = "azu-env-d-eastus-01"
+```
+
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+    },
+
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+
+provider "confluent" {
+}
+
+```
+
+[More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
+
+
+### backend.tf
+```hcl
+# Example for Azure blob state storage backend
+terraform {
+     backend "azurerm" {
+      resource_group_name  = "<resource_group_name>"
+      storage_account_name = "<storage_account_name>"
+      container_name       = "tfstate"
+      key                  = "cc_kafka_cluster.tfstate"
+  }
+}
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name                                                                      | Version   |
-|---------------------------------------------------------------------------|-----------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.2 |
-| <a name="requirement_confluent"></a> [confluent](#requirement\_confluent) | 2.30.0    |
+No requirements.
 
 ## Providers
 
-| Name                                                                | Version |
-|---------------------------------------------------------------------|---------|
-| <a name="provider_confluent"></a> [confluent](#provider\_confluent) | 2.30.0  |
+No providers.
 
 ## Modules
 
-No modules.
+| Name                                                                 | Source                                                              | Version |
+|----------------------------------------------------------------------|---------------------------------------------------------------------|---------|
+| <a name="module_cc_network"></a> [cc\_network](#module\_cc\_network) | github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-network | n/a     |
 
 ## Resources
 
-| Name                                                                                                                                                          | Type        |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| [confluent_network.private_link_network](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/network)                        | resource    |
-| [confluent_private_link_access.private_link_access](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/private_link_access) | resource    |
-| [confluent_environment.cc_environment](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/environment)                   | data source |
+No resources.
 
 ## Inputs
 
 | Name                                                                                                                                       | Description                                                                      | Type     | Default     | Required |
 |--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|----------|-------------|:--------:|
-| <a name="input_cloud_provider"></a> [cloud\_provider](#input\_cloud\_provider)                                                             | Cloud provider to deploy Kafka cluster to                                        | `string` | `"AZURE"`   |    no    |
 | <a name="input_confluent_cloud_environment_name"></a> [confluent\_cloud\_environment\_name](#input\_confluent\_cloud\_environment\_name)   | The name of the Confluent Cloud Environment that the Network belongs to.         | `string` | n/a         |   yes    |
 | <a name="input_customer_azure_subscription_id"></a> [customer\_azure\_subscription\_id](#input\_customer\_azure\_subscription\_id)         | Your Azure Subscription ID that will be granted Private Link Access.             | `string` | n/a         |   yes    |
 | <a name="input_network_display_name"></a> [network\_display\_name](#input\_network\_display\_name)                                         | The name of the Confluent Cloud Network for Azure Private Link.                  | `string` | n/a         |   yes    |
