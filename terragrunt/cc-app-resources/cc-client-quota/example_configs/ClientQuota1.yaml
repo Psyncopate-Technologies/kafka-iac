@@ -1,0 +1,10 @@
+---
+client_quota:
+  name: "ApplicationClientNameQuota_1"
+  alias_name: "ClientQuota_1"
+  description: "Test client quota config"
+  ingress_byte_rate: 100000
+  egress_byte_rate: 200000
+  principal: "sa-23456"
+  mal_acronym: "CLMAL1"
+  srb_review_number: "SRB001"
