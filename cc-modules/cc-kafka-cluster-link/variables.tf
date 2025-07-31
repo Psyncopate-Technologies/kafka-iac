@@ -20,16 +20,6 @@ variable "confluent_cloud_api_secret" {
   }
 }
 
-variable "environment_id" {
-  description = "Confluent Cloud Environment ID (e.g., env-12345)"
-  type        = string
-
-  validation {
-    condition     = can(regex("^env-[a-zA-Z0-9]+$", var.environment_id))
-    error_message = "The environment_id must be in format 'env-<alphanumeric>' (e.g., env-abcd1)."
-  }
-}
-
 variable "local_cluster_id" {
   description = "Kafka cluster ID (local)"
   type        = string
@@ -102,5 +92,23 @@ variable "local_cluster_rbac_crn" {
   validation {
     condition     = can(regex("^crn:.*$", var.local_cluster_rbac_crn))
     error_message = "The local_cluster_rbac_crn must be a valid CRN string starting with 'crn:'."
+  }
+}
+
+variable "local_environment_id" {
+  description = "Environment ID of the local Kafka cluster"
+  type        = string
+  validation {
+    condition     = can(regex("^env-[a-zA-Z0-9]+$", var.local_environment_id))
+    error_message = "The local_environment_id must be in format 'env-<alphanumeric>' (e.g., env-abcd1)."
+  }
+}
+
+variable "remote_environment_id" {
+  description = "Environment ID of the remote Kafka cluster"
+  type        = string
+  validation {
+    condition     = can(regex("^env-[a-zA-Z0-9]+$", var.remote_environment_id))
+    error_message = "The remote_environment_id must be in format 'env-<alphanumeric>' (e.g., env-abcd1)."
   }
 }

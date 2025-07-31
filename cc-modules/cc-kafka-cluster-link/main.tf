@@ -32,7 +32,7 @@ resource "confluent_api_key" "local" {
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
-      id = var.environment_id
+      id = var.local_environment_id
     }
   }
 
@@ -55,7 +55,7 @@ resource "confluent_api_key" "remote" {
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
-      id = var.environment_id
+      id = var.remote_environment_id
     }
   }
 

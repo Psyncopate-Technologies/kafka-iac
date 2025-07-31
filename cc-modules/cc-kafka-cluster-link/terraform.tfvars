@@ -1,6 +1,7 @@
 confluent_cloud_api_key     = "********"
 confluent_cloud_api_secret  = "********"
-environment_id              = "env-abc123"
+local_environment_id        = "env-abc123"
+remote_environment_id       = "env-bca789"
 
 link_name                   = "GCP.DEV.MAL.TOPIC"
 local_cluster_id            = "lkc-local123"
