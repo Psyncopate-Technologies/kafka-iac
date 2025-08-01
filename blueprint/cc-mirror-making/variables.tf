@@ -38,3 +38,8 @@ variable "mirror_topics" {
     })
   }))
 }
+
+variable "target_kafka_cluster_id" {
+  type        = string
+  description = "ID of the target Kafka cluster where mirror topics will be created"
+}
