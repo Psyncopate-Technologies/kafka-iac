@@ -15,29 +15,12 @@ variable "target_kafka_cluster_id" {
   description = "ID of the target Kafka cluster where mirror topics will be created"
 }
 
-variable "mirror_topics" {
-  type = list(object({
-    mirror_topic_name = string
-
-    source_kafka_topic = object({
-      topic_name = string
-    })
-
-    cluster_link = object({
-      link_name = string
-    })
-
-    kafka_cluster = object({
-      id            = string
-      rest_endpoint = string
-      credentials = object({
-        key    = string
-        secret = string
-      })
-    })
-
-    prevent_destroy = optional(bool)
-  }))
-
-  description = "List of mirror topics with full config blocks"
+variable "mirror_topics_yaml_file" {
+  type        = string
+  description = "Path to the YAML file containing mirror topic specifications"
 }
+variable "mirror_topic_config_raw" {
+  type        = string
+  description = "Raw YAML string defining mirror topic configuration."
+}
+

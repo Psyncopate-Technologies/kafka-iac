@@ -5,7 +5,7 @@ provider "confluent" {
 
 resource "confluent_kafka_mirror_topic" "this" {
   for_each = {
-    for topic in var.mirror_topics : topic.mirror_topic_name => topic
+    for topic in local.mirror_topics : topic.mirror_topic_name => topic
   }
 
   source_kafka_topic {
