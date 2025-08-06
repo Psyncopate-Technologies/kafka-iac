@@ -2,5 +2,9 @@ confluent_cloud_api_key     = "********"
 confluent_cloud_api_secret  = "********"
 
 link_name                   = "GCP.DEV.MAL.TOPIC"
-local_cluster_id            = "lkc-local123"
-remote_cluster_id           = "lkc-remote456"
+local_environment_name  = "dev-env"
+remote_environment_name = "prod-env"
+
+local_kafka_cluster_name  = "dev-kafka-cluster"
+remote_kafka_cluster_name = "prod-kafka-cluster"
+

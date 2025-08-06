@@ -24,6 +24,8 @@ No modules.
 | [confluent_cluster_link.this](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/cluster_link) | resource |
 | [confluent_role_binding.linker_binding](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/role_binding) | resource |
 | [confluent_service_account.linker](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/service_account) | resource |
+| [confluent_environment.local](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/environment) | data source |
+| [confluent_environment.remote](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/environment) | data source |
 | [confluent_kafka_cluster.local](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/kafka_cluster) | data source |
 | [confluent_kafka_cluster.remote](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/kafka_cluster) | data source |
 
@@ -35,20 +37,18 @@ No modules.
 | <a name="input_confluent_cloud_api_secret"></a> [confluent\_cloud\_api\_secret](#input\_confluent\_cloud\_api\_secret) | Confluent Cloud API Secret (Org Admin) | `string` | n/a | yes |
 | <a name="input_link_name"></a> [link\_name](#input\_link\_name) | Cluster link name (e.g., GCP.DEV.MAL.TOPIC) | `string` | `"GCP.DEV.MAL.TOPIC"` | no |
 | <a name="input_linker_service_account_name"></a> [linker\_service\_account\_name](#input\_linker\_service\_account\_name) | Service account name for cluster linking | `string` | `"poc-cluster-linker"` | no |
-| <a name="input_local_cluster_id"></a> [local\_cluster\_id](#input\_local\_cluster\_id) | Kafka cluster ID (local) | `string` | n/a | yes |
-| <a name="input_local_environment_id"></a> [local\_environment\_id](#input\_local\_environment\_id) | Environment ID of the local Kafka cluster | `string` | n/a | yes |
-| <a name="input_remote_cluster_id"></a> [remote\_cluster\_id](#input\_remote\_cluster\_id) | Kafka cluster ID (remote) | `string` | n/a | yes |
-| <a name="input_remote_environment_id"></a> [remote\_environment\_id](#input\_remote\_environment\_id) | Environment ID of the remote Kafka cluster | `string` | n/a | yes |
+| <a name="input_local_environment_name"></a> [local\_environment\_name](#input\_local\_environment\_name) | Display name of the local environment | `string` | n/a | yes |
+| <a name="input_local_kafka_cluster_name"></a> [local\_kafka\_cluster\_name](#input\_local\_kafka\_cluster\_name) | Display name of the local Kafka cluster | `string` | n/a | yes |
+| <a name="input_remote_environment_name"></a> [remote\_environment\_name](#input\_remote\_environment\_name) | Display name of the remote environment | `string` | n/a | yes |
+| <a name="input_remote_kafka_cluster_name"></a> [remote\_kafka\_cluster\_name](#input\_remote\_kafka\_cluster\_name) | Display name of the remote Kafka cluster | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_link_id"></a> [cluster\_link\_id](#output\_cluster\_link\_id) | ID of the cluster link |
-| <a name="output_cluster_link_name"></a> [cluster\_link\_name](#output\_cluster\_link\_name) | Name of the cluster link |
-| <a name="output_local_api_key_id"></a> [local\_api\_key\_id](#output\_local\_api\_key\_id) | API key ID for local cluster |
-| <a name="output_local_cluster_id"></a> [local\_cluster\_id](#output\_local\_cluster\_id) | Local Kafka cluster ID used in the cluster link |
-| <a name="output_remote_api_key_id"></a> [remote\_api\_key\_id](#output\_remote\_api\_key\_id) | API key ID for remote cluster |
-| <a name="output_remote_cluster_id"></a> [remote\_cluster\_id](#output\_remote\_cluster\_id) | Remote Kafka cluster ID used in the cluster link |
-| <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | ID of the service account created for cluster linking |
-| <a name="output_service_account_name"></a> [service\_account\_name](#output\_service\_account\_name) | Display name of the service account |
+| <a name="output_linker_service_account_name"></a> [linker\_service\_account\_name](#output\_linker\_service\_account\_name) | The name of the service account used for the cluster link |
+| <a name="output_local_cluster_rbac_crn"></a> [local\_cluster\_rbac\_crn](#output\_local\_cluster\_rbac\_crn) | RBAC CRN of the local Kafka cluster |
+| <a name="output_local_environment_id"></a> [local\_environment\_id](#output\_local\_environment\_id) | Environment ID for the local Kafka cluster |
+| <a name="output_local_rest_endpoint"></a> [local\_rest\_endpoint](#output\_local\_rest\_endpoint) | REST endpoint for the local Kafka cluster |
+| <a name="output_remote_bootstrap_endpoint"></a> [remote\_bootstrap\_endpoint](#output\_remote\_bootstrap\_endpoint) | Bootstrap endpoint for the remote Kafka cluster |
+| <a name="output_remote_environment_id"></a> [remote\_environment\_id](#output\_remote\_environment\_id) | Environment ID for the remote Kafka cluster |

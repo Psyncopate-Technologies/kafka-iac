@@ -20,26 +20,6 @@ variable "confluent_cloud_api_secret" {
   }
 }
 
-variable "local_cluster_id" {
-  description = "Kafka cluster ID (local)"
-  type        = string
-
-  validation {
-    condition     = can(regex("^lkc-[a-z0-9]+$", var.local_cluster_id))
-    error_message = "The local_cluster_id must start with 'lkc-' followed by alphanumeric characters."
-  }
-}
-
-variable "remote_cluster_id" {
-  description = "Kafka cluster ID (remote)"
-  type        = string
-
-  validation {
-    condition     = can(regex("^lkc-[a-z0-9]+$", var.remote_cluster_id))
-    error_message = "The remote_cluster_id must start with 'lkc-' followed by alphanumeric characters."
-  }
-}
-
 variable "link_name" {
   description = "Cluster link name (e.g., GCP.DEV.MAL.TOPIC)"
   type        = string
@@ -65,12 +45,22 @@ variable "linker_service_account_name" {
   }
 }
 
-variable "local_environment_id" {
-  description = "Environment ID of the local Kafka cluster"
+variable "local_environment_name" {
   type        = string
+  description = "Display name of the local environment"
 }
 
-variable "remote_environment_id" {
-  description = "Environment ID of the remote Kafka cluster"
+variable "remote_environment_name" {
   type        = string
+  description = "Display name of the remote environment"
+}
+
+variable "local_kafka_cluster_name" {
+  type        = string
+  description = "Display name of the local Kafka cluster"
+}
+
+variable "remote_kafka_cluster_name" {
+  type        = string
+  description = "Display name of the remote Kafka cluster"
 }

@@ -1,17 +1,23 @@
-# Get local cluster info using ID and environment ID
+data "confluent_environment" "local" {
+  display_name = var.local_environment_name
+}
+
+data "confluent_environment" "remote" {
+  display_name = var.remote_environment_name
+}
+
 data "confluent_kafka_cluster" "local" {
-  id = var.local_cluster_id
+  display_name = var.local_kafka_cluster_name
 
   environment {
-    id = var.local_environment_id
+    id = data.confluent_environment.local.id
   }
 }
 
-# Get remote cluster info using ID and environment ID
 data "confluent_kafka_cluster" "remote" {
-  id = var.remote_cluster_id
+  display_name = var.remote_kafka_cluster_name
 
   environment {
-    id = var.remote_environment_id
+    id = data.confluent_environment.remote.id
   }
 }

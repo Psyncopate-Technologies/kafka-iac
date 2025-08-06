@@ -1,8 +1,3 @@
-provider "confluent" {
-  cloud_api_key    = var.confluent_cloud_api_key
-  cloud_api_secret = var.confluent_cloud_api_secret
-}
-
 # Create service account for cluster linking
 resource "confluent_service_account" "linker" {
   display_name = local.linker_sa_name
@@ -28,7 +23,7 @@ resource "confluent_api_key" "local" {
   }
 
   managed_resource {
-    id          = var.local_cluster_id
+    id          = local.local_cluster_id
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
@@ -51,7 +46,7 @@ resource "confluent_api_key" "remote" {
   }
 
   managed_resource {
-    id          = var.remote_cluster_id
+    id          = local.remote_cluster_id
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
@@ -68,7 +63,7 @@ resource "confluent_cluster_link" "this" {
   link_mode = "BIDIRECTIONAL"
 
   local_kafka_cluster {
-    id            = var.local_cluster_id
+    id            = local.local_cluster_id
     rest_endpoint = local.local_rest_endpoint
     credentials {
       key    = confluent_api_key.local.id
@@ -77,7 +72,7 @@ resource "confluent_cluster_link" "this" {
   }
 
   remote_kafka_cluster {
-    id                 = var.remote_cluster_id
+    id                 = local.remote_cluster_id
     bootstrap_endpoint = local.remote_bootstrap_endpoint
     credentials {
       key    = confluent_api_key.remote.id
