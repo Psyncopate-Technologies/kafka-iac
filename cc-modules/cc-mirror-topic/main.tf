@@ -17,11 +17,11 @@ resource "confluent_kafka_mirror_topic" "this" {
   }
 
   kafka_cluster {
-    id            = each.value.kafka_cluster.id
-    rest_endpoint = each.value.kafka_cluster.rest_endpoint
+    id            = data.confluent_kafka_cluster.mirror_clusters[each.key].id
+    rest_endpoint = data.confluent_kafka_cluster.mirror_clusters[each.key].rest_endpoint
     credentials {
-      key    = each.value.kafka_cluster.credentials.key
-      secret = each.value.kafka_cluster.credentials.secret
+      key    = var.confluent_cloud_api_key
+      secret = var.confluent_cloud_api_secret
     }
   }
 

@@ -44,7 +44,11 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_link_name"></a> [cluster\_link\_name](#output\_cluster\_link\_name) | n/a |
-| <a name="output_local_api_key_id"></a> [local\_api\_key\_id](#output\_local\_api\_key\_id) | n/a |
-| <a name="output_remote_api_key_id"></a> [remote\_api\_key\_id](#output\_remote\_api\_key\_id) | n/a |
-| <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | n/a |
+| <a name="output_cluster_link_id"></a> [cluster\_link\_id](#output\_cluster\_link\_id) | ID of the cluster link |
+| <a name="output_cluster_link_name"></a> [cluster\_link\_name](#output\_cluster\_link\_name) | Name of the cluster link |
+| <a name="output_local_api_key_id"></a> [local\_api\_key\_id](#output\_local\_api\_key\_id) | API key ID for local cluster |
+| <a name="output_local_cluster_id"></a> [local\_cluster\_id](#output\_local\_cluster\_id) | Local Kafka cluster ID used in the cluster link |
+| <a name="output_remote_api_key_id"></a> [remote\_api\_key\_id](#output\_remote\_api\_key\_id) | API key ID for remote cluster |
+| <a name="output_remote_cluster_id"></a> [remote\_cluster\_id](#output\_remote\_cluster\_id) | Remote Kafka cluster ID used in the cluster link |
+| <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | ID of the service account created for cluster linking |
+| <a name="output_service_account_name"></a> [service\_account\_name](#output\_service\_account\_name) | Display name of the service account |
