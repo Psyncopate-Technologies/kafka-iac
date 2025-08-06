@@ -20,7 +20,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [confluent_kafka_mirror_topic.this](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/resources/kafka_mirror_topic) | resource |
-| [confluent_kafka_cluster.mirror_clusters](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/kafka_cluster) | data source |
+| [confluent_environment.kafka_env](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/environment) | data source |
+| [confluent_kafka_cluster.kafka_cluster](https://registry.terraform.io/providers/confluentinc/confluent/2.30.0/docs/data-sources/kafka_cluster) | data source |
 
 ## Inputs
 
@@ -35,6 +36,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_mirror_topic_details"></a> [mirror\_topic\_details](#output\_mirror\_topic\_details) | Detailed info of all mirror topics |
-| <a name="output_mirror_topic_ids"></a> [mirror\_topic\_ids](#output\_mirror\_topic\_ids) | IDs of all created mirror topics |
-| <a name="output_mirror_topic_names"></a> [mirror\_topic\_names](#output\_mirror\_topic\_names) | Names of all created mirror topics |
+| <a name="output_cluster_link_name"></a> [cluster\_link\_name](#output\_cluster\_link\_name) | Name of the cluster link used for mirroring |
+| <a name="output_kafka_cluster_id"></a> [kafka\_cluster\_id](#output\_kafka\_cluster\_id) | ID of the Kafka cluster where mirror topic is created |
+| <a name="output_kafka_cluster_rest_endpoint"></a> [kafka\_cluster\_rest\_endpoint](#output\_kafka\_cluster\_rest\_endpoint) | REST endpoint of the Kafka cluster |
+| <a name="output_mirror_topic_name"></a> [mirror\_topic\_name](#output\_mirror\_topic\_name) | Name of the mirror topic created |
+| <a name="output_source_topic_name"></a> [source\_topic\_name](#output\_source\_topic\_name) | Name of the source Kafka topic |

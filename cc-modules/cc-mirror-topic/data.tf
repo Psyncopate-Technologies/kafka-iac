@@ -1,11 +1,12 @@
-data "confluent_kafka_cluster" "mirror_clusters" {
-  for_each = {
-    for topic in local.mirror_topics : topic.mirror_topic_name => topic
-  }
+# Fetch environment by display name
+data "confluent_environment" "kafka_env" {
+  display_name = local.mirror_topic.kafka_cluster.environment_name
+}
 
-  id = each.value.kafka_cluster.cluster_id
-
+# Fetch kafka cluster by display name + environment ID
+data "confluent_kafka_cluster" "kafka_cluster" {
+  display_name   = local.mirror_topic.kafka_cluster.cluster_name
   environment {
-    id = each.value.kafka_cluster.environment_id
+    id = data.confluent_environment.kafka_env.id
   }
 }
