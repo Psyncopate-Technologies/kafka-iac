@@ -13,7 +13,7 @@ resource "confluent_service_account" "linker" {
 resource "confluent_role_binding" "linker_binding" {
   principal   = "User:${confluent_service_account.linker.id}"
   role_name   = "CloudClusterAdmin"
-  crn_pattern = var.local_cluster_rbac_crn
+  crn_pattern = local.local_cluster_rbac_crn
 }
 
 # API key for local cluster
@@ -32,7 +32,7 @@ resource "confluent_api_key" "local" {
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
-      id = var.local_environment_id
+      id = local.local_environment_id
     }
   }
 
@@ -55,7 +55,7 @@ resource "confluent_api_key" "remote" {
     api_version = "cmk/v2"
     kind        = "Cluster"
     environment {
-      id = var.remote_environment_id
+      id = local.remote_environment_id
     }
   }
 
@@ -69,7 +69,7 @@ resource "confluent_cluster_link" "this" {
 
   local_kafka_cluster {
     id            = var.local_cluster_id
-    rest_endpoint = var.local_rest_endpoint
+    rest_endpoint = local.local_rest_endpoint
     credentials {
       key    = confluent_api_key.local.id
       secret = confluent_api_key.local.secret
@@ -78,7 +78,7 @@ resource "confluent_cluster_link" "this" {
 
   remote_kafka_cluster {
     id                 = var.remote_cluster_id
-    bootstrap_endpoint = var.remote_bootstrap_endpoint
+    bootstrap_endpoint = local.remote_bootstrap_endpoint
     credentials {
       key    = confluent_api_key.remote.id
       secret = confluent_api_key.remote.secret

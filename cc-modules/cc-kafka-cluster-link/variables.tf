@@ -40,26 +40,6 @@ variable "remote_cluster_id" {
   }
 }
 
-variable "local_rest_endpoint" {
-  description = "REST endpoint for local Kafka cluster"
-  type        = string
-
-  validation {
-    condition     = can(regex("^https://", var.local_rest_endpoint))
-    error_message = "The local_rest_endpoint must be a valid HTTPS URL."
-  }
-}
-
-variable "remote_bootstrap_endpoint" {
-  description = "Bootstrap endpoint for remote Kafka cluster"
-  type        = string
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9.-]+:[0-9]+$", var.remote_bootstrap_endpoint))
-    error_message = "The remote_bootstrap_endpoint must be in host:port format."
-  }
-}
-
 variable "link_name" {
   description = "Cluster link name (e.g., GCP.DEV.MAL.TOPIC)"
   type        = string
@@ -85,30 +65,12 @@ variable "linker_service_account_name" {
   }
 }
 
-variable "local_cluster_rbac_crn" {
-  description = "CRN pattern for the local Kafka cluster for RBAC role binding"
-  type        = string
-
-  validation {
-    condition     = can(regex("^crn:.*$", var.local_cluster_rbac_crn))
-    error_message = "The local_cluster_rbac_crn must be a valid CRN string starting with 'crn:'."
-  }
-}
-
 variable "local_environment_id" {
   description = "Environment ID of the local Kafka cluster"
   type        = string
-  validation {
-    condition     = can(regex("^env-[a-zA-Z0-9]+$", var.local_environment_id))
-    error_message = "The local_environment_id must be in format 'env-<alphanumeric>' (e.g., env-abcd1)."
-  }
 }
 
 variable "remote_environment_id" {
   description = "Environment ID of the remote Kafka cluster"
   type        = string
-  validation {
-    condition     = can(regex("^env-[a-zA-Z0-9]+$", var.remote_environment_id))
-    error_message = "The remote_environment_id must be in format 'env-<alphanumeric>' (e.g., env-abcd1)."
-  }
 }

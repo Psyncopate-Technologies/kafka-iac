@@ -1,0 +1,13 @@
+mirror_topic:
+  mirror_topic_name: "Mirror.CustomerData.Consent.JSON"
+  description: "Mirror topic for Consent"
+  cluster_link:
+    link_name: "gcp-azure-link"
+  source_kafka_topic:
+    topic_name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT"
+  kafka_cluster:
+    id: "lkc-123"
+    rest_endpoint: "https://pkc-abc.us-west4.gcp.confluent.cloud"
+    credentials:
+      key: "source-api-key"
+      secret: "source-api-secret"
