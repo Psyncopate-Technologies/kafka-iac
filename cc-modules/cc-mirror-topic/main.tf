@@ -1,9 +1,5 @@
-provider "confluent" {
-  cloud_api_key    = var.confluent_cloud_api_key
-  cloud_api_secret = var.confluent_cloud_api_secret
-}
-
 resource "confluent_kafka_mirror_topic" "this" {
+  mirror_topic_name = local.mirror_topic.mirror_topic_name
 
   source_kafka_topic {
     topic_name = local.mirror_topic.source_kafka_topic.topic_name
