@@ -39,3 +39,27 @@ variable "remote_kafka_cluster_name" {
   type        = string
   description = "Display name of the remote Kafka cluster"
 }
+
+variable "local_cloud_api_key" {
+  description = "API key for local Confluent Cloud provider"
+  type        = string
+  sensitive   = true
+}
+
+variable "local_cloud_api_secret" {
+  description = "API secret for local Confluent Cloud provider"
+  type        = string
+  sensitive   = true
+}
+
+variable "remote_cloud_api_key" {
+  description = "API key for remote Confluent Cloud provider"
+  type        = string
+  sensitive   = true
+}
+
+variable "remote_cloud_api_secret" {
+  description = "API secret for remote Confluent Cloud provider"
+  type        = string
+  sensitive   = true
+}

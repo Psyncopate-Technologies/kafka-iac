@@ -1,5 +1,5 @@
 module "cc-kafka-cluster-linking" {
-  source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-kafka-cluster-link?ref=cc-cluster-link"
+  source = "/Users/shravyagennepally/Desktop/git/kafka-iac/cc-modules/cc-kafka-cluster-link"
 
   providers = {
     confluent.local  = confluent.local
