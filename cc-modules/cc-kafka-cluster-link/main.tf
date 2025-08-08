@@ -1,11 +1,13 @@
 # Create service account for cluster linking
 resource "confluent_service_account" "linker" {
+  provider     = confluent.local
   display_name = local.linker_sa_name
   description  = "SA for Cluster Linking"
 }
 
 # Role Binding: Needed to allow cluster link creation (CloudClusterAdmin minimum for cluster scope)
 resource "confluent_role_binding" "linker_binding" {
+  provider    = confluent.local
   principal   = "User:${confluent_service_account.linker.id}"
   role_name   = "CloudClusterAdmin"
   crn_pattern = local.local_cluster_rbac_crn
@@ -13,6 +15,7 @@ resource "confluent_role_binding" "linker_binding" {
 
 # API key for local cluster
 resource "confluent_api_key" "local" {
+  provider     = confluent.local
   display_name = local.local_api_key_name
   description  = "API Key for local cluster access"
 
@@ -36,6 +39,7 @@ resource "confluent_api_key" "local" {
 
 # API key for remote cluster
 resource "confluent_api_key" "remote" {
+  provider     = confluent.remote
   display_name = local.remote_api_key_name
   description  = "API Key for remote cluster access"
 
@@ -59,6 +63,7 @@ resource "confluent_api_key" "remote" {
 
 # Cluster Link
 resource "confluent_cluster_link" "this" {
+  provider  = confluent.local
   link_name = var.link_name
   link_mode = "BIDIRECTIONAL"
 

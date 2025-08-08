@@ -3,6 +3,5 @@ terraform {
     confluent = {
       source  = "confluentinc/confluent"
     }
-
   }
 }

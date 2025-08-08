@@ -1,5 +1,4 @@
 resource "confluent_kafka_mirror_topic" "this" {
-  mirror_topic_name = local.mirror_topic.mirror_topic_name
 
   source_kafka_topic {
     topic_name = local.mirror_topic.source_kafka_topic.topic_name
