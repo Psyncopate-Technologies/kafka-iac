@@ -1,6 +1,10 @@
 module "cc-kafka-cluster-linking" {
   source = "github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-kafka-cluster-link?ref=cc-cluster-link"
 
+  providers = {
+    confluent.local  = confluent.local
+    confluent.remote = confluent.remote
+  }
   confluent_cloud_api_key     = var.confluent_cloud_api_key
   confluent_cloud_api_secret  = var.confluent_cloud_api_secret
   link_name                   = var.link_name
