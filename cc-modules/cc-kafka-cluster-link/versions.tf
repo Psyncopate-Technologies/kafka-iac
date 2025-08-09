@@ -11,3 +11,11 @@ terraform {
     }
   }
 }
+
+provider "confluent" {
+  alias = "local"
+}
+
+provider "confluent" {
+  alias = "remote"
+}
