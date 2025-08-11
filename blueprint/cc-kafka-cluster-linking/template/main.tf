@@ -1,5 +1,7 @@
 module "cc-kafka-cluster-linking" {
-  source = "/Users/shravyagennepally/Desktop/git/kafka-iac/cc-modules/cc-kafka-cluster-link"
+  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=<INSERT module_repo_version_tag VARIABLE HERE>"
+
+  module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
 
   providers = {
     confluent.local  = confluent.local
