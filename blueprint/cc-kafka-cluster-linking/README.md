@@ -1,20 +1,64 @@
-## Requirements
+# Blueprint - Confluent Cloud Kafka Cluster
+This blueprint is for a Confluent Cloud Kafka Cluster
 
-No requirements.
+## Setup
+1. Copy the files from the template folder to a new folder
+2. Update the `module_repo_version_tag` in the `main.tf` file
+3. Create a `terraform.tfvars` file with your configuration (reference in `test/test.tfvars`)
+4. Setup your `provider.tf` file
 
-## Providers
+## Examples
 
-No providers.
+### terraform.tfvars
 
-## Modules
+```hcl
+confluent_cloud_api_key     = "********"
+confluent_cloud_api_secret  = "********"
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_cc-kafka-cluster-linking"></a> [cc-kafka-cluster-linking](#module\_cc-kafka-cluster-linking) | github.com/Psyncopate-Technologies/kafka-iac//cc-modules/cc-kafka-cluster-link | cc-cluster-link |
+link_name                   = "GCP.DEV.MAL.TOPIC"
+local_environment_name  = "dev-env"
+remote_environment_name = "prod-env"
 
-## Resources
+local_kafka_cluster_name  = "dev-kafka-cluster"
+remote_kafka_cluster_name = "prod-kafka-cluster
+```
 
-No resources.
+### provider.tf
+```hcl
+terraform {
+  required_providers {
+    confluent = {
+      source  = "confluentinc/confluent"
+    },
+
+# If using Azure blob TF state storage
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+
+provider "confluent" {
+}
+
+```
+
+[More `confluent` provider information available here](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs)
+
+
+### backend.tf
+```hcl
+# Example for Azure blob state storage backend
+terraform {
+     backend "azurerm" {
+      resource_group_name  = "<resource_group_name>"
+      storage_account_name = "<storage_account_name>"
+      container_name       = "tfstate"
+      key                  = "cc_kafka_cluster.tfstate"
+  }
+}
+```
 
 ## Inputs
 
