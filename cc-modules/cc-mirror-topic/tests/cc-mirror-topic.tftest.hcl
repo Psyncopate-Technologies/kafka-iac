@@ -34,6 +34,8 @@ cluster_link:
 kafka_cluster:
   cluster_name: dummy-cluster
   environment_name: dummy-env
+status: "ACTIVE"                  # ACTIVE, PAUSED, PROMOTED, FAILED_OVER
+delete_after_migration: false 
 YAML
 }
 run "test_rest_endpoint_format" {
@@ -82,7 +84,16 @@ run "test_resource_properties" {
 
   # Check the cluster link name on resource
   assert {
-    condition     = confluent_kafka_mirror_topic.this.cluster_link[0].link_name == "test-link-1"
+    condition     = confluent_kafka_mirror_topic.this[0].cluster_link[0].link_name == "test-link-1"
     error_message = "Resource cluster_link name should be 'test-link-1'"
+  }
+}
+
+run "test_output_status" {
+  command = plan
+
+  assert {
+    condition     = output.mirror_topic_status == "ACTIVE"
+    error_message = "Mirror topic status output should be 'ACTIVE'"
   }
 }

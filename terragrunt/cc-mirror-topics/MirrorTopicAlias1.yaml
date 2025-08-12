@@ -6,3 +6,5 @@ cluster_link:
 kafka_cluster:
   cluster_name: "lkc-display-name"
   environment_name: "env-display-name"
+status: "ACTIVE"                  # ACTIVE, PAUSED, PROMOTED, FAILED_OVER
+delete_after_migration: false     

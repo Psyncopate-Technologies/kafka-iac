@@ -1,4 +1,5 @@
 resource "confluent_kafka_mirror_topic" "this" {
+  count = local.mirror_topic.delete_after_migration ? 0 : 1
 
   source_kafka_topic {
     topic_name = local.mirror_topic.source_kafka_topic.topic_name
@@ -16,6 +17,8 @@ resource "confluent_kafka_mirror_topic" "this" {
       secret = var.confluent_cloud_api_secret
     }
   }
+
+  status = local.mirror_topic.status
 
   lifecycle {
     prevent_destroy = true

@@ -40,4 +40,5 @@ No modules.
 | <a name="output_kafka_cluster_id"></a> [kafka\_cluster\_id](#output\_kafka\_cluster\_id) | ID of the Kafka cluster where mirror topic is created |
 | <a name="output_kafka_cluster_rest_endpoint"></a> [kafka\_cluster\_rest\_endpoint](#output\_kafka\_cluster\_rest\_endpoint) | REST endpoint of the Kafka cluster |
 | <a name="output_mirror_topic_name"></a> [mirror\_topic\_name](#output\_mirror\_topic\_name) | Name of the mirror topic created |
+| <a name="output_mirror_topic_status"></a> [mirror\_topic\_status](#output\_mirror\_topic\_status) | Status of the mirror topic |
 | <a name="output_source_topic_name"></a> [source\_topic\_name](#output\_source\_topic\_name) | Name of the source Kafka topic |
