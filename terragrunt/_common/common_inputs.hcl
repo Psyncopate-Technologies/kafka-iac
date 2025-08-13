@@ -1,4 +1,4 @@
-# Common TF configs
+# Common TF Inputs - Will be exposed directly as TF variables
 inputs = {
   confluent_api_key    = get_env("CONFLUENT_API_KEY")
   confluent_api_secret = get_env("CONFLUENT_API_SECRET")
@@ -6,10 +6,12 @@ inputs = {
   cc_kafka_api_secret  = get_env("CC_KAFKA_API_SECRET")
   cc_sr_api_key        = get_env("CC_SR_API_KEY")
   cc_sr_api_secret     = get_env("CC_SR_API_SECRET")
-  cc_sr_endpoint     = get_env("CC_SR_ENDPOINT")
+  cc_sr_endpoint       = get_env("CC_SR_ENDPOINT")
   environment_name     = get_env("ENVIRONMENT_NAME")
+  env_category         = get_env("ENV_CATEGORY")
   cc_kafka_cluster_name= get_env("CC_KAFKA_CLUSTER_NAME")
 }
+
 
 generate "shared_variables" {
   path      = "shared-variables.tf"
