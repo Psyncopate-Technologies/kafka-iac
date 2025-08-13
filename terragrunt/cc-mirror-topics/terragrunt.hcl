@@ -1,4 +1,4 @@
-# Logic for topics
+# Logic for mirror topics
 include "common" {
   path = find_in_parent_folders("_common/common_inputs.hcl")
 }
@@ -12,75 +12,52 @@ include "errors" {
 }
 
 locals {
-
   # Include Common Terragrunt Configs
-  terragrunt_configs = read_terragrunt_config(find_in_parent_folders("_common/common_configs.hcl"))
-  cloud_provider = local.terragrunt_configs.inputs.cloud_provider
-  env = local.terragrunt_configs.inputs.env
+  terragrunt_configs     = read_terragrunt_config(find_in_parent_folders("_common/common_configs.hcl"))
+  cloud_provider         = local.terragrunt_configs.inputs.cloud_provider
+  env                    = local.terragrunt_configs.inputs.env
   mirror_topic_config_raw = local.terragrunt_configs.inputs.resource_config_raw
-  mirror_topic_path = local.terragrunt_configs.inputs.resource_path
-  is_tfstate_local = local.terragrunt_configs.inputs.is_tfstate_local
-  iac_version = local.terragrunt_configs.inputs.pipeline_version
-  
-  # Include Module specific configs
-  # Parse topic name from YAML (assumes only one topic)
-  topic_name       = local.topic_config_raw.topic.name
-  # Retrieve ClientMAL and SRB#
-  clientMAL = local.topic_config_raw.topic.mal_acronym
-  srb_review_number = local.topic_config_raw.topic.srb_review_number
-  sec_review_number = try(local.topic_config_raw.topic.sec_review_number, "")
-  # Define environment-specific defaults
-  #default_partitions = local.env == "dev" ? 3 : local.env == "test" ? 6 : 6
-  default_partitions = get_env("DEFAULT_PATITION_COUNT")
+  mirror_topic_path      = local.terragrunt_configs.inputs.resource_path
+  is_tfstate_local       = local.terragrunt_configs.inputs.is_tfstate_local
+  iac_version            = local.terragrunt_configs.inputs.pipeline_version
+
+  # Parse mirror topic details from YAML
+  mirror_topic_name   = local.mirror_topic_config_raw.mirror_topic_name
+  source_topic_name   = local.mirror_topic_config_raw.source_kafka_topic.topic_name
+  cluster_link_name   = local.mirror_topic_config_raw.cluster_link.link_name
+  target_cluster_name = local.mirror_topic_config_raw.kafka_cluster.cluster_name
+  target_env_name     = local.mirror_topic_config_raw.kafka_cluster.environment_name
+  mirror_topic_status = local.mirror_topic_config_raw.status
+  delete_after_migration = local.mirror_topic_config_raw.delete_after_migration
 
   # Include Backend Configurations
   backend_config_common = read_terragrunt_config(find_in_parent_folders("_common/backend_configs.hcl"))
-  backend_key_suffix    = "topics/${local.topic_name}.tfstate"
-  # select backend template based on mode
+  backend_key_suffix    = "mirror-topics/${local.mirror_topic_name}.tfstate"
   backend_template      = local.is_tfstate_local == "false" ? local.backend_config_common.locals.backend_common[local.cloud_provider].template : local.backend_config_common.locals.backend_common["local"].template
   backend_config        = format(local.backend_template, local.is_tfstate_local == "false" ? "${local.env}/${local.backend_key_suffix}" : "${get_terragrunt_dir()}/terraform.tfstate")
-
 }
 
 terraform {
-  source = "git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-kafka-topic?ref=${local.iac_version}"
-
-  before_hook "check_tag_existence" {
-    commands = ["plan", "apply"]
-    execute  = [
-      "bash",
-      "${get_terragrunt_dir()}/validation/check_tag_existence.sh",
-      (
-        get_env("CC_SR_API_KEY", "") != "" ? get_env("CC_SR_API_KEY") :
-        get_env("CLOUD_PROVIDER") == "azure" ? regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show", "--name", "${upper(get_env("CLOUD_PROVIDER"))}-CC-SR-API-KEY-APP-${upper(get_env("ENV"))}", "--vault-name", get_env("AZURE_KEYVAULT_NAME"), "--query", "value"))[0] :
-        ""
-      ),
-      (
-        get_env("CC_SR_API_SECRET", "") != "" ? get_env("CC_SR_API_SECRET") :
-        get_env("CLOUD_PROVIDER") == "azure" ? regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show", "--name", "${upper(get_env("CLOUD_PROVIDER"))}-CC-SR-API-SECRET-APP-${upper(get_env("ENV"))}", "--vault-name", get_env("AZURE_KEYVAULT_NAME"), "--query", "value"))[0] :
-        ""
-      ),
-      get_env("CC_SR_ENDPOINT"),
-      local.clientMAL,
-      local.srb_review_number,
-      local.sec_review_number
-    ]
-  }
-  
+  source = "/Users/shravyagennepally/Desktop/git/kafka-iac/cc-modules/cc-mirror-topic"
 }
 
 inputs = {
-  topic_path           = local.topic_path
-  topic_config_raw     = local.topic_config_raw
-  topic_name           = local.topic_name # Explicitly passing this as input so as to validate the naming convention of it in variables.tf
-  default_partitions   = local.default_partitions
+  mirror_topic_path       = local.mirror_topic_path
+  mirror_topic_config_raw = local.mirror_topic_config_raw
+  mirror_topic_name       = local.mirror_topic_name
+  source_topic_name       = local.source_topic_name
+  cluster_link_name       = local.cluster_link_name
+  target_cluster_name     = local.target_cluster_name
+  target_env_name         = local.target_env_name
+  mirror_topic_status     = local.mirror_topic_status
+  delete_after_migration  = local.delete_after_migration
 }
 
-generate "backend" {
-  path      = "backend.tf"
-  if_exists = "overwrite"
-  contents  = local.backend_config
-}
+#generate "backend" {
+ # path      = "backend.tf"
+ # if_exists = "overwrite"
+  #contents  = local.backend_config
+#}
 
 generate "outputs" {
   path      = "outputs.tf"
@@ -89,10 +66,6 @@ generate "outputs" {
 output "pipeline_version" {
   value       = "${local.iac_version}"
   description = "The version of the IaC module that was applied."
-}
-output "topic_id" {
-  value = confluent_kafka_topic.cc_kafka_topic.id
-  description = "The ID of the Topic being created in Confluent Cloud"
 }
 EOF
 }
