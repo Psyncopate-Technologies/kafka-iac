@@ -1,25 +1,3 @@
-variable "confluent_cloud_api_key" {
-  description = "Confluent Cloud API Key (Org Admin)"
-  type        = string
-  sensitive   = true
-
-  validation {
-    condition     = length(var.confluent_cloud_api_key) > 0
-    error_message = "The Confluent Cloud API Key must not be empty."
-  }
-}
-
-variable "confluent_cloud_api_secret" {
-  description = "Confluent Cloud API Secret (Org Admin)"
-  type        = string
-  sensitive   = true
-
-  validation {
-    condition     = length(var.confluent_cloud_api_secret) > 0
-    error_message = "The Confluent Cloud API Secret must not be empty."
-  }
-}
-
 variable "link_name" {
   description = "Cluster link name (e.g., GCP.DEV.MAL.TOPIC)"
   type        = string

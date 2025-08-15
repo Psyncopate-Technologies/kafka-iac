@@ -26,8 +26,6 @@ variables {
   remote_environment_name  = "local-env"           # Using same env for test
   local_kafka_cluster_name = "local-cluster"
   remote_kafka_cluster_name= "local-cluster"       # Using same cluster for test
-  confluent_cloud_api_key  = "dummykey"
-  confluent_cloud_api_secret = "dummysecret"
 }
 
 run "test_outputs" {

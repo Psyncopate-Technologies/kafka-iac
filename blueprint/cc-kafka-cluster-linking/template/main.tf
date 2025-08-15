@@ -1,14 +1,8 @@
 module "cc-kafka-cluster-linking" {
-  source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=<INSERT module_repo_version_tag VARIABLE HERE>"
+  #source = "github.com/CenturyLink/kafka-modules/cc-modules/cc-kafka-cluster?ref=<INSERT module_repo_version_tag VARIABLE HERE>"
+source = "/Users/shravyagennepally/Desktop/git/kafka-iac/cc-modules/cc-kafka-cluster-link"
+  #module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
 
-  module_repo_version_tag = <INSERT module_repo_version_tag VARIABLE HERE>
-
-  providers = {
-    confluent.local  = confluent.local
-    confluent.remote = confluent.remote
-  }
-  confluent_cloud_api_key     = var.confluent_cloud_api_key
-  confluent_cloud_api_secret  = var.confluent_cloud_api_secret
   link_name                   = var.link_name
   linker_service_account_name = var.linker_service_account_name
 
