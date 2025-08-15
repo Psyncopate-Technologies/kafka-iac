@@ -64,10 +64,8 @@ terraform {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_confluent_cloud_api_key"></a> [confluent\_cloud\_api\_key](#input\_confluent\_cloud\_api\_key) | Confluent Cloud API Key (Org Admin) | `string` | n/a | yes |
-| <a name="input_confluent_cloud_api_secret"></a> [confluent\_cloud\_api\_secret](#input\_confluent\_cloud\_api\_secret) | Confluent Cloud API Secret (Org Admin) | `string` | n/a | yes |
-| <a name="input_link_name"></a> [link\_name](#input\_link\_name) | Cluster link name (e.g., GCP.DEV.MAL.TOPIC) | `string` | `"GCP.DEV.MAL.TOPIC"` | no |
-| <a name="input_linker_service_account_name"></a> [linker\_service\_account\_name](#input\_linker\_service\_account\_name) | Service account name for cluster linking | `string` | `"poc-cluster-linker"` | no |
+| <a name="input_link_name"></a> [link\_name](#input\_link\_name) | Cluster link name (e.g., GCP.DEV.MAL.TOPIC) | `string` | n/a | yes |
+| <a name="input_linker_service_account_name"></a> [linker\_service\_account\_name](#input\_linker\_service\_account\_name) | Service account name for cluster linking | `string` | n/a | yes |
 | <a name="input_local_environment_name"></a> [local\_environment\_name](#input\_local\_environment\_name) | Display name of the local environment | `string` | n/a | yes |
 | <a name="input_local_kafka_cluster_name"></a> [local\_kafka\_cluster\_name](#input\_local\_kafka\_cluster\_name) | Display name of the local Kafka cluster | `string` | n/a | yes |
 | <a name="input_remote_environment_name"></a> [remote\_environment\_name](#input\_remote\_environment\_name) | Display name of the remote environment | `string` | n/a | yes |
