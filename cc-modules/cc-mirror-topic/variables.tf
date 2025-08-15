@@ -6,4 +6,3 @@ variable "mirror_topic_config_raw" {
   type        = string
   description = "Raw YAML string defining mirror topic configuration."
 }
-

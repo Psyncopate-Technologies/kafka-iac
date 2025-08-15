@@ -27,8 +27,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_confluent_cloud_api_key"></a> [confluent\_cloud\_api\_key](#input\_confluent\_cloud\_api\_key) | Confluent Cloud API Key | `string` | n/a | yes |
-| <a name="input_confluent_cloud_api_secret"></a> [confluent\_cloud\_api\_secret](#input\_confluent\_cloud\_api\_secret) | Confluent Cloud API Secret | `string` | n/a | yes |
 | <a name="input_mirror_topic_config_raw"></a> [mirror\_topic\_config\_raw](#input\_mirror\_topic\_config\_raw) | Raw YAML string defining mirror topic configuration. | `string` | n/a | yes |
 | <a name="input_mirror_topics_yaml_file"></a> [mirror\_topics\_yaml\_file](#input\_mirror\_topics\_yaml\_file) | Path to the YAML file containing mirror topic specifications | `string` | n/a | yes |
 
