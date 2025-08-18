@@ -8,7 +8,6 @@ mirror_topic_definition:
   kafka_cluster: include('kafka_cluster_definition', required=True)
   status: enum('ACTIVE', 'PAUSED', 'PROMOTED', 'FAILED_OVER', required=True)
   delete_after_migration: bool(required=True)
-  config: include('mirror_topic_config_props', required=False)
 ---
 source_kafka_topic_definition:
   topic_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
@@ -19,19 +18,3 @@ cluster_link_definition:
 kafka_cluster_definition:
   cluster_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
   environment_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
----
-mirror_topic_config_props:
-  cleanup.policy: enum('delete', 'compact', required=False)
-  delete.retention.ms: int(required=False)
-  max.message.bytes: int(required=False)
-  max.compaction.lag.ms: int(required=False)
-  message.timestamp.difference.max.ms: int(required=False)
-  message.timestamp.before.max.ms: int(required=False)
-  message.timestamp.after.max.ms: int(required=False)
-  message.timestamp.type: enum('CreateTime', 'LogAppendTime', required=False)
-  min.compaction.lag.ms: int(required=False)
-  min.insync.replicas: int(required=False)
-  retention.bytes: int(required=False)
-  retention.ms: int(required=False)
-  segment.bytes: int(required=False)
-  segment.ms: int(required=False)
