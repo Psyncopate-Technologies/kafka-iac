@@ -1,12 +1,14 @@
 resource "confluent_kafka_mirror_topic" "this" {
-  count = local.mirror_topic.delete_after_migration ? 0 : 1
+  count = var.delete_after_migration ? 0 : 1
+
+  mirror_topic_name = var.mirror_topic_name
 
   source_kafka_topic {
     topic_name = local.mirror_topic.source_kafka_topic.topic_name
   }
 
   cluster_link {
-    link_name = local.mirror_topic.cluster_link.link_name
+    link_name = var.cluster_link_name
   }
 
   kafka_cluster {
@@ -14,9 +16,6 @@ resource "confluent_kafka_mirror_topic" "this" {
     rest_endpoint = data.confluent_kafka_cluster.kafka_cluster.rest_endpoint
   }
 
-  status = local.mirror_topic.status
+  status = var.mirror_topic_status
 
-  lifecycle {
-    prevent_destroy = true
-  }
 }

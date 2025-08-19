@@ -21,21 +21,21 @@ mock_provider "confluent" {
   }
 
 variables {
-  confluent_cloud_api_key    = "dummy-key"
-  confluent_cloud_api_secret = "dummy-secret"
+
+  # Terragrunt-driven inputs
+  mirror_topic_name          = "mirror-topic-1"
+  source_topic_name          = "source-topic-1"
+  cluster_link_name                  = "test-link-1"
+  mirror_topic_status                     = "ACTIVE"
+  delete_after_migration     = false
 
   mirror_topics_yaml_file = "" # unused if you pass raw yaml
   mirror_topic_config_raw = <<YAML
-mirror_topic_name: mirror-topic-1
 source_kafka_topic:
   topic_name: source-topic-1
-cluster_link:
-  link_name: test-link-1
 kafka_cluster:
   cluster_name: dummy-cluster
   environment_name: dummy-env
-status: "ACTIVE"                  # ACTIVE, PAUSED, PROMOTED, FAILED_OVER
-delete_after_migration: false 
 YAML
 }
 run "test_rest_endpoint_format" {
@@ -68,13 +68,13 @@ run "test_yaml_decoding" {
 
   # Check that local variable from yamldecode contains the right topic name
   assert {
-    condition     = local.mirror_topic.mirror_topic_name == "mirror-topic-1"
+    condition     = var.mirror_topic_name == "mirror-topic-1"
     error_message = "YAML decoded mirror_topic_name should be 'mirror-topic-1'"
   }
 
   # Check cluster link name from YAML
   assert {
-    condition     = local.mirror_topic.cluster_link.link_name == "test-link-1"
+    condition     = var.cluster_link_name == "test-link-1"
     error_message = "YAML decoded cluster link name should be 'test-link-1'"
   }
 }

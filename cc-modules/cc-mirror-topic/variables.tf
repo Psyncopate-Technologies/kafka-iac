@@ -6,3 +6,26 @@ variable "mirror_topic_config_raw" {
   type        = string
   description = "Raw YAML string defining mirror topic configuration."
 }
+
+variable "delete_after_migration" {
+  description = "If true, mirror topic will not be created (count=0) and destroy will be allowed"
+  type        = bool
+  default     = false
+}
+
+variable "mirror_topic_status" {
+  description = "Mirror topic status: ACTIVE, PAUSED, PROMOTED, or FAILED_OVER"
+  type        = string
+  default     = "ACTIVE"
+}
+
+variable "cluster_link_name" {
+  description = "Name of the cluster link used for mirroring"
+  type        = string
+}
+
+variable "mirror_topic_name" {
+  type        = string
+  description = "Name of the mirror topic"
+}
+
