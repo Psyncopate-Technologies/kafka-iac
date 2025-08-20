@@ -9,7 +9,7 @@ mock_provider "confluent" {
   mock_data "confluent_kafka_cluster" {
     defaults = {
         id                 = "lkc-123"
-        display_name       = "dummy-cluster"
+        display_name       = "cluster-1"
         rest_endpoint      = "https://rest.dummy.kafka.mock"
         bootstrap_endpoint = "SASL_SSL://dummy.kafka.mock:9092"
         rbac_crn           = "crn://confluent.cloud/kafka=lkc-123"
@@ -25,17 +25,21 @@ variables {
   # Terragrunt-driven inputs
   mirror_topic_name          = "mirror-topic-1"
   source_topic_name          = "source-topic-1"
-  cluster_link_name                  = "test-link-1"
-  mirror_topic_status                     = "ACTIVE"
+  cluster_link_name          = "test-link-1"
+  mirror_topic_status        = "ACTIVE"
   delete_after_migration     = false
+  target_env_name            = "dummy-env"
+  target_cluster_name        = "cluster-1"
 
   mirror_topics_yaml_file = "" # unused if you pass raw yaml
   mirror_topic_config_raw = <<YAML
-source_kafka_topic:
-  topic_name: source-topic-1
-kafka_cluster:
-  cluster_name: dummy-cluster
-  environment_name: dummy-env
+mirror_topic:
+  source_kafka_cluster: east-cluster
+  target_kafka_cluster: west-cluster
+  target_kafka_env: sample
+  source_topic_name: sample-topic
+  status: ACTIVE
+  delete_after_migration: false
 YAML
 }
 run "test_rest_endpoint_format" {
@@ -58,8 +62,8 @@ run "test_mock_data_injection" {
 
   # Validate kafka cluster display name from mock
   assert {
-    condition     = data.confluent_kafka_cluster.kafka_cluster.display_name == "dummy-cluster"
-    error_message = "Mocked kafka cluster display name should be 'dummy-cluster'"
+    condition     = data.confluent_kafka_cluster.kafka_cluster.display_name == "cluster-1"
+    error_message = "Mocked kafka cluster display name should be 'cluster-1'"
   }
 }
 

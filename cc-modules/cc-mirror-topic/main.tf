@@ -4,7 +4,7 @@ resource "confluent_kafka_mirror_topic" "this" {
   mirror_topic_name = var.mirror_topic_name
 
   source_kafka_topic {
-    topic_name = local.mirror_topic.source_kafka_topic.topic_name
+    topic_name = var.source_topic_name
   }
 
   cluster_link {

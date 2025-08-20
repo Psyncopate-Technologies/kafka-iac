@@ -38,3 +38,8 @@ variable "target_cluster_name" {
   type        = string
   description = "Target cluster name"
 }
+
+variable "source_topic_name" {
+  type        = string
+  description = "Source topic name"
+}
