@@ -1,10 +1,7 @@
-mirror_topic_name: "mirror-topic-2"
-source_kafka_topic:
-  topic_name: "source-topic-2"
-cluster_link:
-  link_name: "my-cluster-link-2"
-kafka_cluster:
-  cluster_name: "lkc-display-name"
-  environment_name: "env-display-name"
-status: "ACTIVE"                  # ACTIVE, PAUSED, PROMOTED, FAILED_OVER
-delete_after_migration: false     
+mirror_topic:
+  source_kafka_cluster: east-cluster
+  target_kafka_cluster: west-cluster
+  target_kafka_env: sample
+  source_topic_name: sample-topic
+  status: ACTIVE
+  delete_after_migration: false

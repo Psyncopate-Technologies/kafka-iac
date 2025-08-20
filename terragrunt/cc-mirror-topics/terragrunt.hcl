@@ -21,14 +21,17 @@ locals {
   is_tfstate_local       = local.terragrunt_configs.inputs.is_tfstate_local
   iac_version            = local.terragrunt_configs.inputs.pipeline_version
 
-  # Parse mirror topic details from YAML
-  mirror_topic_name   = local.mirror_topic_config_raw.mirror_topic_name
-  source_topic_name   = local.mirror_topic_config_raw.source_kafka_topic.topic_name
-  cluster_link_name   = local.mirror_topic_config_raw.cluster_link.link_name
-  target_cluster_name = local.mirror_topic_config_raw.kafka_cluster.cluster_name
-  target_env_name     = local.mirror_topic_config_raw.kafka_cluster.environment_name
-  mirror_topic_status = local.mirror_topic_config_raw.status
-  delete_after_migration = local.mirror_topic_config_raw.delete_after_migration
+   # Extract inputs from YAML
+  source_cluster_name = local.mirror_topic_config_raw.mirror_topic.source_kafka_cluster
+  target_cluster_name = local.mirror_topic_config_raw.mirror_topic.target_kafka_cluster
+  target_env_name        = local.mirror_topic_config_raw.mirror_topic.target_kafka_env
+  source_topic_name   = local.mirror_topic_config_raw.mirror_topic.source_topic_name
+  mirror_topic_status = lookup(local.mirror_topic_config_raw, "mirror_topic.status", "ACTIVE")
+  delete_after_migration = lookup(local.mirror_topic_config_raw, "mirror_topic.delete_after_migration", false)
+
+  # Derived names
+  cluster_link_name   = "${local.source_cluster_name}-to-${local.target_cluster_name}"
+  mirror_topic_name   = "${local.source_topic_name}-${local.source_cluster_name}-to-${local.target_cluster_name}"
 
   # Include Backend Configurations
   backend_config_common = read_terragrunt_config(find_in_parent_folders("_common/backend_configs.hcl"))
@@ -66,6 +69,11 @@ generate "outputs" {
 output "pipeline_version" {
   value       = "${local.iac_version}"
   description = "The version of the IaC module that was applied."
+}
+
+output "mirror_topic_name" {
+  value       = "${local.mirror_topic_name}"
+  description = "The derived mirror topic name."
 }
 EOF
 }

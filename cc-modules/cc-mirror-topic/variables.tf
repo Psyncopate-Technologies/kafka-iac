@@ -29,3 +29,12 @@ variable "mirror_topic_name" {
   description = "Name of the mirror topic"
 }
 
+variable "target_env_name" {
+  type        = string
+  description = "Target environment name"
+}
+
+variable "target_cluster_name" {
+  type        = string
+  description = "Target cluster name"
+}

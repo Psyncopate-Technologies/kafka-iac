@@ -27,8 +27,14 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cluster_link_name"></a> [cluster\_link\_name](#input\_cluster\_link\_name) | Name of the cluster link used for mirroring | `string` | n/a | yes |
+| <a name="input_delete_after_migration"></a> [delete\_after\_migration](#input\_delete\_after\_migration) | If true, mirror topic will not be created (count=0) and destroy will be allowed | `bool` | `false` | no |
 | <a name="input_mirror_topic_config_raw"></a> [mirror\_topic\_config\_raw](#input\_mirror\_topic\_config\_raw) | Raw YAML string defining mirror topic configuration. | `string` | n/a | yes |
+| <a name="input_mirror_topic_name"></a> [mirror\_topic\_name](#input\_mirror\_topic\_name) | Name of the mirror topic | `string` | n/a | yes |
+| <a name="input_mirror_topic_status"></a> [mirror\_topic\_status](#input\_mirror\_topic\_status) | Mirror topic status: ACTIVE, PAUSED, PROMOTED, or FAILED\_OVER | `string` | `"ACTIVE"` | no |
 | <a name="input_mirror_topics_yaml_file"></a> [mirror\_topics\_yaml\_file](#input\_mirror\_topics\_yaml\_file) | Path to the YAML file containing mirror topic specifications | `string` | n/a | yes |
+| <a name="input_target_cluster_name"></a> [target\_cluster\_name](#input\_target\_cluster\_name) | Target cluster name | `string` | n/a | yes |
+| <a name="input_target_env_name"></a> [target\_env\_name](#input\_target\_env\_name) | Target environment name | `string` | n/a | yes |
 
 ## Outputs
 
