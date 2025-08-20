@@ -2,19 +2,9 @@ pipeline_version: str(required=False)
 mirror_topic: include('mirror_topic_definition', required=True)
 ---
 mirror_topic_definition:
-  mirror_topic_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
-  source_kafka_topic: include('source_kafka_topic_definition', required=True)
-  cluster_link: include('cluster_link_definition', required=True)
-  kafka_cluster: include('kafka_cluster_definition', required=True)
+  source_kafka_cluster: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
+  target_kafka_cluster: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
+  target_kafka_env: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
+  source_topic_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
   status: enum('ACTIVE', 'PAUSED', 'PROMOTED', 'FAILED_OVER', required=True)
   delete_after_migration: bool(required=True)
----
-source_kafka_topic_definition:
-  topic_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
----
-cluster_link_definition:
-  link_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
----
-kafka_cluster_definition:
-  cluster_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
-  environment_name: str(min=1, max=249, regex='^[a-zA-Z0-9._-]+$', required=True)
