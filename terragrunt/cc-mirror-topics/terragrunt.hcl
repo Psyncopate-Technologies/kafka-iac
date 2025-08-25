@@ -30,8 +30,8 @@ locals {
   delete_after_migration = lookup(local.mirror_topic_config_raw, "mirror_topic.delete_after_migration", false)
 
   # Derived names
-  cluster_link_name   = "${local.source_cluster_name}-to-${local.target_cluster_name}"
-  mirror_topic_name   = "${local.source_topic_name}-${local.source_cluster_name}-to-${local.target_cluster_name}"
+  cluster_link_name   = "${local.source_cluster_name}-${local.target_cluster_name}"
+  mirror_topic_name   = "${local.source_cluster_name}-${env}-${local.source_topic_name}"
 
   # Include Backend Configurations
   backend_config_common = read_terragrunt_config(find_in_parent_folders("_common/backend_configs.hcl"))
