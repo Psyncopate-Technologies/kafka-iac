@@ -1,10 +1,14 @@
 # Common Terragrunt Configurations - Will be used in independent module's terragrunt.hcl file
 locals {
-  cloud_provider      = get_env("CLOUD_PROVIDER", "azure")
-  env                 = get_env("ENV", "dev")
-  env_category        = get_env("ENV_CATEGORY", "commercial")
-  is_tfstate_local    = get_env("IS_TF_STATE_LOCAL", "false")
+  cloud_provider      = get_env("CLOUD_PROVIDER")
+  env                 = get_env("ENV")
+  env_category        = get_env("ENV_CATEGORY")
+  is_tfstate_local    = get_env("IS_TF_STATE_LOCAL")
+  file_name           = get_env("FILE_NAME")
+  
+  # The pipeline now copies the resource file to the working directory
   resource_path       = "${get_original_terragrunt_dir()}/${get_env("FILE_NAME")}"
+    
   resource_config_raw = yamldecode(file(local.resource_path))
 }
 

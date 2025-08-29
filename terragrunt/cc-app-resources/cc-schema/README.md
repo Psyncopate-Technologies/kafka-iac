@@ -1,15 +1,15 @@
-# TF Module for Confluent Cloud Kafka Topics — YAML Interface Approach
+# TF Module for Confluent Cloud Schema Registry — YAML Interface Approach
 
-This Terragrunt wrapper provisions **Kafka Topics** in **Confluent Cloud** using a **YAML interface**, abstracting away Terraform complexity while enforcing governance via naming conventions, metadata, and hooks.
+This Terragrunt wrapper provisions **Schema Registry** in **Confluent Cloud** using a **YAML interface**, abstracting away Terraform complexity while enforcing governance via naming conventions, metadata, and hooks.
 
 ---
 
 ## Overview
 
-This wrapper uses a topic-specific YAML file to define Kafka topic configurations and dynamically injects those values into a reusable Terraform module sourced from:
+This wrapper uses a schema-specific YAML file to define Kafka topic configurations and dynamically injects those values into a reusable Terraform module sourced from:
 
 ```hcl
-git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-kafka-topic?ref=<version>
+git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-schema?ref=<version>
 ```
 
 - `pipeline_version` is fetched from the YAML (`default = latest`)
@@ -32,12 +32,11 @@ git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-kafka-topic
 | `CC_KAFKA_API_SECRET`     | Kafka API Secret                            |
 | `CC_KAFKA_CLUSTER_NAME`   | Kafka Cluster Name                          |
 | `ENVIRONMENT_NAME`        | Confluent Cloud Environment Name            |
-| `DEFAULT_PATITION_COUNT`  | Default number of partitions (e.g., `3`)    |
 | `GITHUB_TOKEN`            | Token to access the private module repo     |
 | `CC_SR_API_KEY`           | Schema Registry API Key                     |
 | `CC_SR_API_SECRET`        | Schema Registry API Secret                  |
 | `CC_SR_ENDPOINT`          | Schema Registry endpoint                    |
-| `FILE_NAME`               | Path to the YAML file describing the topic  |
+| `FILE_NAME`               | Path to the YAML file describing the Schema |
 
 ---
 
@@ -63,20 +62,21 @@ git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-kafka-topic
 
 ## YAML File Format
 
-The YAML should include topic metadata like:
+The YAML should include schema metadata like:
 
 - `pipeline_version`
-- `topic.name`
-- `topic.alias_name`
+- `schema.topic_name`
+- `schema.schema_type`
+- `schema.format`
 - `mal_acronym`
 - `srb_review_number`
 
 This file is passed via:
 ```bash
-export FILE_NAME=sample_topic_files/TopicAlias1.yaml
+export FILE_NAME=sample_schema_files/schema1.yaml
 ```
 
-Only one topic definition is expected per file.
+Only one schema definition is expected per file.
 
 ---
 
@@ -97,7 +97,7 @@ validation/check_tag_existence.sh \
 
 ## Local Testing Instructions
 
-1. Place the topic YAML file in the same directory as `terragrunt.hcl`
+1. Place the schema YAML file in the same directory as `terragrunt.hcl`
 2. Export all required environment variables
 3. Run the following commands:
 
@@ -114,7 +114,7 @@ terragrunt apply --auto-approve
 | Output Name         | Description                                    |
 |---------------------|------------------------------------------------|
 | `pipeline_version`  | The version of the IaC module that was applied |
-| `topic_id`          | The Confluent Kafka topic ID that was created  |
+| `schema_id`         | The Confluent Schema Registry ID that was created |
 
 ---
 
@@ -122,9 +122,9 @@ terragrunt apply --auto-approve
 
 - The backend is dynamically created using the environment and alias name:
   ```
-  <ENV>/topics/<topic_name>.tfstate
+  <ENV>/schemas/<subject_name>.tfstate
   ```
 - If `pipeline_version` is not defined in the YAML, `latest` is used.
-- The reusable module validates the topic name and enforces naming conventions via Terraform `variables.tf`.
+- The reusable module validates the schema name and enforces naming conventions via Terraform `variables.tf`.
 
 ---

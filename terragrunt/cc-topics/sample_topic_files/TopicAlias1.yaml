@@ -1,7 +1,9 @@
 ---
+pipeline_version: v0.0.1
 topic:
   name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT"
   alias_name: "TopicAlias1"
   description: "Test topic"
   mal_acronym: "CLMAL1"
   srb_review_number: "SRB001"
+  sec_review_number: "SEC001"

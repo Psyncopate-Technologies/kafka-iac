@@ -1,0 +1,11 @@
+---
+pipeline_version: v0.0.1
+schema:
+  topic_name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT"
+  schema_type: "key"
+  format: "AVRO"
+  mal_acronym: "CLMAL1"
+  srb_review_number: "SRB001"
+  sec_review_number: "SEC001"
+  file_name: "sample-schema.avsc"
+
