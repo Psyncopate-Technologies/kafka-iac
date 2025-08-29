@@ -19,15 +19,17 @@ locals {
   
   # Include Module specific configs
   terragrunt_inputs = read_terragrunt_config(find_in_parent_folders("_common/common_inputs.hcl"))
-  first_schema     = local.schema_config_raw.schema[0]
-  topic_name       = local.first_schema.topic_name
+  first_schema     = local.schema_config_raw.schema
+  topic_name       = local.schema_config_raw.topic.name
   schema_type      = local.first_schema.schema_type
   subject_name     = "${local.topic_name}-${local.schema_type}"
   schema_registry_rest_endpoint = local.terragrunt_inputs.inputs.cc_sr_endpoint
   schema_registry_api_key       = local.terragrunt_inputs.inputs.cc_sr_api_key
   schema_registry_api_secret    = local.terragrunt_inputs.inputs.cc_sr_api_secret
   schema_format                 = local.first_schema.format
-  schema_file_path              = local.first_schema.file_name
+  schema_file_extension         = local.schema_format == "AVRO" ? "avsc" : local.schema_format == "JSON" ? "json" : local.schema_format == "PROTOBUF" ? "proto" : "avsc"
+  schema_file_name              = (can(coalesce(local.first_schema.file_name))) ? local.first_schema.file_name : "${local.topic_name}-${local.schema_type}.${local.schema_file_extension}"
+  schema_file_path              = get_env("SCHEMA_FILE_PATH", "") != "" ? (get_env("SCHEMA_FILE_PATH") + "/${local.schema_file_name}") : "${get_original_terragrunt_dir()}/../../kafka-schemas/${local.schema_file_name}"
   environment_name = local.terragrunt_inputs.inputs.environment_name
 
   # Include Backend Configurations
@@ -40,15 +42,6 @@ locals {
 
 terraform {
   source = "git::https://github.com/CenturyLink/kafka-modules.git//cc-modules/cc-schema?ref=${local.iac_version}"
-  
-  # Copy schema files BEFORE plan/apply/destroy when they're needed
-  # The working directory for terraform commands is the cache directory
-  # Schemas are in the parent directory (client_MAL1/schemas), not in cc-schema/schemas
-  before_hook "copy_schemas" {
-    commands = ["plan", "apply", "destroy"]
-    execute  = ["bash", "-c", "PARENT_DIR=$(dirname '${get_original_terragrunt_dir()}') && echo \"Looking for schemas in: $PARENT_DIR/schemas\" && if [ -d \"$PARENT_DIR/schemas\" ]; then cp -r \"$PARENT_DIR/schemas\" . && echo 'Schemas copied successfully' && ls -la schemas/; else echo \"No schemas directory found at $PARENT_DIR/schemas\"; fi"]
-    run_on_error = false
-  }
 }
 
 inputs = {
