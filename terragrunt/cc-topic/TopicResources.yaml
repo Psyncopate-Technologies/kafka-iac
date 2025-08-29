@@ -1,0 +1,18 @@
+---
+pipeline_version: v0.0.1
+topic:
+  name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT"
+  alias_name: "TopicAlias1"
+  description: "Test topic"
+  mal_acronym: "CLMAL1"
+  srb_review_number: "SRB001"
+  sec_review_number: "SEC001"
+
+
+mirror_topic:
+  source_kafka_cluster: "east-cluster"
+  target_kafka_cluster: "west-cluster"
+  target_kafka_env: "sample"
+  source_topic_name: "sample-topic"
+  status: "ACTIVE"
+  delete_after_migration: false

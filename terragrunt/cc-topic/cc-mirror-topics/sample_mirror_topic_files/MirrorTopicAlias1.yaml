@@ -1,0 +1,7 @@
+mirror_topic:
+  source_kafka_cluster: east-cluster
+  target_kafka_cluster: west-cluster
+  target_kafka_env: sample
+  source_topic_name: sample-topic
+  status: ACTIVE
+  delete_after_migration: false
