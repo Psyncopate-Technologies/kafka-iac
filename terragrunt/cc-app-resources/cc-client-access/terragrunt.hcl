@@ -38,6 +38,7 @@ locals {
   terragrunt_configs = read_terragrunt_config(find_in_parent_folders("_common/common_configs.hcl"))
   cloud_provider = local.terragrunt_configs.inputs.cloud_provider
   env = local.terragrunt_configs.inputs.env
+  env_cat = local.terragrunt_configs.inputs.env_category
   app_resources_path = local.terragrunt_configs.inputs.resource_path
   app_config = local.terragrunt_configs.inputs.resource_config_raw
   is_tfstate_local = local.terragrunt_configs.inputs.is_tfstate_local

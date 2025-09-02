@@ -27,22 +27,18 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster_link_name"></a> [cluster\_link\_name](#input\_cluster\_link\_name) | Name of the cluster link used for mirroring | `string` | n/a | yes |
-| <a name="input_delete_after_migration"></a> [delete\_after\_migration](#input\_delete\_after\_migration) | If true, mirror topic will not be created (count=0) and destroy will be allowed | `bool` | `false` | no |
-| <a name="input_mirror_topic_config_raw"></a> [mirror\_topic\_config\_raw](#input\_mirror\_topic\_config\_raw) | Raw YAML string defining mirror topic configuration. | `string` | n/a | yes |
-| <a name="input_mirror_topic_name"></a> [mirror\_topic\_name](#input\_mirror\_topic\_name) | Name of the mirror topic | `string` | n/a | yes |
-| <a name="input_mirror_topic_status"></a> [mirror\_topic\_status](#input\_mirror\_topic\_status) | Mirror topic status: ACTIVE, PAUSED, PROMOTED, or FAILED\_OVER | `string` | `"ACTIVE"` | no |
-| <a name="input_mirror_topics_yaml_file"></a> [mirror\_topics\_yaml\_file](#input\_mirror\_topics\_yaml\_file) | Path to the YAML file containing mirror topic specifications | `string` | n/a | yes |
-| <a name="input_target_cluster_name"></a> [target\_cluster\_name](#input\_target\_cluster\_name) | Target cluster name | `string` | n/a | yes |
-| <a name="input_target_env_name"></a> [target\_env\_name](#input\_target\_env\_name) | Target environment name | `string` | n/a | yes |
+| <a name="input_replications"></a> [replications](#input\_replications) | Map of mirror topics to create, keyed by provider-region | <pre>map(object({<br/>    mirror_topic_status = string<br/>    mirror_topic_name   = string<br/>    cluster_link_name   = string<br/>    target_cluster_name = string<br/>    target_env_name     = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_source_topic_name"></a> [source\_topic\_name](#input\_source\_topic\_name) | Source Kafka topic name | `string` | n/a | yes |
+| <a name="input_target_cluster_api_key"></a> [target\_cluster\_api\_key](#input\_target\_cluster\_api\_key) | API Key for target Kafka cluster | `string` | n/a | yes |
+| <a name="input_target_cluster_api_secret"></a> [target\_cluster\_api\_secret](#input\_target\_cluster\_api\_secret) | API Secret for target Kafka cluster | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_link_name"></a> [cluster\_link\_name](#output\_cluster\_link\_name) | Name of the cluster link used for mirroring |
-| <a name="output_kafka_cluster_id"></a> [kafka\_cluster\_id](#output\_kafka\_cluster\_id) | ID of the Kafka cluster where mirror topic is created |
-| <a name="output_kafka_cluster_rest_endpoint"></a> [kafka\_cluster\_rest\_endpoint](#output\_kafka\_cluster\_rest\_endpoint) | REST endpoint of the Kafka cluster |
-| <a name="output_mirror_topic_name"></a> [mirror\_topic\_name](#output\_mirror\_topic\_name) | Name of the mirror topic created |
-| <a name="output_mirror_topic_status"></a> [mirror\_topic\_status](#output\_mirror\_topic\_status) | Status of the mirror topic |
+| <a name="output_cluster_link_names"></a> [cluster\_link\_names](#output\_cluster\_link\_names) | Cluster link names used for each mirror topic |
+| <a name="output_kafka_cluster_ids"></a> [kafka\_cluster\_ids](#output\_kafka\_cluster\_ids) | IDs of Kafka clusters where mirror topics are created |
+| <a name="output_kafka_cluster_rest_endpoints"></a> [kafka\_cluster\_rest\_endpoints](#output\_kafka\_cluster\_rest\_endpoints) | REST endpoints of Kafka clusters |
+| <a name="output_mirror_topic_names"></a> [mirror\_topic\_names](#output\_mirror\_topic\_names) | Names of the mirror topics created |
+| <a name="output_mirror_topic_statuses"></a> [mirror\_topic\_statuses](#output\_mirror\_topic\_statuses) | Statuses of the mirror topics |
 | <a name="output_source_topic_name"></a> [source\_topic\_name](#output\_source\_topic\_name) | Name of the source Kafka topic |

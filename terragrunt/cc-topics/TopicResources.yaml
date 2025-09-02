@@ -9,10 +9,10 @@ topic:
   sec_review_number: "SEC001"
 
 
-mirror_topic:
-  source_kafka_cluster: "east-cluster"
-  target_kafka_cluster: "west-cluster"
-  target_kafka_env: "sample"
-  source_topic_name: "sample-topic"
-  status: "ACTIVE"
-  delete_after_migration: false
+replication:
+  - target_provider: gcp
+    target_kafka_cluster_region: eastus2
+    status: ACTIVE
+  - target_provider: azure
+    target_kafka_cluster_region: westus2
+    status: PROMOTED

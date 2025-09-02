@@ -1,21 +1,24 @@
 resource "confluent_kafka_mirror_topic" "this" {
-  count = var.delete_after_migration ? 0 : 1
+  for_each = var.replications
 
-  mirror_topic_name = var.mirror_topic_name
+  mirror_topic_name = each.value.mirror_topic_name
 
   source_kafka_topic {
     topic_name = var.source_topic_name
   }
 
   cluster_link {
-    link_name = var.cluster_link_name
+    link_name = each.value.cluster_link_name
   }
 
   kafka_cluster {
-    id            = data.confluent_kafka_cluster.kafka_cluster.id
-    rest_endpoint = data.confluent_kafka_cluster.kafka_cluster.rest_endpoint
+    id            = data.confluent_kafka_cluster.kafka_cluster[each.key].id
+    rest_endpoint = data.confluent_kafka_cluster.kafka_cluster[each.key].rest_endpoint
+    credentials {
+      key    = var.target_cluster_api_key
+      secret = var.target_cluster_api_secret
+    }
   }
 
-  status = var.mirror_topic_status
-
+  status = each.value.mirror_topic_status
 }

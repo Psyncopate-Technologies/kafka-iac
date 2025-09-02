@@ -1,95 +1,83 @@
 mock_provider "confluent" {
   mock_data "confluent_environment" {
     defaults = { 
-        id           = "env-123"
-        display_name = "dummy-env"     
+      id           = "env-123"
+      display_name = "dummy-env"
     }
   }
 
   mock_data "confluent_kafka_cluster" {
     defaults = {
-        id                 = "lkc-123"
-        display_name       = "cluster-1"
-        rest_endpoint      = "https://rest.dummy.kafka.mock"
-        bootstrap_endpoint = "SASL_SSL://dummy.kafka.mock:9092"
-        rbac_crn           = "crn://confluent.cloud/kafka=lkc-123"
-        environment        = {
-          id = "env-123"
-        }
-      }
+      id                 = "lkc-123"
+      display_name       = "cluster-1"
+      rest_endpoint      = "https://rest.dummy.kafka.mock"
+      bootstrap_endpoint = "SASL_SSL://dummy.kafka.mock:9092"
+      rbac_crn           = "crn://confluent.cloud/kafka=lkc-123"
+      environment        = { id = "env-123" }
+    }
+  }
+}
+
+variables {
+  replications = {
+    "gcp-eastus2" = {
+      mirror_topic_name   = "mirror-topic-gcp-eastus2"
+      cluster_link_name   = "link-gcp-eastus2"
+      mirror_topic_status = "ACTIVE"
+      target_cluster_name = "cluster-1"
+      target_env_name     = "dummy-env"
+    }
+
+    "azure-westus2" = {
+      mirror_topic_name   = "mirror-topic-azure-westus2"
+      cluster_link_name   = "link-azure-westus2"
+      mirror_topic_status = "PROMOTED"
+      target_cluster_name = "cluster-2"
+      target_env_name     = "dummy-env"  
     }
   }
 
-variables {
-
-  # Terragrunt-driven inputs
-  mirror_topic_name          = "mirror-topic-1"
-  source_topic_name          = "source-topic-1"
-  cluster_link_name          = "test-link-1"
-  mirror_topic_status        = "ACTIVE"
-  delete_after_migration     = false
-  target_env_name            = "dummy-env"
-  target_cluster_name        = "cluster-1"
-
-  mirror_topics_yaml_file = "" # unused if you pass raw yaml
-  mirror_topic_config_raw = <<YAML
-mirror_topic:
-  source_kafka_cluster: east-cluster
-  target_kafka_cluster: west-cluster
-  target_kafka_env: sample
-  source_topic_name: sample-topic
-  status: ACTIVE
-  delete_after_migration: false
-YAML
+  source_topic_name         = "source-topic-1"
+  target_cluster_api_key    = "qwertyuiop"
+  target_cluster_api_secret = "zxcvbnmsdf"
 }
+
 run "test_rest_endpoint_format" {
   command = plan
 
   assert {
-    condition     = can(regex("^https://", output.kafka_cluster_rest_endpoint))
-    error_message = "Kafka cluster REST endpoint must start with https://"
+    condition     = alltrue([for k, v in output.kafka_cluster_rest_endpoints : can(regex("^https://", v))])
+    error_message = "All Kafka cluster REST endpoints must start with https://"
   }
 }
 
 run "test_mock_data_injection" {
   command = plan
 
-  # Validate the environment id from mock
+  # Validate the environment id from mock for a specific instance
   assert {
-    condition     = data.confluent_environment.kafka_env.id == "env-123"
+    condition     = data.confluent_environment.kafka_env["gcp-eastus2"].id == "env-123"
     error_message = "Mocked environment ID should be 'env-123'"
   }
 
-  # Validate kafka cluster display name from mock
+  # Validate kafka cluster display name from mock for a specific instance
   assert {
-    condition     = data.confluent_kafka_cluster.kafka_cluster.display_name == "cluster-1"
+    condition     = data.confluent_kafka_cluster.kafka_cluster["gcp-eastus2"].display_name == "cluster-1"
     error_message = "Mocked kafka cluster display name should be 'cluster-1'"
   }
 }
 
-run "test_yaml_decoding" {
-  command = plan
-
-  # Check that local variable from yamldecode contains the right topic name
-  assert {
-    condition     = var.mirror_topic_name == "mirror-topic-1"
-    error_message = "YAML decoded mirror_topic_name should be 'mirror-topic-1'"
-  }
-
-  # Check cluster link name from YAML
-  assert {
-    condition     = var.cluster_link_name == "test-link-1"
-    error_message = "YAML decoded cluster link name should be 'test-link-1'"
-  }
-}
 
 run "test_resource_properties" {
   command = plan
 
-  # Check the cluster link name on resource
+  # All cluster_link names must match expected mock values
   assert {
-    condition     = confluent_kafka_mirror_topic.this[0].cluster_link[0].link_name == "test-link-1"
-    error_message = "Resource cluster_link name should be 'test-link-1'"
+    condition = alltrue([
+      for k, v in confluent_kafka_mirror_topic.this :
+      v.cluster_link[0].link_name == "link-azure-westus2" || v.cluster_link[0].link_name == "link-gcp-eastus2"
+    ])
+    error_message = "All cluster_link names must match the expected values from mock inputs"
   }
 }
 
@@ -97,7 +85,10 @@ run "test_output_status" {
   command = plan
 
   assert {
-    condition     = output.mirror_topic_status == "ACTIVE"
-    error_message = "Mirror topic status output should be 'ACTIVE'"
+    condition = alltrue([
+      for k, v in output.mirror_topic_statuses : 
+      v == "PROMOTED" || v == "ACTIVE"
+    ])
+    error_message = "Mirror topic status outputs must match expected statuses"
   }
 }

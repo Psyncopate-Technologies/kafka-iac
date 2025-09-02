@@ -53,3 +53,15 @@ variable "cc_kafka_cluster_name" {
     error_message = "cc_kafka_cluster_name must be a valid name"
   }
 }
+
+variable "cc_target_cluster_api_key" {
+  type        = string
+  description = "Kafka API key for authenticating with the target Kafka cluster."
+  sensitive   = true
+}
+
+variable "cc_target_cluster_api_secret" {
+  type        = string
+  description = "Kafka API secret for the target Kafka cluster."
+  sensitive   = true
+}

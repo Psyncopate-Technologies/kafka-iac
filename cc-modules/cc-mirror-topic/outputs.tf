@@ -1,29 +1,29 @@
-output "mirror_topic_name" {
-  description = "Name of the mirror topic created"
-  value       = confluent_kafka_mirror_topic.this[0].mirror_topic_name
+output "mirror_topic_names" {
+  description = "Names of the mirror topics created"
+  value       = { for k, mt in confluent_kafka_mirror_topic.this : k => mt.mirror_topic_name }
 }
 
 output "source_topic_name" {
   description = "Name of the source Kafka topic"
-  value       = confluent_kafka_mirror_topic.this[0].source_kafka_topic[0].topic_name
+  value       = var.source_topic_name
 }
 
-output "cluster_link_name" {
-  description = "Name of the cluster link used for mirroring"
-  value       = confluent_kafka_mirror_topic.this[0].cluster_link[0].link_name
+output "cluster_link_names" {
+  description = "Cluster link names used for each mirror topic"
+  value       = { for k, mt in confluent_kafka_mirror_topic.this : k => mt.cluster_link[0].link_name }
 }
 
-output "kafka_cluster_id" {
-  description = "ID of the Kafka cluster where mirror topic is created"
-  value       = confluent_kafka_mirror_topic.this[0].kafka_cluster[0].id
+output "kafka_cluster_ids" {
+  description = "IDs of Kafka clusters where mirror topics are created"
+  value       = { for k, mt in confluent_kafka_mirror_topic.this : k => mt.kafka_cluster[0].id }
 }
 
-output "kafka_cluster_rest_endpoint" {
-  description = "REST endpoint of the Kafka cluster"
-  value       = confluent_kafka_mirror_topic.this[0].kafka_cluster[0].rest_endpoint
+output "kafka_cluster_rest_endpoints" {
+  description = "REST endpoints of Kafka clusters"
+  value       = { for k, mt in confluent_kafka_mirror_topic.this : k => mt.kafka_cluster[0].rest_endpoint }
 }
 
-output "mirror_topic_status" {
-  description = "Status of the mirror topic"
-  value       = confluent_kafka_mirror_topic.this[0].status
+output "mirror_topic_statuses" {
+  description = "Statuses of the mirror topics"
+  value       = { for k, mt in confluent_kafka_mirror_topic.this : k => mt.status }
 }
