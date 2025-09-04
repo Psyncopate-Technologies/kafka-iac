@@ -21,25 +21,32 @@ mock_provider "confluent" {
 variables {
   replications = {
     "gcp-eastus2" = {
+      target_provider     = "gcp"
+      target_kafka_cluster_region = "eastus2"
       mirror_topic_name   = "mirror-topic-gcp-eastus2"
       cluster_link_name   = "link-gcp-eastus2"
       mirror_topic_status = "ACTIVE"
       target_cluster_name = "cluster-1"
       target_env_name     = "dummy-env"
+      target_cluster_api_key    = "qwertyuiop"
+      target_cluster_api_secret = "zxcvbnmsdf"
     }
 
     "azure-westus2" = {
+      target_provider     = "azure"
+      target_kafka_cluster_region = "westus2"
       mirror_topic_name   = "mirror-topic-azure-westus2"
       cluster_link_name   = "link-azure-westus2"
       mirror_topic_status = "PROMOTED"
       target_cluster_name = "cluster-2"
       target_env_name     = "dummy-env"  
+      target_cluster_api_key    = "qwertyuiop"
+      target_cluster_api_secret = "zxcvbnmsdf"
     }
   }
 
   source_topic_name         = "source-topic-1"
-  target_cluster_api_key    = "qwertyuiop"
-  target_cluster_api_secret = "zxcvbnmsdf"
+
 }
 
 run "test_rest_endpoint_format" {
