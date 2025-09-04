@@ -1,0 +1,18 @@
+---
+pipeline_version: v0.0.1
+topic:
+  name: "GCP.DEV1.CLMAL1.CustomerData.Consent.JSON.CDO.EVENT"
+  alias_name: "TopicAlias1"
+  description: "Test topic"
+  mal_acronym: "CLMAL1"
+  srb_review_number: "SRB001"
+  sec_review_number: "SEC001"
+
+
+replication:
+  - target_provider: gcp
+    target_kafka_cluster_region: eastus2
+    status: ACTIVE
+  - target_provider: azure
+    target_kafka_cluster_region: westus2
+    status: PROMOTED

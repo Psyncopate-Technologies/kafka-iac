@@ -15,8 +15,8 @@ resource "confluent_kafka_mirror_topic" "this" {
     id            = data.confluent_kafka_cluster.kafka_cluster[each.key].id
     rest_endpoint = data.confluent_kafka_cluster.kafka_cluster[each.key].rest_endpoint
     credentials {
-      key    = var.target_cluster_api_key
-      secret = var.target_cluster_api_secret
+      key    = each.value.target_cluster_api_key
+      secret = each.value.target_cluster_api_secret
     }
   }
 

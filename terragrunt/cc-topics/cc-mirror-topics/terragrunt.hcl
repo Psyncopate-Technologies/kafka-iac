@@ -16,7 +16,7 @@ locals {
   terragrunt_configs     = read_terragrunt_config(find_in_parent_folders("_common/common_configs.hcl"))
   cloud_provider         = local.terragrunt_configs.inputs.cloud_provider
   env                    = local.terragrunt_configs.inputs.env
-  env_cat = local.terragrunt_configs.inputs.env_category
+  env_cat                = local.terragrunt_configs.inputs.env_category
   topic_config_raw       = local.terragrunt_configs.inputs.resource_config_raw
   topic_path             = local.terragrunt_configs.inputs.resource_path
   is_tfstate_local       = local.terragrunt_configs.inputs.is_tfstate_local
@@ -24,30 +24,6 @@ locals {
 
   raw_replications       = local.topic_config_raw.replication
   topic_name             = local.topic_config_raw.topic.name
-
-  prev_status_map = try(
-  read_terragrunt_config(find_in_parent_folders("previous_status.hcl")).inputs.prev_status_map,
-  {}  # default empty map if file not found
-)
-
-  allowed_transitions = {
-    "ACTIVE"      = ["ACTIVE", "PROMOTED", "FAILED_OVER", "PAUSED"]
-    "PAUSED"      = ["ACTIVE", "PAUSED"]
-    "PROMOTED"    = ["PROMOTED"]  # No changes allowed
-    "FAILED_OVER" = ["FAILED_OVER"]  # No changes allowed
-  }
-
-  # Only keep replication entries with valid transitions
-  valid_replications = {
-    for r in local.raw_replications :
-    "${r.target_provider}-${r.target_kafka_cluster_region}" => r
-    if contains(local.allowed_transitions[lookup(local.prev_status_map, "${r.target_provider}-${r.target_kafka_cluster_region}", "ACTIVE")], lookup(r, "status", "ACTIVE")) ||
-       lookup(local.prev_status_map, "${r.target_provider}-${r.target_kafka_cluster_region}", "ACTIVE") == lookup(r, "status", "ACTIVE")
-  }
-
-  terragrunt_inputs = read_terragrunt_config(find_in_parent_folders("_common/common_inputs.hcl"))
-  tc_api_key       = local.terragrunt_inputs.inputs.cc_target_cluster_api_key
-  tc_api_secret    = local.terragrunt_inputs.inputs.cc_target_cluster_api_secret
 
   cloud_provider_short = (local.cloud_provider == "azure") ? "azu" : (
     (local.cloud_provider == "aws") ? "aws" : (
@@ -63,13 +39,36 @@ locals {
   environment_name_constant = "env-enterprise-kafka"
 
   replications_map = {
-    for r in local.valid_replications :
-    "${r.target_provider}-${r.target_kafka_cluster_region}" => {
+    for r in local.raw_replications :
+    "${local.env}-${r.target_provider}-${lookup(r, "target_kafka_cluster_region", "eastus2")}-${local.topic_name}" => {
+      target_provider     = r.target_provider
+      target_kafka_cluster_region = lookup(r, "target_kafka_cluster_region", "eastus2")
       mirror_topic_status = lookup(r, "status", "ACTIVE")
       mirror_topic_name   = "${local.env}-${r.target_provider}-${r.target_kafka_cluster_region}-${local.topic_name}"
       cluster_link_name   = "${local.env}-${r.target_provider}-${r.target_kafka_cluster_region}-link"
       target_cluster_name = "${local.cloud_provider_short}-${local.cluster_constant}-${local.env_short}-${local.env_cat_short}-${r.target_kafka_cluster_region}-01"
       target_env_name     = "${local.cloud_provider_short}-${local.environment_name_constant}-${local.env_short}-${local.env_cat_short}-${r.target_kafka_cluster_region}-01"
+
+      target_cluster_api_key = (
+      get_env("CC_TARGET_CLUSTER_API_KEY", "") != "" ? get_env("CC_TARGET_CLUSTER_API_KEY") :
+      r.target_provider == "azure" ?
+        regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show",
+          "--name", "${upper(r.target_provider)}-CC-TARGET-CLUSTER-API-KEY-APP-${upper(local.env)}",
+          "--vault-name", get_env("AZURE_KEYVAULT_NAME"),
+          "--query", "value"))[0] :
+      ""
+    )
+
+      target_cluster_api_secret = (
+      get_env("CC_TARGET_CLUSTER_API_SECRET", "") != "" ? get_env("CC_TARGET_CLUSTER_API_SECRET") :
+      r.target_provider == "azure" ?
+        regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show",
+          "--name", "${upper(r.target_provider)}-CC-TARGET-CLUSTER-API-SECRET-APP-$${upper(local.env)}",
+          "--vault-name", get_env("AZURE_KEYVAULT_NAME"),
+          "--query", "value"))[0] :
+      ""
+    )
+      
     }
   }
   
@@ -87,8 +86,6 @@ terraform {
 inputs = {
   replications              = local.replications_map
   source_topic_name         = local.topic_name
-  target_cluster_api_key    = local.tc_api_key
-  target_cluster_api_secret = local.tc_api_secret
 }
 
 generate "backend" {

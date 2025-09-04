@@ -9,9 +9,6 @@ locals {
   cc_sr_api_key_secret_name = "${upper(get_env("CLOUD_PROVIDER"))}-CC-SR-API-KEY-APP-${upper(get_env("ENV"))}"
   cc_sr_api_secret_secret_name = "${upper(get_env("CLOUD_PROVIDER"))}-CC-SR-API-SECRET-APP-${upper(get_env("ENV"))}"
 
-  cc_target_cluster_api_key_secret_name    = "${upper(get_env("CLOUD_PROVIDER"))}-CC-TARGET-CLUSTER-API-KEY-APP-${upper(get_env("ENV"))}"
-  cc_target_cluster_api_secret_secret_name = "${upper(get_env("CLOUD_PROVIDER"))}-CC-TARGET-CLUSTER-API-SECRET-APP-${upper(get_env("ENV"))}"
-
 }
 
 inputs = {
@@ -48,24 +45,6 @@ inputs = {
                             get_env("CLOUD_PROVIDER") == "azure" ? regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show", "--name", local.cc_sr_api_secret_secret_name, "--vault-name", get_env("AZURE_KEYVAULT_NAME"), "--query", "value"))[0] :
                             ""
                           )
-
-  cc_target_cluster_api_key = (
-                            get_env("CC_TARGET_CLUSTER_API_KEY", "") != "" ? get_env("CC_TARGET_CLUSTER_API_KEY") :
-                            get_env("CLOUD_PROVIDER") == "azure" ?
-                              regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show",
-                                "--name", local.cc_target_cluster_api_key_secret_name,
-                                "--vault-name", get_env("AZURE_KEYVAULT_NAME"),
-                                "--query", "value"))[0] : ""
-                          )
-  cc_target_cluster_api_secret = (
-                            get_env("CC_TARGET_CLUSTER_API_SECRET", "") != "" ? get_env("CC_TARGET_CLUSTER_API_SECRET") :
-                            get_env("CLOUD_PROVIDER") == "azure" ?
-                              regex("^.(.*).$", run_cmd("--terragrunt-quiet", "az", "keyvault", "secret", "show",
-                                "--name", local.cc_target_cluster_api_secret_secret_name,
-                                "--vault-name", get_env("AZURE_KEYVAULT_NAME"),
-                                "--query", "value"))[0] : ""
-                          )
-
   cc_sr_endpoint       = get_env("CC_SR_ENDPOINT")
   environment_name     = get_env("ENVIRONMENT_NAME")
   env_category         = get_env("ENV_CATEGORY")
